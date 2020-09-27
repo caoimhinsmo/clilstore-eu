@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+html,body{
+  font-size: 14px;
+  height: 100%;
+  width: 100%;
+}
+body{
+  background-color: #59BDDC;
+}
+
+.revealclil {
+    display: none;    
+}
+  
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  display: flex;
+  align-items: center;
+}
+
+.imagen{    
+  opacity: 1.0;  
+}
+
+.imagen:hover {
+  opacity: 1.0; 
+}
+
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+.card-deck .card {
+  min-width: 220px;  
+}
+
+.card{
+  border-width:3px;
+}
+  
+
+#clilstore2:hover .revealclil {
+    
+}

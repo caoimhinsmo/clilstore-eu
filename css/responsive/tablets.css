@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+@media only screen and (min-width : 768px) {
+    .btn-lg {
+    padding: 0.5rem 1rem;
+    font-size: 2.75rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+  }
+  
+  .border-bottom {
+    border-bottom: 0px solid #dee2e6 !important;
+  }
+  .border-right {
+    border-right: 0px solid #dee2e6 !important;
+  }
+  .card-img-top {
+    flex-shrink: 0;
+    width: 60%;
+  }
+  
+  .parrafo {
+      font-size: x-large;
+  }
+  
+  .fondo_menu{
+      background-color: #59BDDC;
+  }
+  
+  .navbar-toggler-icon {
+    display: inline-block;
+    width: 3.5em;
+    height: 3.5em;
+    vertical-align: middle;
+    content: "";
+    background: no-repeat center center;
+    background-size: 100% 100%;
+  }
+  
+  #mainNav .navbar-nav .nav-item .nav-link {
+    color: #ffffff;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 2.3rem;
+    padding: 0.75rem 0;
+  }
+  
+  #mainNav .navbar-brand {    
+    font-size: 3.0rem;    
+  }
+}
