@@ -3,7 +3,7 @@
 
   header('Cache-Control: no-cache, no-store, must-revalidate');
   header("Cache-Control:max-age=0");
-  
+
   //Load Menu and Footer
   include ("../include/header.php");
   include ("../include/footer.php");
@@ -22,7 +22,7 @@
     $T_Teaching_units         = $T->h('Teaching_units');
     $T_for_CLIL               = $T->h('for_CLIL');
     $T_Help                   = $T->h('Cobhair');
-    $T_About                  = $T->h('About');    
+    $T_About                  = $T->h('About');
     $T_Select_lang_level      = $T->h('Select_lang_level');
     $T_My_options             = $T->h('My_options');
     $T_My_units               = $T->h('My_units');
@@ -121,14 +121,15 @@
     $T_hours                  = $T->h('hours');
     $T_minutes                = $T->h('minutes');
     $T_seconds                = $T->h('seconds');
+    $T_Search_for_t_units     = $T->h('Search_for_t_units');
 
     $T_If_message_persists = sprintf($T_If_message_persists,$T_Got_it);
     $T_privacy_policy      = "<a href='privacyPolicy.php'>$T_privacy_policy</a>";
     $T_CS_is_well_behaved  = sprintf($T_CS_is_well_behaved,$T_privacy_policy);
 
-    $mdNavbar = $hlSelect = SM_mdNavbar::hlSelect();  
-    
-    
+    $mdNavbar = $hlSelect = SM_mdNavbar::hlSelect();
+
+
 
 $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
 
@@ -139,8 +140,8 @@ $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
         $T_Got_it
     </a></p>
     <p class="text-white" style='font-size:80%'>$T_If_message_persists</p>
-    <p class="text-white" style='font-size:80%'>$T_CS_is_well_behaved</p>        
-    </div> 
+    <p class="text-white" style='font-size:80%'>$T_CS_is_well_behaved</p>
+    </div>
 EOD_cookieMessage;
 
     $myCLIL = SM_myCLIL::singleton();
@@ -151,11 +152,11 @@ EOD_cookieMessage;
     $serverhome = SM_myCLIL::serverhome();
 
     $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    
+
     $idioma = SM_T::hl0();
-    
-   
-   
+
+
+
     if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
 
 //    if (isset($_GET['mode']))         { $csSess->setMode($_GET['mode']            ); }
@@ -163,47 +164,47 @@ EOD_cookieMessage;
 //    if (!empty($_GET['deleteCol']))   { $csSess->deleteCol($_GET['deleteCol']     ); }
     if (!empty($_GET['addCol']))      { $csSess->addCol($_GET['addCol']           ); }
     if (!empty($_GET['restoreCols'])) { $csSess->restoreCols($_GET['restoreCols'] ); }
-    
+
     //footer
     $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
-    
+
     //Modo
     $mode    = $csSess->getCsSession()->mode;
-    
+
     $autor = $_GET['owner'];
-    
+
     //$incTest = 0;
-    
-           
+
+
        if (isset($_POST['incTest2'])){
-        $incTest = 1; 
+        $incTest = 1;
        } else {
-        $incTest = 0;       
-       }       
-    
+        $incTest = 0;
+       }
+
 
     //$mode    = $csSess->getCsSession()->mode;
-    
+
     //$incTest = $csSess->getCsSession()->incTest;
-    
+
     $mode0selected = ( $mode==0 ? 'selected=selected' : '');
     $mode1selected = ( $mode==1 ? 'selected=selected' : '');
     $mode2selected = ( $mode==2 ? 'selected=selected' : '');
     $mode3selected = ( $mode==3 ? 'selected=selected' : '');
-    
+
     if ($mode == 0 || $mode == 1){
          $mode1radio ='checked';
     } else {
         $mode1radio ='';
     }
-    
+
      if ($mode == 2 || $mode == 3){
          $mode3radio ='checked';
     } else {
         $mode3radio ='';
     }
-    
-    
+
+
     $addColHtml = $csSess->addColHtml();
     $symbolRowHtml = $csSess->symbolRowHtml();
 
@@ -219,13 +220,13 @@ EOD_cookieMessage;
              $incTestChecked = 'checked';
         } else {
             $incTestChecked = '';
-        }       
+        }
         $wideChecked    = ( $mode==3 ?  : '' );
         $checkboxesHtml = <<<CHECKBOXES
-        <form id="filterForm2" method="post">        
+        <form id="filterForm2" method="post">
 <input type="checkbox" class="custom-control-input" name="incTest2" id="incTest2" $incTestChecked tabindex=2 title="include test units" onChange="submitFForm2()" value="1">
 <label for="incTest2" class="custom-control-label">$incTestLabel</label>
-         </form>       
+         </form>
 CHECKBOXES;
     }
 
@@ -269,7 +270,7 @@ END_USER1;
                                        '&lt;br&gt;' => '<br>'
                                      ]);
             $incUnitMessage = "<p style='margin:0;padding:0.5em;background-color:red;color:white'>$incUnitMessage</p>";
-                                    
+
             $createButton = '';
         } else {
             $incUnitMessage = '';
@@ -314,7 +315,7 @@ END_USER2;
         if ($con=='contains') { $sVis = substr($sVis,1);    }
     }
 
-    
+
 
     $f['idFil']      =
     $f['viewsMin']   =
@@ -459,7 +460,7 @@ END_USER2;
     if ($f['createdMax']<>'') { $whereClauses['createdMax'] = 'created<=?';         }
     if ($f['changedMin']<>'') { $whereClauses['changedMin'] = 'changed>=?';         }
     if ($f['changedMax']<>'') { $whereClauses['changedMax'] = 'changed<=?';         }
-    if ($f['licenceFil']<>'') { $whereClauses['licence']    = 'licence LIKE ?';     }    
+    if ($f['licenceFil']<>'') { $whereClauses['licence']    = 'licence LIKE ?';     }
     if ($f['slFil']<>'')      { $whereClauses['sl']         = 'sl=?';               }
     if ($f['levelMin']!=='')  { $whereClauses['levelMin']   = 'level>=?';           }
     if ($f['levelMax']!=='')  { $whereClauses['levelMax']   = 'level<=?';           }
@@ -476,7 +477,7 @@ END_USER2;
     if ($f['textFil']<>'')    { $whereClauses['text']       = '(text LIKE ? OR summary LIKE ?)';  }
     if ($incTest==0)          { $whereClauses['test']       = ( empty($user)
                                                               ? 'test=0'
-                                                              : "(test=0 OR (test=1 AND owner='$user'))" ); } 
+                                                              : "(test=0 OR (test=1 AND owner='$user'))" ); }
     //if ($mode==1 && $f['slFil']=='') { $whereClauses['zap'] = '0'; } //Zap everything and select no units if no language selected in mode 0
 
     $whereClause = implode(' AND ',$whereClauses);
@@ -593,42 +594,42 @@ END_USER2;
     }
     $slOptionsHtml = implode("\n",$slOptions);
     $slSelectColor = ( $slFil=='' ? 'white' : 'yellow' );
-    
+
     $stmt = $DbMultidict->prepare('SELECT DISTINCT owner FROM clilstore ORDER BY owner');
     $stmt->execute();
     $ownerList = $stmt->fetchAll(PDO::FETCH_COLUMN,0);
-    foreach ($ownerList as &$owner) { 
+    foreach ($ownerList as &$owner) {
         $selected_o = ( $owner==$autor ? ' selected' : '');
-        $owOptions[] = "<option value=\"$owner\"$selected_o>$owner</option>";        
+        $owOptions[] = "<option value=\"$owner\"$selected_o>$owner</option>";
     }
     $owOptionsHtml = implode("\n",$owOptions);
-    
 
-    
+
+
         $levelButHtml = $csSess->levelButHtml();
         $tabletopChoices = <<<ENDtabletopChoices
 
-                    
-        <form id="selectForm" method="post">       
-                
-            <div class="form-group">  
+
+        <form id="selectForm" method="post">
+
+            <div class="form-group">
                 <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group mr-2 input-group-sm" role="group"> 
+                    <div class="btn-group mr-2 input-group-sm" role="group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-language mr-1" aria-hidden="true"></i>$T_Language</span>    
-                            </div>        
+                                <span class="input-group-text"><i class="fa fa-language mr-1" aria-hidden="true"></i>$T_Language</span>
+                            </div>
                             <select name="sl" onchange="document.getElementById('selectForm').submit();" class="form-control form-control-sm mySelect ampliar">
                             $slOptionsHtml
                             </select>
                     </div>
                 </div>
-            </div> 
-               
-        </form>    
-    
+            </div>
+
+        </form>
+
 ENDtabletopChoices;
-      
-    
+
+
 
     $mode0commentoutStart  = ( $mode==0 ? '<!--' : '');
     $mode0commentoutFinish = ( $mode==0 ? '-->'  : '');
@@ -652,8 +653,8 @@ ENDtabletopChoices;
         $tableHtml = <<<END_tableHtmlBarr
 <form id="filterForm" method="post">
 <input type="hidden" name="filterForm" value="1">
-<table id="mitabla" class="hover order-column" style="width:100%"> 
-<thead>      
+<table id="mitabla" class="hover order-column" style="width:100%">
+<thead>
 <tr>
  <th>$T_UnitID</th>
  <th>$T_Views</th>
@@ -670,11 +671,11 @@ ENDtabletopChoices;
  <th>$T_Buttons</th>
  <th>$T_Files</th>
  <th>$T_Title</th>
- <th>Summary</th>               
+ <th>Summary</th>
  <th>Action</th>
- <th>$T_Likes</th>               
+ <th>$T_Likes</th>
 </tr>
-</thead> 
+</thead>
 END_tableHtmlBarr;
 
 
@@ -686,7 +687,7 @@ END_tableHtmlBarr;
         $query = 'SELECT clilstore.id,owner,fullname,sl,endonym,level,words,medtype,medlen,buttons,files,title,text,summary,created,changed,licence,test,views,clicks,likes'
                 .' FROM clilstore,users,lang'
                 ." WHERE $whereClause ORDER BY $orderClause";
-                
+
         $stmt = $DbMultidict->prepare($query);
         $i = 1;
         if (!empty($whereClauses['id']))         { $stmt->bindParam($i++,$idFil);       }
@@ -785,12 +786,12 @@ END_tableHtmlBarr;
             $buttonsHtml = ( empty($buttons) ? '' : $buttons );
             $filesHtml   = ( empty($files)   ? '' : $files   );
             if ($user==$owner || $user=='admin')  {
-                    $deleteHtml = '<a href="edit.php?id='.$id.'" class="btn btn-success btn-sm rounded" role="button"><i class="fa fa-edit" aria-hidden="true"></i></a> 
-                            <a href="delete.php?id='.$id.'" class="btn btn-danger btn-sm rounded" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>                          
+                    $deleteHtml = '<a href="edit.php?id='.$id.'" class="btn btn-success btn-sm rounded" role="button"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                            <a href="delete.php?id='.$id.'" class="btn btn-danger btn-sm rounded" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
                           <input id="action" name="action" type="hidden" value="true">';
                 } else {
                     $deleteHtml = '<input id="action" name="action" type="hidden" value="false">';
-                } 
+                }
             $titleHtml = htmlspecialchars($title);
             $titleCool = strtr($titleHtml,[ "[COOL]" => "<img src='Cool.png' alt='[COOL]' style='padding-right:0.3em'>" ]);
             $tableHtml .= '<tr>'
@@ -807,7 +808,7 @@ END_tableHtmlBarr;
                         . "<td>$medtypeHtml</td>"
                         . "<td>$medlenHtml</td>"
                         . "<td>$buttonsHtml</td>"
-                        . "<td>$filesHtml</td>"                       
+                        . "<td>$filesHtml</td>"
                         . "<td><a href='page.php?id=$id'>"
                         .    '</a>'
                         . "$testHtml<a href='/cs/$id' title='$summary'>$titleCool</a></td>"
@@ -849,18 +850,18 @@ END_tableHtmlBarr;
                  $clickRateMessage = rateMessage($clickRate);
                  $totViewRateMessage  = rateMessage($viewRate *$nunits);
                  $totClickRateMessage = rateMessage($clickRate*$nunits);
-                 
-                 
+
+
              }
         }
-        
+
         $mostrar='';
-        
-        if ($autor<>''){ 
+
+        if ($autor<>''){
             $mostrar = "show";
         } else {
             $mostrar = '';
-        }    
+        }
         $tableHtml .= <<<END_tableHtmlBun
    <tfoot class="text-primary">
         <tr>
@@ -873,10 +874,10 @@ END_tableHtmlBarr;
             <th></th>
             <th></th>
             <th></th>
-            <th></th>    
-            <th></th>    
+            <th></th>
+            <th></th>
         </tr>
-    </tfoot>             
+    </tfoot>
 </table>
 $unitsFoundMessage
 </form>
@@ -884,19 +885,19 @@ END_tableHtmlBun;
 
 $modeAlumno = <<<END_tableModeAlumno
 <script>
-      
+
 $(document).ready(function() {
-    
+
       $('#userTypeFilter').select2({
         selectOnClose: true,
         width: 'resolve',
         theme: "bootstrap"
-      });  
-        
+      });
+
      $('#userTypeFilter').on('select2:select', function (e) {
         filterTable();
       });
-        
+
     /* Custom filtering function which will search data in column four between two values */
     $.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
@@ -935,8 +936,8 @@ $(document).ready(function() {
             }
             return true;
         }
-    );    
-        
+    );
+
     function filterByUserType(userTypeColumnData) {
         let userTypeSelected = $('#userTypeFilter').val();
         //Si la opción seleccionada es 'All', devolvemos 'true' para que pinte la fila
@@ -945,9 +946,9 @@ $(document).ready(function() {
         }
         //La fila sólo se va a pintar si el valor de la columna coincide con el del filtro seleccionado
         return userTypeColumnData === userTypeSelected;
-    }     
-            
-           
+    }
+
+
     var langMap = {
     en: {
           path: 'English',
@@ -962,17 +963,17 @@ $(document).ready(function() {
           }
         }
     };
-            
-        
-        var select = document.getElementById("language");
-        var value = select.value;  
-        var lang = value.substr(0, 2);   
 
-      function getLanguage() { 
+
+        var select = document.getElementById("language");
+        var value = select.value;
+        var lang = value.substr(0, 2);
+
+      function getLanguage() {
         var result = null;
         var path = '//cdn.datatables.net/plug-ins/1.10.13/i18n/';
         $.ajax({
-          async: false,  
+          async: false,
           url: path + langMap[lang].path + '.json',
           success: function(obj) {
             result = $.extend({}, obj, langMap[lang].mods)
@@ -980,83 +981,83 @@ $(document).ready(function() {
         })
         return result
       }
-         
-    var table = $('#mitabla').DataTable( {        
-        
+
+    var table = $('#mitabla').DataTable( {
+
         "paging": true,
-        "order": [[ 0, "desc" ]],   
-        "searching": true,            
-        responsive: true,   
+        "order": [[ 0, "desc" ]],
+        "searching": true,
+        responsive: true,
         "columnDefs": [
             {
                 "targets": [ 0 ],
                 className: 'dt-body-center',
-                "visible": true    
+                "visible": true
             },
             {
                 "targets": [ 1 ],
                 className: 'dt-body-center',
-                "visible": false    
+                "visible": false
             },
             {
                 "targets": [ 2 ],
-                className: 'dt-body-center', 
-                "visible": false    
+                className: 'dt-body-center',
+                "visible": false
             },
             {
                 "targets": [ 3 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 4 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 5 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 7 ]
-                            
+
             },
             {
                 "targets": [ 8 ],
-                className: 'dt-body-center'            
+                className: 'dt-body-center'
             },
             {
                 "targets": [ 9 ],
                 className: 'dt-body-center',
-                "visible": false    
+                "visible": false
             },
             {
                 "targets": [ 10 ],
-                className: 'dt-body-center'            
+                className: 'dt-body-center'
             },
             {
                 "targets": [ 11 ],
-                "visible": false            
-            }, 
+                "visible": false
+            },
             {
                 "targets": [ 12 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 13 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 15 ],
                 "visible": false,
                 className: 'noVis'
-                    
+
             },
             {
                 "targets": [ 16 ],
                 "visible": false,
                 className: 'noVis'
-                    
+
             }
-        
+
         ],
         dom: 'Bfrtip',
         lengthMenu: [
@@ -1064,23 +1065,23 @@ $(document).ready(function() {
             [ '10 rows', '25 rows', '50 rows', '100 rows', 'Show All' ]
         ],
         buttons: [
-            'pageLength',            
-          {    
+            'pageLength',
+          {
             extend: 'colvis',
             columns: ':not(.noVis)',
             text: function ( dt, button, config ) {
                 return dt.i18n( 'buttons.colvis', 'Show/Hide Columns' );
             }
-          }  
+          }
         ]
-        
+
     });
-        
-    //Search        
+
+    //Search
     $('#buscar').on( 'keyup', function () {
     table.search( this.value ).draw();
     } );
-        
+
     //Search Owner
     $('#buscar_autor').on( 'keyup', function () {
     table
@@ -1088,84 +1089,84 @@ $(document).ready(function() {
         .search( this.value )
         .draw();
     } );
-        
-    //Search Title    
+
+    //Search Title
     $('#buscar_titulo').on( 'keyup', function () {
     table
         .columns( 14 )
         .search( this.value )
         .draw();
-    } );   
-     
-        
-    //Filter Media    
+    } );
+
+
+    //Filter Media
     $('input:checkbox').on('change', function () {
    //build a regex filter string with an or(|) condition
    var positions = $('input:checkbox[name="media"]:checked').map(function() {
      return '^' + this.value + '$';
    }).get().join('|');
-   
+
    //filter in column 1, with an regex, no smart filtering, not case sensitive
-   table.column(10).search(positions, true, false, false).draw(false);   
+   table.column(10).search(positions, true, false, false).draw(false);
 
    });
-        
+
    function filterTable() {
      table.draw();
-    }     
-     
- //Show - Hide Columns 
+    }
+
+ //Show - Hide Columns
  $('a.toggle-vis').on( 'click', function (e) {
         e.preventDefault();
- 
+
         // Get the column API object
         var column = table.column( $(this).attr('data-column') );
- 
+
         // Toggle the visibility
         column.visible( ! column.visible() );
     });
- 
+
     //Max - Min Words
     $('#min, #max').keyup( function() {
         table.draw();
-    } );   
-        
+    } );
+
     //Max - Min Views
     $('#min_v, #max_v').keyup( function() {
         table.draw();
     } );
-        
-    
-        
+
+
+
     $("#reset").click(function (e) {
-      table.search( '' ).columns().search( '' ).draw();  
-      $('#buscar').val('Search for teaching units');
-      $('#userTypeFilter').val('All');      
-      $('#userTypeFilter').trigger('change');   
+      table.search( '' ).columns().search( '' ).draw();
+      $('#buscar').val('$T_Search_for_t_units');
+      $('#userTypeFilter').val('All');
+      $('#userTypeFilter').trigger('change');
       $("#media_aud").bootstrapToggle('off');
-      $("#media_vid").bootstrapToggle('off'); 
-      $("#media_doc").bootstrapToggle('off');          
-    });    
-   
-}); 
-   </script>        
+      $("#media_vid").bootstrapToggle('off');
+      $("#media_doc").bootstrapToggle('off');
+    });
+
+});
+   </script>
 END_tableModeAlumno;
 $modeProfesor = <<<END_tableModeProfesor
-<script>      
-$(document).ready(function() { 
+<script>
+$(document).ready(function() {
 
    var estado=document.getElementById("action").value;
-        
+
     $('#userTypeFilter').select2({
         selectOnClose: true,
         width: 'resolve',
         theme: "bootstrap"
-      });  
-        
+      });
+
      $('#userTypeFilter').on('select2:select', function (e) {
         filterTable();
       });
-        
+
    /* Custom filtering function which will search data in column four between two values */
     $.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
@@ -1206,7 +1207,7 @@ $(document).ready(function() {
         }
 
     );
-        
+
     function filterByUserType(userTypeColumnData) {
         let userTypeSelected = $('#userTypeFilter').val();
         //Si la opción seleccionada es 'All', devolvemos 'true' para que pinte la fila
@@ -1215,8 +1216,8 @@ $(document).ready(function() {
         }
         //La fila sólo se va a pintar si el valor de la columna coincide con el del filtro seleccionado
         return userTypeColumnData === userTypeSelected;
-    }    
-           
+    }
+
     var langMap = {
     en: {
           path: 'English',
@@ -1231,17 +1232,17 @@ $(document).ready(function() {
           }
         }
     };
-            
-        
-        var select = document.getElementById("language");
-        var value = select.value;  
-        var lang = value.substr(0, 2);   
 
-      function getLanguage() { 
+
+        var select = document.getElementById("language");
+        var value = select.value;
+        var lang = value.substr(0, 2);
+
+      function getLanguage() {
         var result = null;
         var path = '//cdn.datatables.net/plug-ins/1.10.13/i18n/';
         $.ajax({
-          async: false,  
+          async: false,
           url: path + langMap[lang].path + '.json',
           success: function(obj) {
             result = $.extend({}, obj, langMap[lang].mods)
@@ -1249,83 +1250,83 @@ $(document).ready(function() {
         })
         return result
       }
-    
+
    //Datatable
-    var table = $('#mitabla').DataTable( {        
-        
+    var table = $('#mitabla').DataTable( {
+
         "paging": true,
-        "order": [[ 0, "desc" ]],   
-        "searching": true,            
-        responsive: true,             
+        "order": [[ 0, "desc" ]],
+        "searching": true,
+        responsive: true,
         "columnDefs": [
             {
                 "targets": [ 0 ],
                 className: 'dt-body-center',
-                "visible": true    
+                "visible": true
             },
             {
                 "targets": [ 1 ],
                 className: 'dt-body-center',
-                "visible": false    
+                "visible": false
             },
             {
                 "targets": [ 2 ],
-                className: 'dt-body-center', 
-                "visible": false    
+                className: 'dt-body-center',
+                "visible": false
             },
             {
                 "targets": [ 3 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 4 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 5 ],
-                "visible": false                
+                "visible": false
             },
             {
-                "targets": [ 7 ]                            
+                "targets": [ 7 ]
             },
             {
                 "targets": [ 8 ],
-                className: 'dt-body-center'            
+                className: 'dt-body-center'
             },
             {
                 "targets": [ 9 ],
                 className: 'dt-body-center',
-                "visible": false    
+                "visible": false
             },
             {
                 "targets": [ 10 ],
-                className: 'dt-body-center'            
+                className: 'dt-body-center'
             },
             {
                 "targets": [ 11 ],
-                "visible": false            
-            }, 
+                "visible": false
+            },
             {
                 "targets": [ 12 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 13 ],
-                "visible": false                
+                "visible": false
             },
             {
                 "targets": [ 15 ],
                 "visible": false,
                 className: 'noVis'
-                    
+
             },
             {
                 "targets": [ 16 ],
                 "visible": true,
                 className: 'noVis'
-                    
+
             }
-        
+
         ],
         dom: 'Bfrtip',
         lengthMenu: [
@@ -1334,23 +1335,23 @@ $(document).ready(function() {
         ],
         buttons: [
             'pageLength',
-                
-          {    
+
+          {
             extend: 'colvis',
             columns: ':not(.noVis)',
             text: function ( dt, button, config ) {
                 return dt.i18n( 'buttons.colvis', 'Show/Hide Columns' );
             }
-          }  
+          }
         ]
-        
+
     });
-            
-    //Search        
+
+    //Search
     $('#buscar').on( 'keyup', function () {
     table.search( this.value ).draw();
     } );
-        
+
     //Search Owner
     $('#buscar_autor_2').on( 'change', function () {
     table
@@ -1358,85 +1359,85 @@ $(document).ready(function() {
         .search( this.value )
         .draw();
     } );
-        
-    //Search Title    
+
+    //Search Title
     $('#buscar_titulo').on( 'keyup', function () {
     table
         .columns( 14 )
         .search( this.value )
         .draw();
-    } );  
-        
-    //Filter Media         
+    } );
+
+    //Filter Media
     $('input:checkbox').on('change', function () {
    //build a regex filter string with an or(|) condition
    var positions = $('input:checkbox[name="media"]:checked').map(function() {
      return '^' + this.value + '$';
    }).get().join('|');
-   
+
    //filter in column 1, with an regex, no smart filtering, not case sensitive
-   table.column(10).search(positions, true, false, false).draw(false);   
+   table.column(10).search(positions, true, false, false).draw(false);
 
  });
-        
+
   function filterTable() {
    table.draw();
-  }       
-     
- //Show - Hide Column 
+  }
+
+ //Show - Hide Column
  $('a.toggle-vis').on( 'click', function (e) {
         e.preventDefault();
- 
+
         // Get the column API object
         var column = table.column( $(this).attr('data-column') );
- 
+
         // Toggle the visibility
         column.visible( ! column.visible() );
     });
  //Max - Min Words
     $('#min, #max').keyup( function() {
         table.draw();
-    } ); 
-        
+    } );
+
  //Max - Min Views
     $('#min_v, #max_v').keyup( function() {
         table.draw();
-    } ); 
-        
+    } );
+
     if (estado==='true'){
        $('#mitabla').DataTable().column(15).visible(true);
-   } 
-   
+   }
+
    $("#reset").click(function (e) {
-      table.search( '' ).columns().search( '' ).draw();  
-      $('#buscar').val('Search for teaching units');
-      $('#userTypeFilter').val('All');      
-      $('#userTypeFilter').trigger('change');   
+      table.search( '' ).columns().search( '' ).draw();
+      $('#buscar').val('$T_Search_for_t_units');
+      $('#userTypeFilter').val('All');
+      $('#userTypeFilter').trigger('change');
       $("#media_aud").bootstrapToggle('off');
-      $("#media_vid").bootstrapToggle('off'); 
-      $("#media_doc").bootstrapToggle('off'); 
+      $("#media_vid").bootstrapToggle('off');
+      $("#media_doc").bootstrapToggle('off');
       $("#incTest2").prop("checked", false);
-      document.getElementById('filterForm2').submit();    
-    });  
-   
-}); 
-   </script>        
+      document.getElementById('filterForm2').submit();
+    });
+
+});
+   </script>
 END_tableModeProfesor;
 
 if ($mode == 1){
     $modoTabla = $modeAlumno;
-} 
+}
 
 if ($mode == 3){
     $modoTabla = $modeProfesor;
-}    
-        
-        
-        
-        
-        
-        
-        
+}
+
+
+
+
+
+
+
     }
 
     echo <<<EOD1
@@ -1444,47 +1445,47 @@ if ($mode == 3){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Clilstore - $T_Teaching_units $T_for_CLIL</title>  
-    
+    <title>Clilstore - $T_Teaching_units $T_for_CLIL</title>
+
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">   
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">     
-    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">    
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">  
-    <link href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css" rel="stylesheet">      
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"> 
-    <link href="../css/styles.css" rel="stylesheet"> 
-    <link href="../css/cookiealerts.css" rel="stylesheet">         
-    <link href="../css/responsive/smartphone.css" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <link href="../css/cookiealerts.css" rel="stylesheet">
+    <link href="../css/responsive/smartphone.css" rel="stylesheet">
     <link href="../css/responsive/tablets.css" rel="stylesheet">
     <link href="../css/responsive/desktops.css" rel="stylesheet">
-    <link href="../css/responsive/ultra_desktops.css" rel="stylesheet"> 
+    <link href="../css/responsive/ultra_desktops.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />    
-            
-             
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>          
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>  
-    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>        
-    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script> 
-    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script> 
-    <script src="../js/bootstrap.bundle.min.js"></script>    
-    <script src="../js/bootstrap.min.js"></script>  
-    <script src="../js/cookiealert.js"></script>         
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>   
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>        
-  
-      
-    <script src="../js/clil.js"></script>  
-            
-            
-            
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
 
-        
-        
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/cookiealert.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+
+    <script src="../js/clil.js"></script>
+
+
+
+
+
+
     <style>
-            
+
         @font-face {
             font-family: "Lato";
             src: url('698242188-Lato-Bla.eot');
@@ -1494,22 +1495,22 @@ if ($mode == 3){
             url('698242188-Lato-Bla.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
-        }       
-            
-                 
+        }
+
+
         body {
             margin: 0;
             font-family: 'Lato', sans-serif;
             font-size: 1rem;
             font-weight: 400;
-            line-height: 1.5; 
+            line-height: 1.5;
             background-color: #59BDDC;
           }
-    
-        
+
+
         .btn{
            border-radius:0px;
-        } 
+        }
         .input-group-text {
             display: flex;
             align-items: center;
@@ -1524,28 +1525,28 @@ if ($mode == 3){
             background-color: #2c6692;
             border: 1px solid #2c6692;
             border-radius: 0.00rem;
-        } 
-            
+        }
+
         .ampliar{
             height: 48px;
-        }    
-            
-                  
-        .mySelect {
-            border-radius: 0;            
         }
-            
-        table.dataTable thead {background-color:#2c6692; color:#ffffff;} 
-            
-                   
-        th {            
+
+
+        .mySelect {
+            border-radius: 0;
+        }
+
+        table.dataTable thead {background-color:#2c6692; color:#ffffff;}
+
+
+        th {
             border-right: 3px solid #59BDDC;
-          } 
-              
-        td {            
+          }
+
+        td {
             border-right: 3px solid #59BDDC;
-          }    
-            
+          }
+
         a {
             color: #35a4bf;
             text-decoration: none;
@@ -1559,20 +1560,20 @@ if ($mode == 3){
             color: #fff;
             background-color: #35a4bf;
             border-color: #35a4bf;
-        } 
-            
+        }
+
         .ex_highlight #mitabla tbody tr.even:hover, #example tbody tr.even td.highlighted {
 	background-color: #ECFFB3;
         }
 
         .ex_highlight #mitabla tbody tr.odd:hover, #example tbody tr.odd td.highlighted {
                 background-color: #E6FF99;
-        }  
-            
+        }
+
         .dataTables_wrapper .dataTables_filter {
             display: none;
-        } 
-        
+        }
+
         .btn-secondary {
             color: #fff;
             background-color: #35a4bf;
@@ -1580,29 +1581,29 @@ if ($mode == 3){
             margin-right: 5px;
             margin-bottom: 5px;
         }
-            
+
         .btn-secondary:hover {
             color: #fff;
             background-color: #35a4bf;
             border-color: #35a4bf;
-        } 
-            
+        }
+
         .dropdown-item.active, .dropdown-item:active {
             color: #fff;
             text-decoration: none;
             background-color: #2c6692;
-        } 
-            
+        }
+
         .inputbuscar{
           height:65px;
-          padding-left: 60px;            
-          z-index: 1;    
-        } 
-            
+          padding-left: 60px;
+          z-index: 1;
+        }
+
         .input-group-lg > .form-control, .input-group-lg > .input-group-prepend > .input-group-text, .input-group-lg > .input-group-append > .input-group-text, .input-group-lg > .input-group-prepend > .btn, .input-group-lg > .input-group-append > .btn {
             border-radius: 0.0rem;
-        }   
-            
+        }
+
         .custom-radio-button div {
             display: inline-block;
           }
@@ -1639,7 +1640,7 @@ if ($mode == 3){
           .custom-radio-button input[type="radio"]#color-blue + label span {
             background-color: #35a4bf;
           }
-          
+
           .custom-radio-button input[type="radio"]:checked + label span {
             opacity: 1;
             background: url("tick-icon-4657-01.png") center center no-repeat;
@@ -1647,11 +1648,11 @@ if ($mode == 3){
             height: 40px;
             display: inline-block;
           }
-              
+
           .card-img-top {
-            width: 60%;            
-        }  
-            
+            width: 60%;
+        }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             box-sizing: border-box;
             display: inline-block;
@@ -1670,7 +1671,7 @@ if ($mode == 3){
           .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
             color: #333 !important;
             border: 1px solid #2c6692;
-            background-color: #2c6692;            
+            background-color: #2c6692;
           }
           .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
             cursor: default;
@@ -1683,31 +1684,31 @@ if ($mode == 3){
             color: white !important;
             border: 1px solid #111;
             background-color: #2c6692;
-            
+
           }
           .dataTables_wrapper .dataTables_paginate .paginate_button:active {
             outline: none;
             background-color: #2b2b2b;
-            
-          }  
-            
+
+          }
+
           .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
                 color: #fff;
-            } 
-                
+            }
+
          .toggle-on.btn-lg {
             padding-right: 2rem;
             background-color: #ee3e0d;
             border-color: #e23a0d;
-         }  
-             
+         }
+
          .input-group-lg .select2-container--bootstrap .select2-selection--single {
             font-size: 1.25rem;
-            line-height: 1.3;             
-         }  
-            
-       
-            
+            line-height: 1.3;
+         }
+
+
+
     </style>
     <script>
         function clearFields () {
@@ -1733,7 +1734,7 @@ if ($mode == 3){
         function submitFForm () {
             document.getElementById('filterForm').submit();
         }
-            
+
         function submitFForm2 () {
             document.getElementById('filterForm2').submit();
         }
@@ -1755,20 +1756,20 @@ if ($mode == 3){
 	    document.cookie = "wlUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	    document.cookie = "Thl=; expires=Thu, 01 Jan 2021 00:00:00 UTC; path=/;";
             window.location = window.location.href;
-        } 
-            
-           
-        
+        }
+
+
+
 </script>
 </head>
 <body onload="history.pushState('','',location.pathname);">
-$menu            
+$menu
 $cookieMessage
 <div class="container">
     <div class="row">
             <form id="modeForm" method="get">
-                <div class="row justify-content-center">                     
-                    <div class="col-lg-3 col-md-6 col-sm-6">     
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                        <div class="card text-center bg-transparent border-0">
                             <img class="card-img-top mx-auto" src="../lonelogo/man.png" alt="Alumnos">
                             <div class="card-body">
@@ -1783,10 +1784,10 @@ $cookieMessage
                                     </div>
                                 </div>
                             </div>
-                       </div> 
+                       </div>
                     </div>
-                        
-                    <div class="col-lg-3 col-md-6 col-sm-6">     
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card text-center bg-transparent border-0">
                             <img class="card-img-top mx-auto" src="../lonelogo/girl.png" alt="Profesores">
                             <div class="card-body">
@@ -1801,88 +1802,88 @@ $cookieMessage
                                     </div>
                                 </div>
                             </div>
-                       </div> 
-                    </div>                    
+                       </div>
+                    </div>
                 </div>
-            </form>            
-    </div>  
-     
-          
+            </form>
+    </div>
+
+
     <div class="row">
-        <div class="col col-md-12">     
+        <div class="col col-md-12">
             <div class="form-group">		
-			<div class="input-group">                            
+			<div class="input-group">
                             <div class="input-group-prepend fixed" style="margin-right: -25px; z-index: 100;">
-                                <span class="input-group-text rounded-circle" style="padding: 0.375rem 1.40rem;"><i class="fa fa-search" aria-hidden="true"></i></span>                                
+                                <span class="input-group-text rounded-circle" style="padding: 0.375rem 1.40rem;"><i class="fa fa-search" aria-hidden="true"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-lg rounded inputbuscar" id="buscar" name="buscar" value="Search for teaching units" placeholder="" onclick="if(this.value=='Search for teaching units') this.value=''" onblur="if(this.value=='') this.value='Search for teaching units'" >
+                            <input type="text" class="form-control form-control-lg rounded inputbuscar" id="buscar" name="buscar" value="$T_Search_for_t_units" placeholder="" onclick="if(this.value=='$T_Search_for_t_units') this.value=''" onblur="if(this.value=='') this.value='$T_Search_for_t_units'" >
                         </div>
             </div>
-        </div>        
-    </div>       
+        </div>
+    </div>
     <div class="row">
        <div class="col-lg-4 col-md-4 col-sm-12">
             $tabletopChoices
-       </div>    
+       </div>
        <div class="col-lg-6 col-md-6 col-sm-12">
             $levelButHtml
        </div>
         <div class="col-lg-2 col-md-2 col-sm-2">
-              <a id="reset" class="btn btn-primary btn-sm btn-block text-white" role="button"><i class="fa fa-refresh mr-1"></i> $T_Clear_filter</a> 
-        </div>        
-        
+              <a id="reset" class="btn btn-primary btn-sm btn-block text-white" role="button"><i class="fa fa-refresh mr-1"></i> $T_Clear_filter</a>
+        </div>
+
     </div>
-    <div class="collapse show">    
+    <div class="collapse show">
         <div class="row">
-            <div class="col col-md-4"> 
-                <div class="form-group">  
+            <div class="col col-md-4">
+                <div class="form-group">
                 <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group mr-2 input-group-sm" role="group"> 
+                    <div class="btn-group mr-2 input-group-sm" role="group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-language mr-1" aria-hidden="true"></i>$T_Owner</span>    
-                            </div>        
+                                <span class="input-group-text"><i class="fa fa-language mr-1" aria-hidden="true"></i>$T_Owner</span>
+                            </div>
                             <select id="userTypeFilter" class="form-control form-control-sm rounded-0 ampliar">
                             <option value="All">All</option>
                             $owOptionsHtml
-                            </select>                            
+                            </select>
                     </div>
                 </div>
-            </div> 
             </div>
-            <div class="col col-md-4">    
+            </div>
+            <div class="col col-md-4">
                 <div class="form-group">		
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-tv mr-1" aria-hidden="true"></i> $T_Media</span>                                      
-                                </div>                            
-                                    <input type="checkbox" name="media" id="media_aud" value="1" data-toggle="toggle" data-size="small" data-on="<i class='fa fa-headphones'></i>" data-off="<i class='fa fa-headphones'></i>"> 
-                                    <input type="checkbox" name="media" id="media_vid" value="2" data-toggle="toggle" data-size="small" data-on="<i class='fa fa-film'></i>" data-off="<i class='fa fa-film'></i>">  
-                                    <input type="checkbox" name="media" id="media_doc" value="0" data-toggle="toggle" data-size="small" data-on="<i class='fa fa-file'></i>" data-off="<i class='fa fa-file'></i>">                              
+                                    <span class="input-group-text"><i class="fa fa-tv mr-1" aria-hidden="true"></i> $T_Media</span>
+                                </div>
+                                    <input type="checkbox" name="media" id="media_aud" value="1" data-toggle="toggle" data-size="small" data-on="<i class='fa fa-headphones'></i>" data-off="<i class='fa fa-headphones'></i>">
+                                    <input type="checkbox" name="media" id="media_vid" value="2" data-toggle="toggle" data-size="small" data-on="<i class='fa fa-film'></i>" data-off="<i class='fa fa-film'></i>">
+                                    <input type="checkbox" name="media" id="media_doc" value="0" data-toggle="toggle" data-size="small" data-on="<i class='fa fa-file'></i>" data-off="<i class='fa fa-file'></i>">
 
                             </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-              <div class="custom-control custom-switch float-right"> 
+              <div class="custom-control custom-switch float-right">
                  $checkboxesHtml
               </div>
-            </div>        
+            </div>
         </div>
-        
-     
+
+
     <div class="row">
         <div class="col col-md-12">
-            $tableHtml  
+            $tableHtml
         </div>
-    </div>  
-    <div class="row h-100">    
-        <div class="col-lg-12">    
-            $footer  
+    </div>
+    <div class="row h-100">
+        <div class="col-lg-12">
+            $footer
         </div>
-    </div>        
-            
-</div> 
-$modoTabla     
+    </div>
+
+</div>
+$modoTabla
 </body>
 </html>
 EOD1;
