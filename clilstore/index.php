@@ -1140,7 +1140,7 @@ $(document).ready(function() {
 
     $("#reset").click(function (e) {
       table.search( '' ).columns().search( '' ).draw();
-      $('#buscar').val('$T_Search_for_t_units');
+      $('#buscar').val('');
       $('#userTypeFilter').val('All');
       $('#userTypeFilter').trigger('change');
       $("#media_aud").bootstrapToggle('off');
@@ -1410,7 +1410,7 @@ $(document).ready(function() {
 
    $("#reset").click(function (e) {
       table.search( '' ).columns().search( '' ).draw();
-      $('#buscar').val('$T_Search_for_t_units');
+      $('#buscar').val('');
       $('#userTypeFilter').val('All');
       $('#userTypeFilter').trigger('change');
       $("#media_aud").bootstrapToggle('off');
@@ -1816,7 +1816,7 @@ $cookieMessage
                             <div class="input-group-prepend fixed" style="margin-right: -25px; z-index: 100;">
                                 <span class="input-group-text rounded-circle" style="padding: 0.375rem 1.40rem;"><i class="fa fa-search" aria-hidden="true"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-lg rounded inputbuscar" id="buscar" name="buscar" value="$T_Search_for_t_units" placeholder="" onclick="if(this.value=='$T_Search_for_t_units') this.value=''" onblur="if(this.value=='') this.value='$T_Search_for_t_units'" >
+                            <input type="text" class="form-control form-control-lg rounded inputbuscar" id="buscar" name="buscar" placeholder="$T_Search_for_t_units" >
                         </div>
             </div>
         </div>
