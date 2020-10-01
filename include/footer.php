@@ -17,4 +17,4 @@ function pie($EUlogo,$T_Disclaimer,$T_Disclaimer_EuropeanCom){
     return $footer;
     
 }
-
+?>

@@ -1,7 +1,8 @@
 <?php 
-function cabecera($idioma,$about,$help,$idioma_texto){
-  $serverhome = SM_myCLIL::serverhome();
-  $header=<<<END_HEADER
+
+function cabecera($idioma,$about,$help,$idioma_texto) {
+    $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'] .'/';
+    $header=<<<END_HEADER
 <nav class="navbar navbar-expand-lg fondo_menu navbar-dark" id="mainNav">
   <div class="container">
     <a class="navbar-brand text-white" href="https://www.languages.dk/" target="_blank"><img src="../lonelogo/logo.png" width="150px"></a>
@@ -45,6 +46,6 @@ function cabecera($idioma,$about,$help,$idioma_texto){
   </div>
 </nav>
 END_HEADER;    
- return $header;
-    
+   return $header;
 }
+?>

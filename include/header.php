@@ -1,7 +1,7 @@
 <?php
 
 function cabecera($idioma,$about,$help,$idioma_texto,$usuario,$modo,$T_My_vocabulary,$T_My_units,$T_Logout,$T_My_options,$T_Create_a_unit,$T_Login,$T_register){
-    $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'];
+    $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'] .'/';
 
     if (empty($usuario)) { //Not logged in yet
       $headerUsuario = <<<END_headerLogin
@@ -82,3 +82,4 @@ END_HEADER;
    return $header;
 
 }
+?>
