@@ -1,7 +1,7 @@
 <?php
 
 function cabecera($idioma,$about,$help,$idioma_texto,$usuario,$modo,$T_My_vocabulary,$T_My_units,$T_Logout,$T_My_options,$T_Create_a_unit,$T_Login,$T_register){
-    $serverhome = SM_myCLIL::serverhome();
+    $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'];
 
     if (empty($usuario)) { //Not logged in yet
       $headerUsuario = <<<END_headerLogin
@@ -42,7 +42,7 @@ END_headerUsuario;
     <div class="collapse navbar-collapse align-items-center" id="navbarResponsive">
       <ul class="navbar-nav ml-auto align-items-center list-unstyled">
         <li class="nav-item">
-          <a class="nav-link" href="$servername">Home</a>
+          <a class="nav-link" href="$serverhome">Home</a>
         </li>
          <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
