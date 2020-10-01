@@ -486,6 +486,7 @@ END_addColHtml;
       $T_Advanced = $T->_('Advanced');
       $T_Any      = $T->_('Any');
 
+error_log("\$T_Any=$T_Any");
       $labels = array(-1=>"$T_Any",0=>'A1',1=>'A2',2=>'B1',3=>'B2',4=>'C1',5=>'C2');
       $counts = array(-1=>0, 0=>0, 1=>0, 2=>0, 3=>0, 4=>0, 5=>0 );
       $hrefSelf = $_SERVER['PHP_SELF'];
