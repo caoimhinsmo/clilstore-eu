@@ -1,7 +1,7 @@
 <?php 
 
-function cabecera($idioma,$about,$help,$idioma_texto) {
-    $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'] .'/';
+function cabecera ($idioma,$about,$help,$idioma_texto) {
+    $serverhome = ( empty($_SERVER["HTTPS"]) ? "http" : "https" ) . "://" . $_SERVER["SERVER_NAME"] ."/";
     $header=<<<END_HEADER
 <nav class="navbar navbar-expand-lg fondo_menu navbar-dark" id="mainNav">
   <div class="container">
