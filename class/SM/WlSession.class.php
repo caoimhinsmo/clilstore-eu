@@ -160,9 +160,9 @@ setcookie ('SM_wlUser', '', 1, '',  'multidict.net' );
 
       //Set up the preg pattern determining words in the source language
       if      ($sl=='br')  { $wordpreg = '([cC][\'’”][hH]|\p{L}\p{M}*)+'; } //Allow c’h (and c”h) as a “letter” in Breton
-       elseif ($sl=='ca')  { $wordpreg =     '([lL]·[lL]|\p{L}\p{M}*)+'; }  //Allow l·l as a “letter” in Catalan 
+       elseif ($sl=='ca')  { $wordpreg =     '([lL]·[lL]|\p{L}\p{M}*)+'; }  //Allow l·l as a “letter” in Catalan
        elseif ($sl=='sga') { $wordpreg =             '(·|\p{L}\p{M}*)+'; }  //Allow  ·  as a “letter” in Old Irish
-       elseif ($sl=='oc')  { $wordpreg =   '([sSnN]·[hH]|\p{L}\p{M}*)+'; }  //Allow s·h and n·h as “letters” in Occitan 
+       elseif ($sl=='oc')  { $wordpreg =   '([sSnN]·[hH]|\p{L}\p{M}*)+'; }  //Allow s·h and n·h as “letters” in Occitan
        else                { $wordpreg =               '(\p{L}\p{M}*)+'; }
 
       $this->uid    = $uid;
@@ -352,7 +352,7 @@ setcookie ('SM_wlUser', '', 1, '',  'multidict.net' );
           foreach ($mutRules as $mutRule) {
               foreach ($mutRule as $init=>$mut) {
                   $mutlen = strlen($mut);
-                  if ( strlen($word)>$mutlen && substr($word,0,$mutlen)==$mut ) { 
+                  if ( strlen($word)>$mutlen && substr($word,0,$mutlen)==$mut ) {
                       $demutArr[] = $init.substr($word,$mutlen);
                   }
               }
@@ -446,12 +446,12 @@ setcookie ('SM_wlUser', '', 1, '',  'multidict.net' );
               }
               else { throw new SM_MDexception('Invalid operator in $wfRule'); }
           }
-      } elseif ( preg_match( '/(.*?)\>(.*)/', $wfrule, $matches ) ) {  //Deal with the operator ‘>’, which denotes concatenation of rules 
+      } elseif ( preg_match( '/(.*?)\>(.*)/', $wfrule, $matches ) ) {  //Deal with the operator ‘>’, which denotes concatenation of rules
           $wfrule1 = $matches[1];
           $wfrule2 = $matches[2];
           $wfArr1 = self::wfCalcArr($word,$wfrule1);
           $wfArr  = self::wfCalcArr($wfArr1,$wfrule2);
-      } elseif ( preg_match( '/(.*?)\|(.*)/', $wfrule, $matches ) ) {  //Deal with the operator ‘|’, which denotes unions of rules 
+      } elseif ( preg_match( '/(.*?)\|(.*)/', $wfrule, $matches ) ) {  //Deal with the operator ‘|’, which denotes unions of rules
           $wfrule1 = $matches[1];
           $wfrule2 = $matches[2];
           $wfArr1 = self::wfCalcArr($word,$wfrule1);
@@ -666,7 +666,7 @@ setcookie ('SM_wlUser', '', 1, '',  'multidict.net' );
 //<img src="icon.php?dict=$dict" alt="" style="border:none;margin-top:-5px;vertical-align:bottom">
       if (!empty($icon)) { $html = <<<EOD
 
-<a href="$url" role="button" class="btn btn-danger text-white btn-sm float-right" target="_top" title="$T_Click_to_escape_Multidict" id="esc">ESC</a>               
+<a href="$url" role="button" class="btn btn-danger text-white btn-sm float-right" target="_top" title="$T_Click_to_escape_Multidict" id="esc">ESC</a>
 EOD;
       }
       $html .= (empty($message) ? '' : "<span style=\"color:red\" title=\"$message\">⚠</span>" . $message);

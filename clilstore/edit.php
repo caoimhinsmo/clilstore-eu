@@ -3,10 +3,6 @@
     header("Location:http://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
   header("Cache-Control:max-age=0");
-  
-  //Load Menu and Footer
-  include ("../include/header.php");
-  include ("../include/footer.php");
 
   try {
       $myCLIL = SM_myCLIL::singleton();
@@ -17,7 +13,7 @@
 
   $T = new SM_T('clilstore/edit');
 
-  $T_Creating_new_unit   = $T->h('Creating_new_unit');  
+  $T_Creating_new_unit   = $T->h('Creating_new_unit');
   $T_editorsMessage      = $T->h('editorsMessage');
   $T_Title               = $T->h('Title');
   $T_Title_info_4_120    = $T->h('Title_info_4_120');
@@ -111,51 +107,28 @@
   $T_No_unit_found_for_id      = $T->h('No_unit_found_for_id');
   $T_May_only_edit_own_units   = $T->h('May_only_edit_own_units');
   $T_You_have_Javascript_off   = $T->h('You_have_Javascript_off');
-  $T_Disclaimer                = $T->h('Disclaimer');
-  $T_Disclaimer_EuropeanCom    = $T->h('Disclaimer_EuropeanCom');
-  
-   $T_Teaching_units         = $T->h('Teaching_units');
-    $T_for_CLIL               = $T->h('for_CLIL');
-    $T_Help                   = $T->h('Cobhair');
-    $T_About                  = $T->h('About');
-    $T_Select_lang_level      = $T->h('Select_lang_level');
-    $T_My_options             = $T->h('My_options');
-    $T_My_units               = $T->h('My_units');
-    $T_My_vocabulary          = $T->h('My_vocabulary');
-    $T_Add_a_column_info      = $T->h('Add_a_column_info');
-    $T_See_as_newbie          = $T->h('See_as_newbie');
-    $T_Create_a_unit          = $T->h('Create_a_unit') . '…';
-    $T_For_students           = $T->h('For_students');
-    $T_For_teachers           = $T->h('For_teachers');
-    $T_More_options           = $T->h('More_options');
-    $T_more_options           = $T->h('more_options');
-    $T_For_students_info      = $T->h('For_students_info');
-    $T_For_students_more_info = $T->h('For_students_more_info');
-    $T_For_teachers_info      = $T->h('For_teachers_info');
-    $T_For_teachers_more_info = $T->h('For_teachers_more_info');
-    $T_Include_test_units     = $T->h('Include_test_units');
-    $T_Include_test_units_o   = $T->h('Include_test_units_o');
-    $T_Login                  = $T->h('Log_air');
-    $T_Logout                 = $T->h('Logout');
-    $T_Logout_from_Clilstore  = $T->h('Logout_from_Clilstore');
-    $T_Logged_in_as           = $T->h('Logged_in_as');  
-    $T_or                     = $T->h('or');
-    $T_register               = $T->h('register');
-    $loginReasonStudent       = $T->h('loginReasonStudent');
-    $loginReasonTeacher       = $T->h('loginReasonTeacher');
-    $T_Lorg                   = $T->h('Lorg');
-    
+
+  $T_Teaching_units         = $T->h('Teaching_units');
+  $T_for_CLIL               = $T->h('for_CLIL');
+  $T_Select_lang_level      = $T->h('Select_lang_level');
+  $T_Add_a_column_info      = $T->h('Add_a_column_info');
+  $T_See_as_newbie          = $T->h('See_as_newbie');
+  $T_For_students           = $T->h('For_students');
+  $T_For_teachers           = $T->h('For_teachers');
+  $T_For_students_info      = $T->h('For_students_info');
+  $T_For_students_more_info = $T->h('For_students_more_info');
+  $T_For_teachers_info      = $T->h('For_teachers_info');
+  $T_For_teachers_more_info = $T->h('For_teachers_more_info');
+  $T_Include_test_units     = $T->h('Include_test_units');
+  $T_Include_test_units_o   = $T->h('Include_test_units_o');
+  $T_or                     = $T->h('or');
+  $T_Lorg                   = $T->h('Lorg');
 
   $hl0 = $T->hl0();
- 
-  $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    
-  $mdNavbar = SM_mdNavbar::hlSelect();
-  
+
   $mode=3;
-  
- 
-  $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
+
+  $footer = SM_clilHeadFoot::pie();
 
   $T_I_am_the_author     = strtr( $T_I_am_the_author,     [ '['=>'<i>', ']'=>'</i>' ] );
   $T_I_agree_to_copyleft = strtr( $T_I_agree_to_copyleft, [ '['=>'<i>', ']'=>'</i>', '{'=>'<a href=copyleftPolicy.php>', '}'=>'</a>' ] );
@@ -291,9 +264,9 @@
                      'fr'=>'fr_FR', 'he'=>'he_IL', 'hu'=>'hu_HU', 'kab'=>'kab', 'ka'=>'ka_GE', 'km'=>'km_KH', 'ko'=>'ko_KR',
                      'lvs'=>'lv', 'nb'=>'nb_NO', 'pt'=>'pt_PT', 'sv'=>'sv_SE', 'th'=>'th_TH', 'zh-Hans'=>'zh_CN', 'zh-Hant'=>'zh_TW'];
         if ( !file_exists("{$langdirTiny}{$hlTiny}.js") ) { $hlTiny = $hlTinyTra[$hlTiny] ?? $hlTiny; }
-        
-         $menu = cabecera($mdNavbar, $T_Help, $T_About, $T_Language, $user, $mode, $T_My_vocabulary, $T_My_units, $T_Logout, $T_My_options, $T_Create_a_unit, $T_Login, $T_register);
-        
+
+        $menu = SM_clilHeadFoot::cabecera0($user, $mode);
+
         $tinymceScript = <<<EODtinyMCE
     <script src="/tinymce/tinymce.min.js"></script>
     <script>
@@ -307,7 +280,7 @@
              "save table directionality emoticons template paste"
        ],
        content_css: "$tinymceCSS",
-       toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor", 
+       toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor",
        style_formats: [
             {title: 'Bold text', inline: 'b'},
             {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
@@ -317,7 +290,7 @@
             {title: 'Table styles'},
             {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
         ]
-     }); 
+     });
     </script>
 EODtinyMCE;
 
@@ -495,7 +468,7 @@ EOD2;
     if ($formRequired) {
 
         if (empty($_REQUEST['save'])) {
-         // No form has been submitted; so first obtain the initial values, then create one 
+         // No form has been submitted; so first obtain the initial values, then create one
             $permis = $medtype = $medlen = 0;
             $buttons = array();
             if (empty($id)) {
@@ -526,7 +499,7 @@ EOD2;
                 if ($test<>2) { $permis = 'checked'; }
                 $legend = ( $test==2 ? $T_Creating_Clilstore_unit_d : $T_Editing_Clilstore_unit_d );
                 $legend = sprintf($legend,$id);
-                $cruth  = 'html'; 
+                $cruth  = 'html';
             }
             if (count($buttons)<8) { $buttons[] = new button(count($buttons)); } // Always create at least one blank button, up to a maximum of 8 buttons
             for ($ord=count($buttons);$ord<4;$ord++) { $buttons[] = new button($ord); } //Create new blank buttons if necessary, to give a minimum of 4 buttons
@@ -606,7 +579,7 @@ EODbutHtml;
       = $chkLic['BY-NC']
       = $chkLic['BY-NC-ND'] = '';
         $chkLic[$licence] = 'checked';
-        
+
     // Create fileInfoForm
         $stmtFiles = $DbMultidict->prepare('SELECT fileid, filename, LENGTH(bloigh) AS filesize FROM csFiles WHERE id=:id ORDER BY filename');
         $stmtFiles->execute(array('id'=>$id));
@@ -616,12 +589,12 @@ EODbutHtml;
             extract($fileInfo);
             if ($filesize<10000) { $filesize .= ' bytes'; } else { $filesize = round($filesize/1024) . 'KB'; }
             $filesHtml .= <<<EODeditFile
-<tr id="filetr-$fileid">                   
+<tr id="filetr-$fileid">
 <td><input class="form-control" id="filename-$fileid" value="$filename" title="filesize $filesize" onchange="changeFilename('$fileid')"></td>
 <td><a class="btn btn-danger" title="Delete this file (immediately and permanently)" onclick="deleteFile('$fileid')" alt="Delete" style="color:#ffffff"><i class="fa fa-fw fa-trash"></i></a></td>
 <td><a class="btn btn-success" title="View this file" id="fileLink-$fileid" href="/cs/$id/$filename" target="_blank" alt="View" style="color:#ffffff"><i class="fa fa-fw fa-eye"></i></a></td>
 <td id="fileLinkName-$fileid">/cs/$id/$filename</td>
-<td><span id="filetick-$fileid" class=change>âœ”<span></td>                     
+<td><span id="filetick-$fileid" class=change>âœ”<span></td>
 </tr>
 EODeditFile;
         }
@@ -637,14 +610,14 @@ EODeditFile;
 <form name="fileInfoForm">
 <table id="filesAtt" class="table table-hover">
 <thead class="thead-light">
-    <tr id=vocabhead>       
+    <tr id=vocabhead>
       <th scope="col">File <span class="info" style="font-style:italic">(you can edit its name here to change it)</span></th>
       <th scope="col">Delete</th>
-      <th scope="col">View</th>              
+      <th scope="col">View</th>
       <th scope="col">Link address <span style="font-size:80%;font-style:italic">(relative url for use in buttons or in the body of the unit)</span></th>
-      <th scope="col"></th> 
+      <th scope="col"></th>
    </tr>
-  </thead>                 
+  </thead>
 <tbody id="filesAttBody">
 $filesHtml
 </tbody>
@@ -663,19 +636,19 @@ EODfileInfoForm;
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
-    <link href="../lone.css" rel="stylesheet">         
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">       
+    <link href="../lone.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">       
-    <script src="../js/bootstrap.bundle.min.js"></script>    
-    <script src="../js/bootstrap.min.js"></script>
-    <link href="../css/login.css" rel="stylesheet">             
     <link href="../css/styles.css" rel="stylesheet">
-        
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <link href="../css/login.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+
     <meta name="robots" content="noindex">
     <style>
         table#editlinkbuts { margin-bottom:0.5em; }
-        table#editlinkbuts td:nth-child(1) input { width:12em; text-align:center; background-color:#35a4bf; color:white; 
+        table#editlinkbuts td:nth-child(1) input { width:12em; text-align:center; background-color:#35a4bf; color:white;
                                                    padding:2px 4px; border-radius:6px; }
         table#editlinkbuts td:nth-child(2)       { width:1.5em; text-align:center; }
         table#editlinkbuts td:nth-child(3)       { width:1.8em; text-align:center; }
@@ -694,26 +667,26 @@ EODfileInfoForm;
         table#licTable img { padding:1px 25px 4px 4px; }
         div#licenceInfo { margin:4px 0 0 6px; border:2px solid #bb3; border-radius:6px; background-color:#ffd; padding:2px; }
         div.fann { opacity:0.25; }
-        .card .card-header {                
+        .card .card-header {
         color: #ffffff;
-        } 
-    
+        }
+
         .bg-primary {
            background-color: #35a4bf !important;
         }
-      
-        p {    
+
+        p {
            margin-bottom: 0.2rem;
         }
-      
-        label {    
+
+        label {
            margin-bottom: 0.0rem;
-        }    
+        }
         .change{
             opacity: 0;
             color: white;
-        }     
-                
+        }
+
     </style>
     <script>
 
@@ -800,7 +773,7 @@ EODfileInfoForm;
             var message = { 'BY':'$T_CC_BY_message',
                             'SA':'$T_CC_SA_message',
                             'ND':'$T_CC_ND_message',
-                            'NC':'$T_CC_NC_message' }; 
+                            'NC':'$T_CC_NC_message' };
             if (licence=='BY-NC-SA') { message['SA'] = message['SA'].replace('BY-SA','BY-NC-SA'); }
             bits = licence.split('-');
             var lastbit = bits[bits.length-1];
@@ -831,7 +804,7 @@ EODfileInfoForm;
                         var xmlhttp = new XMLHttpRequest();
                         xmlhttp.onload = function() {
                             var resp = this.responseText;
-                            if (this.status!=200 || resp.substring(0,8)!='Created:') { 
+                            if (this.status!=200 || resp.substring(0,8)!='Created:') {
                                 alert('$T_Error_in createUnit:'+this.status+' '+this.responseText); return;
                             } else {
                                 var newunit = resp.substring(8);
@@ -893,7 +866,7 @@ EODfileInfoForm;
         function deleteFile(fileid) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onload = function() {
-                if (this.status!=200 || this.responseText!='OK') { 
+                if (this.status!=200 || this.responseText!='OK') {
                     alert('$T_Error_in deleteFile:'+this.status+' '+this.responseText); return;
                 } else {
                     var filetr = document.getElementById('filetr-'+fileid);
@@ -918,13 +891,13 @@ EODfileInfoForm;
             if (file.size>1000000) { alert('This file is very big'); }
             uploadStatus.innerHTML = 'Uploading...';
             var formData = new FormData();
-            filenameUpload = document.getElementById('filenameUpload').value; 
+            filenameUpload = document.getElementById('filenameUpload').value;
             formData.append('bloigh', file, filenameUpload);
             formData.append('id','$id');
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'ajax/uploadHandling.php');
             xhr.onload = function () {
-                if (this.status!=200 || this.responseText.substring(0,3)!='OK-') { 
+                if (this.status!=200 || this.responseText.substring(0,3)!='OK-') {
                     uploadStatus.innerHTML = 'Upload error. Try again.';
                     alert('$T_Error_in uploadOnsubmit:'+this.status+'\\n\\n'+this.responseText+'\\n\\n'); return;
                 } else {
@@ -933,7 +906,7 @@ EODfileInfoForm;
                     document.getElementById('nofilesDisplay').style.display = 'none';
                     document.getElementById('filesDisplay').style.display   = 'block';
                     var trNew = document.createElement('tr');
-                    trNew.id = 'filetr-' + fileid;                    
+                    trNew.id = 'filetr-' + fileid;
                     var inner =
 '<td class=newFile><input class="form-control" id="filename-_fileid_" value="_filename_" title="filesize '+file.size+'" onchange=changeFilename("_fileid_")></td>' +
 '<td><a class="btn btn-danger" title="Delete this file (immediately and permanently)" onclick=deleteFile("_fileid_") alt="Delete" style="color:#ffffff"><i class="fa fa-fw fa-trash"></i></a></td>'+
@@ -959,7 +932,7 @@ EODfileInfoForm;
         return;
     }
 */
-        
+
     </script>
 
 $tinymceScript
@@ -1007,8 +980,8 @@ $T_Text <span class="info" style="padding-left:2em">$textAdvice</span><br>
 $buttonsHtml
 </table>
 </fieldset>
-$fileInfoForm                
-<fieldset style="margin:6px;border:1px solid green;padding:10px;border-radius:5px;"> 
+$fileInfoForm
+<fieldset style="margin:6px;border:1px solid green;padding:10px;border-radius:5px;">
 <legend class=boldleg>Upload a file</legend>
 <form id="uploadForm" action="ajax/uploadHandling.php" method="post" onsubmit="uploadOnsubmit(event)">
 <div>
@@ -1062,11 +1035,11 @@ $T_Media_type:<br>
 <div class="custom-control custom-radio">
 <input type="radio" class="custom-control-input" name="medtype"$medtype2sel value="2" id="medtype2" onclick="medlenDisp(2)">
 <label  class="custom-control-label" for="medtype2">$T_video</label><br>
-</div>    
+</div>
 <div class="custom-control custom-radio">
-<input type="radio" class="custom-control-input" name="medtype"$medtype1sel value="1" id="medtype1" onclick="medlenDisp(1)">  
+<input type="radio" class="custom-control-input" name="medtype"$medtype1sel value="1" id="medtype1" onclick="medlenDisp(1)">
 <label  class="custom-control-label" for="medtype1">$T_sound_only</label><br>
-</div>     
+</div>
 <div class="custom-control custom-radio">
 <input type="radio" class="custom-control-input" name="medtype"$medtype0sel value="0" id="medtype0" onclick="medlenDisp(0)">
 <label  class="custom-control-label" for="medtype0">$T_neither</label><br>
@@ -1086,20 +1059,20 @@ $T_Language_notes: <span class="info">($T_1000_character_max)</span>
 </div>
 
 <div style="margin-top:7px">
-<div class="custom-control custom-switch">  
-  <input type="checkbox" class="custom-control-input" name="test" id="test" $testch onClick="testClick(this)">              
+<div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" name="test" id="test" $testch onClick="testClick(this)">
   <label class="custom-control-label" for="test">$T_Tick_if_test_unit</label>
-</div>  
 </div>
-                
+</div>
+
 <div style="margin-top:7px">
-$T_Owner: <span style="font-size:120%;text-decoration:underline;padding-right:0.35em">$owner</span>                
-<div class="custom-control custom-switch"> 
-  <input  type="checkbox" class="custom-control-input" name="permis" id="permis" required $permisch onChange="permisChange();">    
+$T_Owner: <span style="font-size:120%;text-decoration:underline;padding-right:0.35em">$owner</span>
+<div class="custom-control custom-switch">
+  <input  type="checkbox" class="custom-control-input" name="permis" id="permis" required $permisch onChange="permisChange();">
   <label class="custom-control-label" for="permis">$T_I_am_the_author</label>
-</div>  
-  <label>$T_I_agree_to_copyleft</label>              
-</div>                
+</div>
+  <label>$T_I_agree_to_copyleft</label>
+</div>
 
 
 <div style="margin-left2:5em" id="ccdiv">
@@ -1145,7 +1118,7 @@ $T_I_grant_use
 </table>
 </div>
 
-<div style="margin-top:8px;margin-bottom:2em" class="col text-center">      
+<div style="margin-top:8px;margin-bottom:2em" class="col text-center">
 <input type="submit" class="btn btn-primary mt-2" name="save" id="save" value="$submitValue">
 </div>
 </fieldset>
@@ -1153,9 +1126,9 @@ $T_I_grant_use
 </form>
   </div>
 </div>
-<div class="col-lg-12">    
-    $footer  
-</div>   
+<div class="col-lg-12">
+    $footer
+</div>
 
 </body>
 </html>

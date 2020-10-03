@@ -3,24 +3,11 @@
     header("Location:http://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
   header("Cache-Control:max-age=0");
-  
-  //Load Menu and Footer
-  include ("../include/header_p.php");
-  include ("../include/footer.php");
-  
-  $T = new SM_T('clilstore/index');
-  $T_Disclaimer             = $T->h('Disclaimer');
-  $T_Disclaimer_EuropeanCom = $T->h('Disclaimer_EuropeanCom');
-  $T_Help                   = $T->h('Cobhair');
-  $T_About                  = $T->h('About');
-  $T_Language               = $T->h('Language');
-  
-  $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    
-  $hlSelect = SM_mdNavbar::hlSelect();
-  
-  $menu = cabecera($hlSelect,$T_Help,$T_About,$T_Language);
-  $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
+
+  $T = new SM_T('clilstore/options');
+
+  $menu   = SM_clilHeadFoot::cabecera();
+  $footer = SM_clilHeadFoot::pie();
 
   try {
       $myCLIL = SM_myCLIL::singleton();
@@ -37,32 +24,32 @@
     <title>Clilstore options for user</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
-    <link href="../lone.css" rel="stylesheet">         
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">       
+    <link href="../lone.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">       
-    <script src="../js/bootstrap.bundle.min.js"></script>    
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <link href="../css/login.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
-    <style>             
-        
-        .card .card-header {                
+    <style>
+
+        .card .card-header {
         color: #ffffff;
-        } 
-    
+        }
+
         .bg-primary {
            background-color: #35a4bf !important;
         }
-      
-        p {    
+
+        p {
            margin-bottom: 0.2rem;
         }
-      
-        label {    
+
+        label {
            margin-bottom: 0.0rem;
         }
-  
+
         span.change { opacity:0; color:white; }
         span.change.changed { color:green; animation:appearFade 3s; }
         @keyframes appearFade { from { opacity:1; background-color:yellow; } 20% { opacity:0.8; background-color:white; } to { opacity:0; } }
@@ -73,7 +60,7 @@
             width:100%;
             border-top:1px solid gray;
        }
-        
+
     </style>
     <script>
         function changeUserOption(user,option,value) {
@@ -219,7 +206,7 @@ EODtransferHtml;
     $highlightRowArr = array(
         '-1' => 'Never',
          '0' => 'Only in “Author page - more options”',
-         '1' => 'Always'); 
+         '1' => 'Always');
     $highlightRowHtml = optionsHtml($highlightRowArr,$highlightRow);
     $recordArr = array(
          '0' => 'No',
@@ -230,7 +217,7 @@ EODtransferHtml;
     $successMessage = ( empty($successMessage) ? '' : '<div class="message" style="color:green"><span style="font-size:200%">✔</span> ' . $successMessage . '</div>' );
 
     echo <<<ENDform
-    
+
     <div class="row h-100 justify-content-center align-items-center">
 	<div class="col-lg col-sm">
 		<div class="card">
@@ -242,10 +229,10 @@ EODtransferHtml;
 					<h5><span class="badge badge-danger">$errorMessage</span></h5>
 				</div>
                                 <div class="row">
-						<div class="col-md-6">							
+						<div class="col-md-6">
 							<a class="btn btn-primary btn-lg btn-block mb-2" href="voc.php?user=$user">My Vocabulary</a>
 						</div>
-                                                <div class="col-md-6">							
+                                                <div class="col-md-6">
 							<a class="btn btn-primary btn-lg btn-block mb-2" href="changePassword.php?user=$user">Change Password</a>
 						</div>
 				</div>
@@ -311,47 +298,47 @@ EODtransferHtml;
 						<div class="col-md-12">
 							<div class="form-group">
 								<label>Email</label>
-                                                                <p style="font-size:xx-small">This is kept private</p> 
+                                                                <p style="font-size:xx-small">This is kept private</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span>
 									</div>
 									<input class="form-control" type="email" name="email" value="$emailSC" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" style="width:22em" onchange="changeUserOption('$user','email',this.value)">
-                                                                        <span id=emailChanged class="change"><img src="check.gif" height="38" width="48"></img><span>    
+                                                                        <span id=emailChanged class="change"><img src="check.gif" height="38" width="48"></img><span>
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
 							</div>
 						</div>
-					</div>					
-					
+					</div>
+
 				</form>
 				<div class="clear">
 				</div>
                                 <div class="h-divider"></div>
                                 <div class="row">
-						<div class="col-md-6">							
+						<div class="col-md-6">
 							$verMessage
 						</div>
-                                                <div class="col-md-6">							
+                                                <div class="col-md-6">
 							$verLink
 						</div>
 				</div>
-				
+
                                 <p class="text-center mt-2"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
 			</div>
 		</div>
 	</div>
-</div> 
+</div>
 
 ENDform;
 
   } catch (Exception $e) { echo $e; }
 
   echo <<<EOD_BONN
-        <div class="col-lg-12">    
-            $footer  
-        </div>   
+        <div class="col-lg-12">
+            $footer
+        </div>
     </div>
 </div>
 

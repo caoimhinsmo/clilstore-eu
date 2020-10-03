@@ -3,34 +3,21 @@
     header("Location:http://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
   header("Cache-Control:no-cache,must-revalidate");
 
-  //Load Menu and Footer
-  include ("../include/header_p.php");
-  include ("../include/footer.php");
-  
   try {
     $myCLIL = SM_myCLIL::singleton();
     $csSess = SM_csSess::singleton();
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
     $servername = SM_myCLIL::servername();
     $serverhome = SM_myCLIL::serverhome();
-    
-    $T = new SM_T('clilstore/index');
-    $T_Disclaimer             = $T->h('Disclaimer');
-    $T_Disclaimer_EuropeanCom = $T->h('Disclaimer_EuropeanCom');
-    $T_Help                   = $T->h('Cobhair');
-    $T_About                  = $T->h('About');
-    $T_Language               = $T->h('Language');
+
+    $T = new SM_T('clilstore/login');
 
     $formRequired = TRUE;
     $successMessage = $refreshHeader = $formHtml = '';
     $userAsTyped = $passwordAsTyped = $userAutofocus = $passwordAutofocus = '';
-    
-    $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    
-    $hlSelect = SM_mdNavbar::hlSelect();
-  
-    $menu = cabecera($hlSelect,$T_Help,$T_About,$T_Language);
-    $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
+
+    $menu   = SM_clilHeadFoot::cabecera();
+    $footer = SM_clilHeadFoot::pie();
 
     if (!empty($csSess->getCsSession()->user)) { $userAsTyped = $csSess->getCsSession()->user; }
     if (!empty($_REQUEST['user'])) {
@@ -147,13 +134,13 @@ ENDfailure;
 			</div>
 		</div>
 	</div>
-</div> 
-            
-                
+</div>
+
+
 
 ENDform;
     }
- 
+
    echo <<<EOD
 <!DOCTYPE html>
 <html lang="en">
@@ -162,28 +149,28 @@ ENDform;
     <title>Login to Clilstore</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
-    <link href="../lone.css" rel="stylesheet">         
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">       
+    <link href="../lone.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">       
-    <script src="../js/bootstrap.bundle.min.js"></script>    
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <link href="../css/login.css" rel="stylesheet">
-    
-    
+
+
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <style>
         span.info { color:green; font-size:70%; font-style:italic; }
-        
-        .card .card-header {                
+
+        .card .card-header {
         color: #ffffff;
-        } 
-    
+        }
+
         .bg-primary {
            background-color: #35a4bf !important;
         }
-    
-        p {    
+
+        p {
            margin-bottom: 0.3rem;
            margin-bottom: 0.0rem;
         }
@@ -194,15 +181,15 @@ $refreshHeader
 $menu
 $cookieMessage
 <div class="container h100">
-    <div class="row h-100 justify-content-center align-items-center"> 
+    <div class="row h-100 justify-content-center align-items-center">
         $successMessage
         $formHtml
-     
-    <div class="col-lg-12">    
-        $footer  
-    </div>            
-  </div> 
-</div> 
+
+    <div class="col-lg-12">
+        $footer
+    </div>
+  </div>
+</div>
 </body>
 </html>
 EOD;

@@ -18,7 +18,7 @@ Licensed under MIT License
 		factory(jQuery);
 	}
 }(function($, undefined) {
-    
+
     if ($.fn.resizableSafe)
         return;
 
@@ -52,15 +52,15 @@ Licensed under MIT License
         return this.each(function () {
             var opt = $.extend({}, defaultOptions);
             if (!opt.instanceId)
-                opt.instanceId = "rsz_" + new Date().getTime();            
+                opt.instanceId = "rsz_" + new Date().getTime();
 
             var startPos, startTransition;
 
-            // get the element to resize 
+            // get the element to resize
             var $el = $(this);
             var $handle;
 
-            if (options === 'destroy') {            
+            if (options === 'destroy') {
                 opt = $el.data('resizable');
                 if (!opt)
                     return;
@@ -72,7 +72,7 @@ Licensed under MIT License
                 $el.removeClass("resizable");
                 return;
             }
-          
+
             $el.data('resizable', opt);
 
             // get the drag handle
@@ -91,11 +91,11 @@ Licensed under MIT License
             };
 
             function startDragging(e) {
-                // Prevent dragging a ghost image in HTML5 / Firefox and maybe others    
+                // Prevent dragging a ghost image in HTML5 / Firefox and maybe others
                 if ( e.preventDefault ) {
                   e.preventDefault();
                 }
-                
+
                 startPos = getMousePos(e);
                 startPos.width = parseInt($el.width(), 10);
                 startPos.height = parseInt($el.height(), 10);
@@ -107,7 +107,7 @@ Licensed under MIT License
                     if (opt.onDragStart(e, $el, opt) === false)
                         return;
                 }
-                
+
                 $(document).on('mousemove.' + opt.instanceId, doDrag);
                 $(document).on('mouseup.' + opt.instanceId, stopDragging);
                 if (window.Touch || navigator.maxTouchPoints) {
@@ -119,7 +119,7 @@ Licensed under MIT License
             }
 
             function doDrag(e) {
-                
+
                 var pos = getMousePos(e), newWidth, newHeight;
 
                 if (opt.resizeWidthFrom === 'left')
@@ -134,10 +134,10 @@ Licensed under MIT License
 
                 if (!opt.onDrag || opt.onDrag(e, $el, newWidth, newHeight, opt) !== false) {
                     if (opt.resizeHeight)
-                        $el.height(newHeight);                    
+                        $el.height(newHeight);
 
                     if (opt.resizeWidth)
-                        $el.width(newWidth);                    
+                        $el.width(newWidth);
                 }
             }
 
@@ -152,7 +152,7 @@ Licensed under MIT License
                     $(document).off('touchmove.' + opt.instanceId);
                     $(document).off('touchend.' + opt.instanceId);
                 }
-                $(document).off('selectstart.' + opt.instanceId, noop);                
+                $(document).off('selectstart.' + opt.instanceId, noop);
 
                 // reset changed values
                 $el.css("transition", startTransition);
@@ -186,9 +186,9 @@ Licensed under MIT License
 
                 // Search for the selector, but only in the parent element to limit the scope
                 // This works for multiple objects on a page (using .class syntax most likely)
-                // as long as each has a separate parent container. 
+                // as long as each has a separate parent container.
                 return selector ? $el.parent().find(selector) : $el;
-            } 
+            }
         });
     };
 

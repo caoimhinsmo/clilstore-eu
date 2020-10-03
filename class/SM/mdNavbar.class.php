@@ -40,7 +40,7 @@ class SM_mdNavbar {
       $T_Clilstore_index_page = $T->h('Clilstore_index_page');
       $T_Wordlink_index_page  = $T->h('Wordlink_index_page');
       $T_Multidict_index_page = $T->h('Multidict_index_page');
-      $T_Unit                 = $T->h('Unit');  
+      $T_Unit                 = $T->h('Unit');
 
       $php_self = $_SERVER['PHP_SELF'];
       $php_self1 = explode('/',$php_self)[1] ?? '';

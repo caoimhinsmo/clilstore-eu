@@ -4,10 +4,6 @@
   header('Cache-Control: no-cache, no-store, must-revalidate');
   header("Cache-Control:max-age=0");
 
-  //Load Menu and Footer
-  include ("../include/header.php");
-  include ("../include/footer.php");
-
   try {
     $T = new SM_T('clilstore/index');
 
@@ -21,8 +17,6 @@
 
     $T_Teaching_units         = $T->h('Teaching_units');
     $T_for_CLIL               = $T->h('for_CLIL');
-    $T_Help                   = $T->h('Cobhair');
-    $T_About                  = $T->h('About');
     $T_Select_lang_level      = $T->h('Select_lang_level');
     $T_My_options             = $T->h('My_options');
     $T_My_units               = $T->h('My_units');
@@ -32,8 +26,6 @@
     $T_Create_a_unit          = $T->h('Create_a_unit') . '…';
     $T_For_students           = $T->h('For_students');
     $T_For_teachers           = $T->h('For_teachers');
-    $T_More_options           = $T->h('More_options');
-    $T_more_options           = $T->h('more_options');
     $T_For_students_info      = $T->h('For_students_info');
     $T_For_students_more_info = $T->h('For_students_more_info');
     $T_For_teachers_info      = $T->h('For_teachers_info');
@@ -127,11 +119,7 @@
     $T_privacy_policy      = "<a href='privacyPolicy.php'>$T_privacy_policy</a>";
     $T_CS_is_well_behaved  = sprintf($T_CS_is_well_behaved,$T_privacy_policy);
 
-    $mdNavbar = $hlSelect = SM_mdNavbar::hlSelect();
-
-
-
-$tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
+    $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
 
     if (!isset($_COOKIE['csSessionId'])) $cookieMessage = <<<EOD_cookieMessage
      <div class="alert text-center cookiealert" role="alert">
@@ -151,11 +139,7 @@ EOD_cookieMessage;
     $servername = SM_myCLIL::servername();
     $serverhome = SM_myCLIL::serverhome();
 
-    $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-
     $idioma = SM_T::hl0();
-
-
 
     if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
 
@@ -165,8 +149,7 @@ EOD_cookieMessage;
     if (!empty($_GET['addCol']))      { $csSess->addCol($_GET['addCol']           ); }
     if (!empty($_GET['restoreCols'])) { $csSess->restoreCols($_GET['restoreCols'] ); }
 
-    //footer
-    $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
+    $footer = SM_clilHeadFoot::pie();
 
     //Modo
     $mode    = $csSess->getCsSession()->mode;
@@ -295,7 +278,7 @@ $incUnitMessage
 </div><br style="clear:both">
 END_USER2;
     }
-    $menu = cabecera($mdNavbar, $T_Help, $T_About, $T_Language, $user, $mode, $T_My_vocabulary, $T_My_units, $T_Logout, $T_My_options, $T_Create_a_unit, $T_Login, $T_register);
+    $menu = SM_clilHeadFoot::cabecera0($user, $mode);
     if ($mode<=1) { $userHtml .= "<p style='clear:both'>$T_Select_lang_level</p>"; }
 
     function wildChars (&$s,&$sVis,$con) {
@@ -1811,7 +1794,7 @@ $cookieMessage
 
     <div class="row">
         <div class="col col-md-12">
-            <div class="form-group">		
+            <div class="form-group">
 			<div class="input-group">
                             <div class="input-group-prepend fixed" style="margin-right: -25px; z-index: 100;">
                                 <span class="input-group-text rounded-circle" style="padding: 0.375rem 1.40rem;"><i class="fa fa-search" aria-hidden="true"></i></span>
@@ -1851,7 +1834,7 @@ $cookieMessage
             </div>
             </div>
             <div class="col col-md-4">
-                <div class="form-group">		
+                <div class="form-group">
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-tv mr-1" aria-hidden="true"></i> $T_Media</span>

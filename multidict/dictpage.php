@@ -69,7 +69,7 @@
     if (!empty($pparams)) {
         $pparams_arr = explode('&',$pparams);
         foreach ($pparams_arr as $pparam) {
-            list($key,$value) = explode('=',$pparam); 
+            list($key,$value) = explode('=',$pparam);
             $req->addPostParameter($key, $value);
         }
     }
@@ -81,7 +81,7 @@
         $netUrl = new Net_URL2($url);
         $url = $netUrl->resolve($httpResponse->getHeader('Location'))->getURL();
     }
-    if ($httpStatus>=300) { 
+    if ($httpStatus>=300) {
         $httpReason = $httpResponse->getReasonPhrase();
         throw new SM_MDexception("sgrios|No response from $url<br/>"
                               ."<span style=\"background-color:yellow\">HTTP error $httpStatus - $httpReason</span>");

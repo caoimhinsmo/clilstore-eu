@@ -85,7 +85,7 @@ class SM_csSess {
           $this->csSession->csid = $csid = $_COOKIE['csSessionId'];
           if ($this->fetchCsSession()) { $this->newSession = 0; }
       }
-      
+
       if ($this->newSession==1) {
          // No valid csid exists so create a new one
           $stmt1 = $DbMultidict->prepare('SELECT MAX(csid) AS csidMax FROM csSession');
@@ -529,14 +529,14 @@ END_addColHtml;
       $buttonC2  = $button[5];
       $html = <<<ENDHTML
 
-    <div class="form-group">          
+    <div class="form-group">
         <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group mr-1 input-group-sm" role="group">               
+            <div class="btn-group mr-1 input-group-sm" role="group">
                 <p style="padding:0px;margin:0 0 1.5em 0">
                     <div class="input-group-prepend" style="padding:0px;margin:0 1.5em 0 0">
 			<span class="input-group-text"><i class="fa fa-signal mr-1" aria-hidden="true"></i>$T_Level</span>
-                        <span class="text-white"> 
-                        $buttonAny    
+                        <span class="text-white">
+                        $buttonAny
                         $buttonA1
                         $buttonA2
                         $buttonB1
@@ -544,15 +544,15 @@ END_addColHtml;
                         $buttonC1
                         $buttonC2
                         </span>
-                    </div>   
+                    </div>
                 </p>
-            </div>    
-        </div> 
-    </div>         
-             
-              
-              
-              
+            </div>
+        </div>
+    </div>
+
+
+
+
 
 ENDHTML;
       return $html;

@@ -52,7 +52,7 @@
 
   $robots = ( empty($wlSession->url) ? 'index,follow' : 'noindex,nofollow' );
   $servername = $_SERVER['SERVER_NAME'];
-  
+
   $slOptions = array();
   $slArr = SM_WlSession::slArr();
   foreach ($slArr as $lang=>$langInfo) { $slArray[$lang] = $langInfo['endonym']; }
@@ -72,14 +72,14 @@
     <title>Wordlink <span navigation frame</title>
     <meta name="robots" content="$robots">
     <link rel="icon" type="image/png" href="/favicons/wordlink.png">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">         
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">        
-    <link href="../css/styles.css" rel="stylesheet">    
-        
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
-    <script src="../js/bootstrap.bundle.min.js"></script>    
-    <script src="../js/bootstrap.min.js"></script>       
-    
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
         <script>
         function escapeAmpersands() {
             document.getElementById('url').value = document.getElementById('url').value.replace('&','{and}');
@@ -99,57 +99,57 @@
     <style>
          .fondo {
             background-color: #13557A;
-            padding: 10px;            
-        }  
+            padding: 10px;
+        }
         .padding-0{
             padding-right:0;
             padding-left:0;
-        }   
+        }
         .btn-sm, .btn-group-sm > .btn {
           padding: 0.25rem 0.5rem;
           font-size: 0.675rem;
           line-height: 1.1;
           border-radius: 0.2rem;
         }
-        
+
         .form-control-sm {
             height: calc(1.5em + 0.5rem + 2px);
             padding: 0.25rem 0.5rem;
             font-size: 0.675rem;
             line-height: 1.1;
             border-radius: 0.2rem;
-        }  
-          
-   </style>      
+        }
+
+   </style>
 </head>
 <body class="fondo">
-  <div class="container padding-0"> 
+  <div class="container padding-0">
    <form id="wlForm" action="./" target="_top" onsubmit="escapeAmpersands('testing');">
-        
-    <div class="row">       
-       <div class="col-md-6">         
-          <input type="hidden" name="sid" value="$sid"/>          
+
+    <div class="row">
+       <div class="col-md-6">
+          <input type="hidden" name="sid" value="$sid"/>
           <input type="text" class="form-control form-control-sm rounded" id="url" name="url" value="$url" title="URL of the webpage" placeholder="$T_Copy_url_here">
-       </div> 
+       </div>
        <div class="col-md-4">
           <select class="form-control form-control-sm" name="sl" id="sl" title="The language the above page is written in" onchange="submitForm()">
           $slOptionsHtml
           </select>
        </div>
         <div class="col-md-2">
-          <a role="button" class="btn btn-danger text-white btn-sm float-right" title="$T_Esc_title" onclick="escapeWL()">ESC</a>        
-       </div>   
-    </div> 
-    <div class="row mt-1">       
-       <div class="col-md-4">         
+          <a role="button" class="btn btn-danger text-white btn-sm float-right" title="$T_Esc_title" onclick="escapeWL()">ESC</a>
+       </div>
+    </div>
+    <div class="row mt-1">
+       <div class="col-md-4">
           <select name="upload" class="form-control form-control-sm">
             <option value="0" selected>$T_Process_page</option>
             <option value="2">Compose a page</option>
           </select>
-       </div> 
+       </div>
        <div class="col-md-2 mx-auto">
-          <div class="custom-control custom-switch text-center">            
-            <input type="checkbox" class="custom-control-input" name="rmLi"$rmLiHtml/ id="rexl">              
+          <div class="custom-control custom-switch text-center">
+            <input type="checkbox" class="custom-control-input" name="rmLi"$rmLiHtml/ id="rexl">
             <label class="custom-control-label text-white" for="rexl" style="font-size: 0.5rem;">$T_Remove_exist_links</label>
           </div>
        </div>
@@ -162,15 +162,15 @@
           </select>
        </div>
        <div class="col-md-2">
-          <input type="submit" class="btn btn-primary btn-sm float-right" name="go" value="$T_Process">          
-       </div>    
-    </div>      
+          <input type="submit" class="btn btn-primary btn-sm float-right" name="go" value="$T_Process">
+       </div>
+    </div>
 EOD1;
-  
+
 echo <<<EOD2
 
-   
+
 </form>
-</div> 
+</div>
 EOD2;
 ?>

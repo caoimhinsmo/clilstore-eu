@@ -14,7 +14,7 @@
     $T_About_Multidict_text2  = $T->h('About_Multidict_text2');
     $T_About_Multidict_text3  = $T->h('About_Multidict_text3');
     $T_Note_for_dict_owners   = $T->h('Note_for_dict_owners');
-    
+
     $T_About_Multidict_text1 = strtr($T_About_Multidict_text1,
       [ '{Multidict}' => '<a href="/multidict/">Multidict</a>',
         '{Caoimhín Ó Donnaíle}' => '<a href="http://www.smo.uhi.ac.uk/~caoimhin/">Caoimhín Ó Donnaíle</a>',

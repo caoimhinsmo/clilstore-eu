@@ -262,17 +262,17 @@ $hl = 'ENG';
         $html = createForm($url,$pparams);
         goto echohtml;
     }
-    
+
     if ($handling=='click') {
         $html = createClick($url,$message,$sid);
         goto echohtml;
     }
-    
+
     if ($handling=='popup') {
         $html = createPopup($url,$message,$sid);
         goto echohtml;
     }
-    
+
     $servername = $_SERVER['SERVER_NAME'];
     $scheme = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' );
     $server = "$scheme://$servername";
@@ -298,7 +298,7 @@ $hl = 'ENG';
     if (!empty($pparams)) {
         $pparams_arr = explode('&',$pparams);
         foreach ($pparams_arr as $pparam) {
-            list($key,$value) = explode('=',$pparam,2); 
+            list($key,$value) = explode('=',$pparam,2);
             $req->addPostParameter($key, $value);
         }
     }
@@ -379,7 +379,7 @@ echohtml:
           $wfsArr = explode('|',$wlSession->wfs);
           if (count($wfsArr)>1) {
               $plural = ( count($wfsArr)>2 ? 's' : '' );
-              $suggestionsHtml = "<p style='color:brown'>But you can reclick to try the alternative$plural above suggested by Multidict</p>"; 
+              $suggestionsHtml = "<p style='color:brown'>But you can reclick to try the alternative$plural above suggested by Multidict</p>";
           }
           $pageHtml = <<<END_NORESPONSE
 <body style="background-color:#ffe;font-size:120%">

@@ -136,7 +136,7 @@ EOD_PT;
     <script>
       function resetNewclicks(unit) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onload = function() { if (this.status!=200) { alert('Error in resetNewclicks:'+this.status); } } 
+        xmlhttp.onload = function() { if (this.status!=200) { alert('Error in resetNewclicks:'+this.status); } }
         xmlhttp.open('GET', 'ajax/resetNewclicks.php?unit=' + unit);
         xmlhttp.send();
         window.location.href = window.location.href;

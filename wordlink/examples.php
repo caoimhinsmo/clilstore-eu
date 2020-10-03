@@ -5,7 +5,7 @@
     $T = new SM_T('wordlink/examples');
     $T_Example_pages    = $T->h('Example_pages');
     $T_Example_pages_h1 = $T->h('Example_pages_h1');
-    
+
     $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan);
 
     $wikiLinks = '';
@@ -32,14 +32,14 @@
     <style>
         fieldset#wiki { background-color:#eef; border:1px solid #88f;
                         -moz-border-radius:3px; -webkit-border-radius:3px; }
-        fieldset#wiki legend { font-weight:bold; background-color:#ddf; border:1px solid blue; color:#006; 
+        fieldset#wiki legend { font-weight:bold; background-color:#ddf; border:1px solid blue; color:#006;
                                padding:2px; -moz-border-radius:2px; -webkit-border-radius:2px; }
         fieldset#wiki div { float:left; margin:2px; padding:1px 0; min-width:1.3em; text-align:center;
                             border:1px solid black; background-color:yellow;
                             -moz-border-radius:2px; -webkit-border-radius:2px; }
         fieldset#wiki div.tools  { font-weight:bold; background-color:#0e0; }
         fieldset#wiki div.poolst { font-weight:bold; background-color:#8f3; }
-        fieldset#wiki div.problem  a {color:grey; text-decoration:line-through;  }  
+        fieldset#wiki div.problem  a {color:grey; text-decoration:line-through;  }
         fieldset#wiki div.googleOnly a { color:grey; }
         fieldset#wiki a { padding:2px; }
     </style>

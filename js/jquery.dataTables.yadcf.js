@@ -485,7 +485,7 @@ if (!Object.entries) {
 				date: 'Select a date'
 			},
 			settingsMap = {};
-			
+
 		let closeBootstrapDatepicker = false;
 		let	closeBootstrapDatepickerRange = false;
 		let	closeSelect2 = false;
@@ -657,7 +657,7 @@ if (!Object.entries) {
 				}
 			}
 			options[selector_arg] = tmpOptions;
-			
+
 			check3rdPPluginsNeededClose();
 		}
 
@@ -668,7 +668,7 @@ if (!Object.entries) {
 						if (columnEntry[1].filter_type === 'range_date') {
 							closeBootstrapDatepickerRange = true;
 						} else {
-							closeBootstrapDatepicker = true;	
+							closeBootstrapDatepicker = true;
 						}
 					} else if (columnEntry[1].select_type === 'select2') {
 						closeSelect2 = true;
@@ -676,7 +676,7 @@ if (!Object.entries) {
 				});
 			});
 		}
-		
+
 		//taken and modified from DataTables 1.10.0-beta.2 source
 		function yadcfVersionCheck(version) {
 			var aThis = $.fn.dataTable.ext.sVersion.split('.'),
@@ -1123,7 +1123,7 @@ if (!Object.entries) {
 		}
 
 		function findMinInArray(array, columnObj) {
-			var narray = [], 
+			var narray = [],
 				i,
 				num,
 				min;
@@ -1153,7 +1153,7 @@ if (!Object.entries) {
 					min = -1 * Math.ceil(min * -1);
 				}
 			}
-			
+
 			return min;
 		}
 
@@ -1415,7 +1415,7 @@ if (!Object.entries) {
 							val = val['@' + columnObj.html5_data];
 						}
 					}
-					
+
 					//omit empty rows when filtering
 					if (val === '' && (min !== '' || max !== '')) {
 						return false;
@@ -3248,7 +3248,7 @@ if (!Object.entries) {
 
 				min = document.getElementById(fromId).value;
 				max = document.getElementById(toId).value;
-					
+
 				if (columnObj.datepicker_type === 'jquery-ui') {
 					try {
 						if (min.length === (date_format.length + 2)) {
@@ -4181,7 +4181,7 @@ if (!Object.entries) {
 				}
 			}
 		}
-		
+
 		function stopPropagation(evt) {
 			close3rdPPluginsNeededClose(evt);
 			if (evt.stopPropagation !== undefined) {

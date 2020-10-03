@@ -13,7 +13,7 @@
 
   $T = new SM_T('clilstore/delete');
 
-  $T_Unit     = $T->h('Unit');  
+  $T_Unit     = $T->h('Unit');
   $T_Cancel   = $T->h('Sguir');
   $T_Or_else  = $T->h('Air neo');
   $T_Delete   = $T->h('Sguab às');

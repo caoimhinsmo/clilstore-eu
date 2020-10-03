@@ -11,7 +11,7 @@
     $req->setMethod('POST');
     $req->setConfig('proxy_host','wwwcache.uhi.ac.uk');
     $req->setConfig('proxy_port',8080);
-    foreach ($_GET as $key=>$value) { 
+    foreach ($_GET as $key=>$value) {
         if ($key<>'url') { $req->addPostParameter($key, $value); }
     }
 //if ($url=='http://www.lexicelt.org/geiriadur/geiriadur.aspx') { $req->addPostParameter('__VIEWSTATE','/wEPDwULLTEzMTE2MjMwODYPZBYCAgEPZBYKAgMPDxYCHghJbWFnZVVybAUraW1hZ2VzL2N5bmxsdW5fbGx5ZnJ5bjNfcjVfYzNfZ3d5ZGRlbGVnLmdpZmRkAgUPDxYCHwAFK2ltYWdlcy9jeW5sbHVuX2xseWZyeW4zX3I1X2M1X2d3eWRkZWxlZy5naWZkZAIHDw8WAh8ABStpbWFnZXMvY3lubGx1bl9sbHlmcnluM19yNV9jOF9nd3lkZGVsZWcuZ2lmZGQCCQ8PFgIfAAUsaW1hZ2VzL2N5bmxsdW5fbGx5ZnJ5bjNfcjVfYzEwX2d3eWRkZWxlZy5naWZkZAILD2QWCgIBDxAPFgIeBFRleHQFE0JyZWF0bmFpcyA+IEdhZWlsZ2VkZGRkAgMPEA8WAh8BBRNHYWVpbGdlID4gQnJlYXRuYWlzZGRkZAIFDw8WAh8BBQpDdWFyZGFpZ2g6ZGQCBw8PZBYCHglvbmtleWRvd24FK2ZuVHJhcEtEKFNlYXJjaEJveENvbnRyb2xfc2VhcmNoX2J0bixldmVudClkAgkPDxYCHwEFCUN1YXJkYWlnaGRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYJBQ9JQnRuX2xhbmdTd2l0Y2gFDUlidG5feW1hZHJvZGQFDklCdG5fZ2VpcmlhZHVyBQ1JQnRuX2dyYW1hZGVnBQ9JQnRuX2d3eWJvZGFldGgFHFNlYXJjaEJveENvbnRyb2w6Y3kyZ2FfcmFkaW8FHFNlYXJjaEJveENvbnRyb2w6Z2EyY3lfcmFkaW8FHFNlYXJjaEJveENvbnRyb2w6Z2EyY3lfcmFkaW8FG1NlYXJjaEJveENvbnRyb2w6YnRuVW5pY29kZSxERmCBwM9/rmQin0cOQclgdS09'); }
@@ -23,7 +23,7 @@
         $netUrl = new Net_URL2($url);
         $url = $netUrl->resolve($httpResponse->getHeader('Location'))->getURL();
     }
-    if ($httpStatus>=300) { 
+    if ($httpStatus>=300) {
         $httpReason = $httpResponse->getReasonPhrase();
         throw new SM_MDexception("sgrios|Cha d'fhuaireadh freagairt bho $url<br/>"
                               ."<span style=\"background-color:yellow\">HTTP error $httpStatus - $httpReason</span>");

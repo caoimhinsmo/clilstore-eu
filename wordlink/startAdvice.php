@@ -56,12 +56,12 @@ END_HTML;
 <html>
 <head>
     <title>Wordlink start advice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">         
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">     
-    <link href="../css/styles.css" rel="stylesheet"> 
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
-    <script src="../js/bootstrap.bundle.min.js"></script>    
-    <script src="../js/bootstrap.min.js"></script> 
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
 </head>
 $HTML
 </html>

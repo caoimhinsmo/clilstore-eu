@@ -152,7 +152,7 @@ EODmainForm;
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <style>
         table#filesbuts { margin-bottom:0.2em; border-collapse:collapse; }
-        table#filesbuts td { padding:2px 4px; } 
+        table#filesbuts td { padding:2px 4px; }
         table#filesbuts td:nth-child(1) input { min-width:20em; background-color:#bfe; color:black; font-size:100%;
                                                    padding:3px 6px; border:1px solid green; border-radius:4px; }
         table#filesbuts td:nth-child(2)       { width:1.8em; text-align:center; }

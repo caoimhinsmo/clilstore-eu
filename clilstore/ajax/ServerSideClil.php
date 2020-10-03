@@ -15,7 +15,7 @@ $orderClause = $csSess->orderClause();
 $query = 'SELECT clilstore.id,owner,fullname,sl,endonym,level,words,medtype,medlen,buttons,files,title,text,summary,created,changed,licence,test,views,clicks'
          .' FROM clilstore,users,lang'
         .' LIMIT 50,100';
-         
+
 $stmt = $DbMultidict->prepare($query);
 $stmt->execute();
 
@@ -25,8 +25,8 @@ if (!$stmt){
     $data = array();
     while ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
                 $data['data'] = $row;
-            }        
+            }
     echo json_encode($data);
 }
-  
+
 ?>

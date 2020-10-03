@@ -49,7 +49,7 @@
     $stmt->bindColumn(2,$wl);
     $stmt->bindColumn(3,$new);
     $stmt->bindColumn(4,$link);
-    while ($stmt->fetch()) { 
+    while ($stmt->fetch()) {
        if (empty($but) or empty($link)) { continue; }
         if (is_numeric($link))          { $link = "/cs/$link"; unset($wl); } //a link to another unit
         if (substr($link,0,5)=='file:') { $link = "/cs/$id/".substr($link,5); }         //a link to an attached file
@@ -60,7 +60,7 @@
         $buttonsHtml .= "<a role=\"button\" class=\"nowordlink btn btn-success text-white btn-sm align-middle ml-1 mt-1 mb-1 mr-1\" href=\"$link\" $class $target>$but</a>";
     }
     $buttonedit = ( $user<>$owner && $user<>'admin'
-                  ? ''                  
+                  ? ''
                   : "<a href=\"edit.php?id=$id&amp;view\" class=\"nowordlink btn btn-success btn-sm rounded\" target=\"_parent\" role=\"button\"><i class=\"fa fa-edit\" aria-hidden=\"true\"></i></a>"
                   );
     $stmt = $DbMultidict->prepare('SELECT record FROM users WHERE user=:user');
@@ -77,14 +77,14 @@
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
        $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
        $stmtGetLikes->execute([':id'=>$id]);
-       
+
 //$likes = $stmtGetLike->fetchColumn();
 //error_log("\$likes=$likes");
        if ($stmtGetLike->fetchColumn()>0) { $likeClass = 'liked'; } else { $likeClass = 'unliked'; }
        $likes = $stmtGetLikes->fetchColumn();
        $likeHtml = "<span id=likeLI class='$likeClass' onclick='likeClicked();'><img id=heartUnliked src='/favicons/unlike.png' alt='unlike'><img id=heartLiked src='/favicons/like.png' alt='like'></span><span id='likesBadge' class='badge badge-pill badge-danger'>$likes</span>";
     }
-    
+
     $shareTitle = 'Clilstore unit: ' . urlencode($title);
     $shareURL = urlencode("https://clilstore.eu/cs/$id");
     $sharebuttonFB="<a href='http://www.facebook.com/sharer.php?u=$shareURL' target='_blank' class='nowordlink' title='Share via Facebook'><img src='facebook.png' alt='Facebook' /></a>";
@@ -94,27 +94,27 @@
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='Share via Email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
     $navbar1 = <<<EOD_NB1
-<div class="row no-margin" style="background-color: #2c6692;"> 
+<div class="row no-margin" style="background-color: #2c6692;">
     <div class="col-md-8" id="share-buttons">
         <a role="button" href="/clilstore" class="nowordlink btn btn-primary text-white btn-sm align-middle ml-1 mt-1 mb-1 mr-1" title="Clilstore index page" target="_parent">Clilstore</a>
-             $sharebuttonFB 
-             $sharebuttonTw   
+             $sharebuttonFB
+             $sharebuttonTw
              $sharebuttonWA
              $sharebuttonLI
              $sharebuttonEM
              $likeHtml
     </div>
-    <div class="col-md-4"> 
+    <div class="col-md-4">
              $buttonedit
              $recordVocHtml
-             <a role="button" href="unitinfo.php?id=$id" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" title="Summary and other details on this unit">Unit info</a> 
-    </div> 
-</div> 
+             <a role="button" href="unitinfo.php?id=$id" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" title="Summary and other details on this unit">Unit info</a>
+    </div>
+</div>
 
 
 EOD_NB1;
     $navbar2 = <<<EOD_NB2
-<div class="row no-margin" style="background-color: #2c6692;"> 
+<div class="row no-margin" style="background-color: #2c6692;">
     <div class="col-md-12" id="share-buttons">
         <a role="button" href="/clilstore" class="nowordlink btn btn-primary text-white btn-sm align-middle ml-1 mt-1 mb-1 mr-1" title="Clilstore index page" target="_parent">Clilstore</a>
              $buttonsHtml
@@ -128,16 +128,16 @@ EOD_NB2;
 <head>
     <meta charset="UTF-8">
     <title>CLILstore unit $id: $title</title>
-    
+
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">         
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"> 
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">    
-    <link href="../css/styles.css" rel="stylesheet">    
-        
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
-    <script src="../js/bootstrap.bundle.min.js"></script>    
-    <script src="../js/bootstrap.min.js"></script>         
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <style>
         #share-buttons img {
             width: 40px;
@@ -145,7 +145,7 @@ EOD_NB2;
             border: 0;
             box-shadow: 0;
             display: inline;
-        }     
+        }
         html,body { height:100%; width:100%; overflow:auto;}
         div.none  { margin:0.5em; }
         div.left  { float:left;  margin:0.5em; }
@@ -166,48 +166,48 @@ EOD_NB2;
         span.csinfo a    { text-decoration:none; }
         a.csinfo:link    { color:#00f; }
         a.csinfo:visited { color:#909; }
-       
-        span.vocOff img:nth-child(1) { 
+
+        span.vocOff img:nth-child(1) {
             width: 40px;
             padding: 5px;
             border: 0;
             box-shadow: 0;
-            display:inline; 
+            display:inline;
         }
-            
-        span.vocOff img:nth-child(2) { 
+
+        span.vocOff img:nth-child(2) {
             width: 40px;
             padding: 5px;
             border: 0;
             box-shadow: 0;
-            display:none;                
+            display:none;
         }
-        span.vocOn  img:nth-child(1) { 
+        span.vocOn  img:nth-child(1) {
             width: 40px;
             padding: 5px;
             border: 0;
             box-shadow: 0;
-            display:none; 
+            display:none;
         }
         span.vocOn  img:nth-child(2) {
             width: 40px;
             padding: 5px;
             border: 0;
             box-shadow: 0;
-            display:inline; 
+            display:inline;
         }
         a.vocOff { display:none; }
         span#likeLI.liked   #heartLiked   { display:inline; }
         span#likeLI.liked   #heartUnliked { display:none;   }
         span#likeLI.unliked #heartLiked   { display:none;   }
-        span#likeLI.unliked #heartUnliked { display:inline; }    
-            
-        
+        span#likeLI.unliked #heartUnliked { display:inline; }
+
+
    .no-margin{
     margin-right: 0px;
-    margin-left: 0px; 
+    margin-left: 0px;
    }
-           
+
     </style>
     <script>
         function likeClicked() {
@@ -223,8 +223,8 @@ EOD_NB2;
             }
             xhr.open('GET', '/clilstore/ajax/setLike.php?unit=$id&newLikeStatus=' + newLikeStatus);
             xhr.send();
-        }   
-            
+        }
+
         function vocClicked(cl) {
             var clnew, i;
             if (cl=='vocOff') { clnew = 'vocOn';  }
@@ -300,7 +300,7 @@ $text
 
 </div>
 $navbar2
-<p style="clear:both;font-size:70%;margin:0;text-align:center">Short url:&nbsp;&nbsp; $serverhome/cs/$id</p>            
+<p style="clear:both;font-size:70%;margin:0;text-align:center">Short url:&nbsp;&nbsp; $serverhome/cs/$id</p>
 </body>
 </html>
 EOD1;
@@ -310,7 +310,7 @@ EOD1;
     $stmt->bindParam(':id',$id);
     $stmt->execute();
     $stmt = null;
-    
+
 
   } catch (Exception $e) { echo $e; }
 

@@ -2,25 +2,11 @@
   try {
     if (!include('autoload.inc.php')) { throw new Exception('Failed to find autoload.inc.php'); }
     header('Cache-Control:max-age=0');
-    
-    //Load Menu and Footer
-  include ("../include/header_p.php");
-  include ("../include/footer.php");
-  
-  $T = new SM_T('clilstore/index');
-  $T_Disclaimer             = $T->h('Disclaimer');
-  $T_Disclaimer_EuropeanCom = $T->h('Disclaimer_EuropeanCom');
-  $T_Help                   = $T->h('Cobhair');
-  $T_About                  = $T->h('About');
-  $T_Language               = $T->h('Language');
-  
-  
-  $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    
-  $hlSelect = SM_mdNavbar::hlSelect();
-  
-  $menu = cabecera($hlSelect,$T_Help,$T_About,$T_Language);
-  $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
+
+    $T = new SM_T('clilstore/token');
+
+    $menu   = SM_clilHeadFoot::cabecera();
+    $footer = SM_clilHeadFoot::pie();
 
     if (empty($_GET['token'])) { throw new Exception('This page requires a token= parameter'); }
     $token = $_GET['token'];
@@ -62,12 +48,12 @@
     <meta charset="UTF-8"> $refresh
     <title>Clilstore: Act on a token</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
-    <script src="../js/scripts.js"></script>            
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">       
+    <script src="../js/scripts.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">       
-    <script src="../js/bootstrap.bundle.min.js"></script>    
-    <script src="../js/bootstrap.min.js"></script>     
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
 </head>
 <body>
@@ -77,11 +63,11 @@ $menu
 
 $HTML
 
-        <div class="col-lg-12">    
-            $footer  
-        </div>   
+        <div class="col-lg-12">
+            $footer
+        </div>
     </div>
-</div>   
+</div>
 
 </body>
 </html>

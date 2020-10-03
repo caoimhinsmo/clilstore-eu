@@ -7,7 +7,7 @@
     line-height: 1.5;
     border-radius: 0.3rem;
   }
-  
+
   .border-bottom {
     border-bottom: 0px solid #dee2e6 !important;
   }
@@ -18,15 +18,15 @@
     flex-shrink: 0;
     width: 60%;
   }
-  
+
   .parrafo {
       font-size: x-large;
   }
-  
+
   .fondo_menu{
       background-color: #59BDDC;
   }
-  
+
   .navbar-toggler-icon {
     display: inline-block;
     width: 3.5em;
@@ -36,7 +36,7 @@
     background: no-repeat center center;
     background-size: 100% 100%;
   }
-  
+
   #mainNav .navbar-nav .nav-item .nav-link {
     color: #ffffff;
     font-family: 'Lato', sans-serif;
@@ -44,8 +44,8 @@
     font-size: 2.3rem;
     padding: 0.75rem 0;
   }
-  
-  #mainNav .navbar-brand {    
-    font-size: 3.0rem;    
+
+  #mainNav .navbar-brand {
+    font-size: 3.0rem;
   }
 }

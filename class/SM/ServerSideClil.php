@@ -14,7 +14,7 @@ $orderClause = $csSess->orderClause();
 
 $query = 'SELECT clilstore.id,owner,fullname,sl,endonym,level,words,medtype,medlen,buttons,files,title,text,summary,created,changed,licence,test,views,clicks'
          .' FROM clilstore,users,lang';
-         
+
 $stmt = $DbMultidict->prepare($query);
 $stmt->execute();
 
@@ -25,5 +25,5 @@ if (!$stmt){
     $results = $stmt->fetchAll();
     echo json_encode($results);
 }
-  
+
 ?>

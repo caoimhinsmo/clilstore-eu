@@ -4,10 +4,6 @@
 
   header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
   header("Pragma: no-cache");
-  
-  //Load Menu and Footer
-  include ("../include/header_p.php");
-  include ("../include/footer.php");
 
   try {
       $myCLIL = SM_myCLIL::singleton();
@@ -34,25 +30,11 @@
   $T_No_words_in_voc_list_info = $T->h('No_words_in_voc_list_info');
   $T_Empty_voc_list_question   = $T->h('Empty_voc_list_question');
   $T_Empty_voc_list_confirm    = $T->j('Empty_voc_list_confirm');
-  
-  $T_Disclaimer             = $T->h('Disclaimer');
-  $T_Disclaimer_EuropeanCom = $T->h('Disclaimer_EuropeanCom');
-  
-  $T_Help                   = $T->h('Cobhair');
-  $T_About                  = $T->h('About');
- 
-  
 
   $T_No_words_in_voc_list_info = strtr ( $T_No_words_in_voc_list_info, [ '{'=>'<i>', '}'=>'</i>' ] );
 
-  $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan);
-  
-  $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    
-  $hlSelect = SM_mdNavbar::hlSelect();
-  
-  $menu = cabecera($hlSelect,$T_Help,$T_About,$T_Language);
-  $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
+  $menu   = SM_clilHeadFoot::cabecera();
+  $footer = SM_clilHeadFoot::pie();
 
   try {
     $myCLIL->dearbhaich();
@@ -122,7 +104,7 @@ END_noVocTable2;
 <td><span id="$vocid-tick" class="change"><img src="check.png" height="28" width="28"></img><span></td>
 <td class="text-center">$unitsHtml</td>
 </tr>
-</tbody>                     
+</tbody>
 END_vocHtml;
             }
             $T_Empty_voc_list_question = strtr ( $T_Empty_voc_list_question,
@@ -138,10 +120,10 @@ END_vocHtml;
       <th scope="col"></th>
       <th scope="col">$T_Word</th>
       <th scope="col">$T_Meaning</th>
-      <th scope="col"></th>              
+      <th scope="col"></th>
       <th scope="col">$T_Clicked_in_unit</th>
     </tr>
-  </thead>              
+  </thead>
 
 $vocHtml
 </table>
@@ -150,20 +132,20 @@ END_vocTable;
         }
     }
     $HTML = <<<EOD
-<div class="col-lg-12 text-center">            
+<div class="col-lg-12 text-center">
 <h1 style="font-size:140%;margin:0;padding-top:0.5em" class="text-white">$T_Vocabulary_list_for_user_ <span style="color:brown">$user</span></h1>
 </div>
-<div class="col-lg-12 text-center"> 
+<div class="col-lg-12 text-center">
     <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group mr-2" role="group">        
+        <div class="btn-group mr-2" role="group">
             $langButHtml
-        </div>    
-   </div>    
+        </div>
+   </div>
 </div>
-            
+
 
 $vocTableHtml
-           
+
 EOD;
 
   } catch (Exception $e) { $HTML = $e; }
@@ -175,37 +157,37 @@ EOD;
     <meta charset="UTF-8">
     <title>$T_Vocabulary_list_for_user_ $user</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
-    <script src="../js/scripts.js"></script>            
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">       
+    <script src="../js/scripts.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">       
-    <script src="../js/bootstrap.bundle.min.js"></script>    
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <link href="../css/login.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
-    <style> 
+    <style>
         .bg-primary {
            background-color: #35a4bf !important;
         }
         .bg-primary:hover {
            background-color: #35a4bf !important;
         }
-            
+
         .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
             color: #fff;
             background-color: #28a745;
             border-color: #28a745; /*set the color you want here*/
-        }  
-          
+        }
+
         a {
             color: #ffffff;
             text-decoration: none;
             background-color: transparent;
-        }  
+        }
         span.change { opacity:0; color:white; }
         span.change.changed { color:green; animation:appearFade 5s; }
         @keyframes appearFade { from { opacity:1; background-color:#35a4bf; } 20% { opacity:0.8; background-color:transparent; } to { opacity:0; } }
-       
+
     </style>
     <script>
         function deleteVocWord(vocid) {
@@ -254,15 +236,15 @@ $menu
     <div class="row h-100 justify-content-center align-items-center">
 
 $HTML
-          <div class="col-lg-12">    
-            <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p> 
-        </div> 
+          <div class="col-lg-12">
+            <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
+        </div>
 
-        <div class="col-lg-12">    
-            $footer  
-        </div>   
+        <div class="col-lg-12">
+            $footer
+        </div>
     </div>
-</div>   
+</div>
 </body>
 </html>
 END_HTMLDOC;

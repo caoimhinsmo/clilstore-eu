@@ -21,7 +21,7 @@
     $T_Using_Wordlink      = $T->h('Using_Wordlink');
     $T_Remove_exist_links  = $T->h('Remove_exist_links');
     $T_For_web_authors     = $T->h('For_web_authors');
-    
+
     $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan);
 
     $T_Wordlink_help_text1 = strtr( $T_Wordlink_help_text1, [ '{Multidict}' => '<a href="/multidict/">Multidict</a>' ] );

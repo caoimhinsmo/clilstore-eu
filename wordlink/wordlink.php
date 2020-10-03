@@ -93,7 +93,7 @@
     $attribute = ( $context=='frame' ? 'src' : 'href' ); //The attribute to be wordlinked
     $pattern =  '/((.*?) '.$attribute.'=")(.*?)("(.*))/ius';
     if (!preg_match($pattern,$tag,$matches)) {                      // If no luck...
-        $pattern =  '/((.*?) '.$attribute.'=\')(.*?)(\'(.*))/ius';  // then try again with single quotes instead of double just in case html uses them 
+        $pattern =  '/((.*?) '.$attribute.'=\')(.*?)(\'(.*))/ius';  // then try again with single quotes instead of double just in case html uses them
         if (!preg_match($pattern,$tag,$matches)) { return $tag; }  //Faulty html so return $tag unchanged
     }
     $tagStart = $matches[1];
@@ -104,7 +104,7 @@
    if (preg_match($pattern,$oldLink)) { return $tag; } //Don't wordlink links to media such as .jpg, .gif, .mov
     $tagEnd   = $matches[4];
     $newLink = strtr ( $oldLink, array('&amp;'=>'&') );
-    $newLink = strtr ( $newLink, array('&'=>'{and}') );  //Protect ampersands 
+    $newLink = strtr ( $newLink, array('&'=>'{and}') );  //Protect ampersands
     if ($context=='frame') {
         $newWordlink = "$wlhome/wordlink.php?sid=$sid&amp;sl=$sl&amp;url=$newLink";
         $newTag = $tagStart.$newWordlink.$tagEnd;
@@ -209,7 +209,7 @@ END_COMPOSE;
         $netUrl = new Net_URL2($url);
 //        if ($netUrl->getScheme()<>'http') { header("Location:$url"); }  //Redirect any non http pages and hope for the best!
 
-        for ($nRhtml=0; $nRhtml<6; $nRhtml++) {   //up to 6 html redirections 
+        for ($nRhtml=0; $nRhtml<6; $nRhtml++) {   //up to 6 html redirections
            $req = new HTTP_Request2();
 //            $req->setConfig('proxy_host','wwwcache.uhi.ac.uk');
 //            $req->setconfig('proxy_port',8080);
@@ -226,7 +226,7 @@ END_COMPOSE;
               if ($httpStatus<>301 and $httpStatus<>302) { break; }
                 $url = $netUrl->resolve($httpResponse->getHeader('Location'))->getURL();
             }
-            if ($httpStatus>=300) { 
+            if ($httpStatus>=300) {
                 $httpReason = $httpResponse->getReasonPhrase();
                 throw new Exception("HTTP error $httpStatus - $httpReason");
             }
@@ -315,7 +315,7 @@ END_COMPOSE;
       function markCur(elem) {
             aTags = document.getElementsByTagName('a');
             for (var i=0; i<aTags.length; i++) {
-                aTag = aTags[i]; 
+                aTag = aTags[i];
                 if (aTag.className=='wllCur') { aTag.className = 'wllCurSean'; }
             }
             elem.className = 'wllCur';

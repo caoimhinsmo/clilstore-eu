@@ -98,7 +98,7 @@
   <td>$adlevHtml</td>
   <td>$emailHtml</td>
 EOD_tableAdlev2;
-        }           
+        }
         $tableHtml .= <<<EODtr
 <tr>
   <td>$fullnameHtml</td>

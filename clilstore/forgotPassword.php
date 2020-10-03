@@ -5,24 +5,11 @@
 
   try {
     $myCLIL = SM_myCLIL::singleton();
-    
-    //Load Menu and Footer
-  include ("../include/header_p.php");
-  include ("../include/footer.php");
-  
-  $T = new SM_T('clilstore/index');
-  $T_Disclaimer             = $T->h('Disclaimer');
-  $T_Disclaimer_EuropeanCom = $T->h('Disclaimer_EuropeanCom');
-  $T_Help                   = $T->h('Cobhair');
-  $T_About                  = $T->h('About');
-  $T_Language               = $T->h('Language');
-  
-  $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    
-  $hlSelect = SM_mdNavbar::hlSelect();
-  
-  $menu = cabecera($hlSelect,$T_Help,$T_About,$T_Language);
-  $footer = pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
+
+    $T = new SM_T('clilstore/forgotPassword');
+
+    $menu   = SM_clilHeadFoot::cabecera();
+    $footer = SM_clilHeadFoot::pie();
 
     echo <<<EOD_barr
 <!DOCTYPE html>
@@ -32,28 +19,28 @@
     <title>Login to Clilstore</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
-    <link href="../lone.css" rel="stylesheet">         
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">       
+    <link href="../lone.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">       
-    <script src="../js/bootstrap.bundle.min.js"></script>    
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <link href="../css/login.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/favicons/clilstore.png">  
+    <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <style>
-       .card .card-header {                
+       .card .card-header {
         color: #ffffff;
-        } 
-    
+        }
+
         .bg-primary {
            background-color: #35a4bf !important;
-        }    
-      
-      
-        label {    
+        }
+
+
+        label {
            margin-bottom: 0.0rem;
-        }    
-   </style>    
+        }
+   </style>
 </head>
 <body>
 $menu
@@ -63,7 +50,7 @@ EOD_barr;
 
     $formRequired = TRUE;
     $errorMessage = '';
-    $findme = ( isset($_REQUEST['findme']) ? trim($_REQUEST['findme']) : ''); 
+    $findme = ( isset($_REQUEST['findme']) ? trim($_REQUEST['findme']) : '');
     $findmeSC = htmlspecialchars($findme);
     if (isset($_POST['sendLink']) && !empty($findme)) {
         $DbMultidict = SM_DbMultidictPDO::singleton('r');
@@ -81,13 +68,13 @@ EOD_barr;
             mail($email,'Clilstore - link to reset password (valid for 24 hours)',$link,"From:no-reply@multidict.net\r\n");
             echo <<<END_mess
             <div class="row">
-		<div class="col-md-12">							
+		<div class="col-md-12">
                     <h5 class="text-white"> A link allowing you to reset your password has been sent to your e-mail address. This will be valid for 24 hours.</h5><br>
                     <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a class="text-white" href="index.php">Volver</a></p>
 		</div>
             </div>
-            
-            
+
+
 END_mess;
             $formRequired = FALSE;
         }
@@ -125,7 +112,7 @@ END_mess;
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-md-12">
 							<input type="hidden" name="redirect" value="index.php">
@@ -134,12 +121,12 @@ END_mess;
 					</div>
 				</form>
 				<div class="clear">
-				</div>				
+				</div>
                                 <p class="text-center"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
 			</div>
 		</div>
 	</div>
-</div>         
+</div>
 
 ENDform;
     }
@@ -147,9 +134,9 @@ ENDform;
   } catch (Exception $e) { echo $e; }
 
   echo <<<EOD_bonn
-     <div class="col-lg-12">    
-            $footer  
-     </div> 
+     <div class="col-lg-12">
+            $footer
+     </div>
    </div>
 </div>
 
