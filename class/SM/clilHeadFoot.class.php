@@ -57,10 +57,10 @@ END_HEADER;
     $T_Help     = $T->h('Cobhair');
     $T_About    = $T->h('About');
     $T_Language = $T->h('Language');
-    $T_Login    = $T->h('Login');
+    $T_Login    = $T->h('Log_air');
     $T_Logout   = $T->h('Logout');
     $T_My_units = $T->h('My_units');
-    $T_register = $T->h('register');
+    $T_Register = ucfirst($T->h('Register'));
     $T_My_options    = $T->h('My_options');
     $T_Create_a_unit = $T->h('Create_a_unit');
     $T_My_vocabulary = $T->h('My_vocabulary');
@@ -72,7 +72,7 @@ END_HEADER;
     if (empty($usuario)) { //Not logged in yet
       $headerUsuario = <<<END_headerLogin
     <a class="btn btn-outline-light ml-2 mr-2" href="login.php">$T_Login</a>
-    <a class="btn btn-outline-light" href="register.php">$T_register</a>
+    <a class="btn btn-outline-light" href="register.php">$T_Register</a>
 END_headerLogin;
     } else {
         if ($modo<=1) { //Student mode

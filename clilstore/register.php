@@ -6,6 +6,18 @@
 
   $T = new SM_T('clilstore/register');
 
+  $T_Password   = $T->h('Password');
+  $T_Email      = $T->h('E-mail');
+  $T_Fullname   = $T->h('Fullname');
+  $T_Login      = $T->h('Log_air');
+  $T_Click_here = $T->h('Click_here');
+  $T_Return     = $T->h('Return');
+  $T_Register   = $T->h('Register');
+  $T_Register_on_Clilstore   = $T->h('Register_on_Clilstore');
+  $T_Already_have_an_account = $T->h('Already_have_an_account');
+
+  $T_Our_privacy_policy = $T->h('Our_privacy_policy');
+
   $menu   = SM_clilHeadFoot::cabecera();
   $footer = SM_clilHeadFoot::pie();
 
@@ -134,7 +146,7 @@ EOD1;
             $stmtInsert->bindParam(':password',$passwordCrypt);
             if (!$stmtInsert->execute()) { throw new SM_MDexception('Failed to insert user record'); }
             echo <<<ENDsuccess
-<h2 class="text-white">User ID <b>$user</b> has been successfully registered. You may now </h2><a class="btn btn-outline-light text-uppercase ml-2" href="login.php">Login</a>
+<h2 class="text-white">User ID <b>$user</b> has been successfully registered. You may now </h2><a class="btn btn-outline-light text-uppercase ml-2" href="login.php">$T_Login</a>
 ENDsuccess;
             $formRequired = 0;
         }
@@ -145,7 +157,7 @@ ENDsuccess;
 	<div class="col-lg col-sm">
 		<div class="card">
 			<div class="card-header bg-primary text-center">
-				<h4>Register to Clilstore</h4>
+				<h4>$T_Register_on_Clilstore</h4>
 			</div>
 			<div class="card-body">
 				<div class="alert text-center" role="alert">
@@ -172,7 +184,7 @@ ENDsuccess;
                                         <div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Full Name</label>
+								<label>$T_Fullname</label>
                                                                 <p style="font-size:xx-small">Your real name - This will be visible to other users</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -188,7 +200,7 @@ ENDsuccess;
                                         <div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Email</label>
+								<label>$T_Email</label>
                                                                 <p style="font-size:xx-small">This is kept private</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -204,7 +216,7 @@ ENDsuccess;
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Password</label>
+								<label>$T_Password</label>
                                                                 <p style="font-size:xx-small">Set a password (at least 8 characters long)</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -236,15 +248,15 @@ ENDsuccess;
 					<div class="row">
 						<div class="col-md-12">
 							<input type="hidden" name="redirect" value="index.php">
-							<input type="submit" class="btn btn-primary btn-lg btn-block mb-2" value="Register" name="submit">
+							<input type="submit" class="btn btn-primary btn-lg btn-block mb-2" value="$T_Register" name="submit">
 						</div>
 					</div>
 				</form>
 				<div class="clear">
 				</div>
-				<i class="fa fa-user fa-fw"></i> ¿Ya tienes una cuenta? <a href="login.php">Login</a><br>
-				<i class="fa fa-file fa-fw"></i> Nuestra politica de privacidad <a href="privacyPolicy.php">Click aquí</a><br>
-                                <p class="text-center mt-2"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
+				<i class="fa fa-user fa-fw"></i> $T_Already_have_an_account <a href="login.php">$T_Login</a><br>
+				<i class="fa fa-file fa-fw"></i> $T_Our_privacy_policy <a href="privacyPolicy.php">$T_Click_here</a><br>
+                                <p class="text-center mt-2"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">$T_Return</a></p>
 			</div>
 		</div>
 	</div>

@@ -11,7 +11,6 @@
     $T_CS_needs_cookies       = $T->h('CS_needs_cookies');
     $T_Got_it                 = $T->h('Got_it');
     $T_If_message_persists    = $T->h('If_message_persists');
-    $T_privacy_policy         = $T->h('privacy_policy');
     $T_CS_is_well_behaved     = $T->h('CS_is_well_behaved');
     $T_setNewbieAlert         = $T->j('setNewbieAlert');
 
@@ -116,8 +115,7 @@
     $T_Search_for_t_units     = $T->h('Search_for_t_units');
 
     $T_If_message_persists = sprintf($T_If_message_persists,$T_Got_it);
-    $T_privacy_policy      = "<a href='privacyPolicy.php'>$T_privacy_policy</a>";
-    $T_CS_is_well_behaved  = sprintf($T_CS_is_well_behaved,$T_privacy_policy);
+    $T_CS_is_well_behaved = strtr( $T_CS_is_well_behaved, ['{'=>'<a href=privacyPolicy.php>','}'=>'</a>'] );
 
     $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
 
