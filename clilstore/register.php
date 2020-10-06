@@ -14,11 +14,21 @@
   $T_Return     = $T->h('Return');
   $T_UserID     = $T->h('UserID');
   $T_Register   = $T->h('Register');
+  $T_Retype_password         = $T->h('Retype_password');
   $T_UserID_advice           = $T->h('UserID_advice');
   $T_Fullname_advice         = $T->h('Fullname_advice');
   $T_Email_advice            = $T->h('Email_advice');
+  $T_Password_advice         = $T->h('Password_advice');
+  $T_Retype_pw_advice        = $T->h('Retype_pw_advice');
   $T_Register_on_Clilstore   = $T->h('Register_on_Clilstore');
   $T_Already_have_an_account = $T->h('Already_have_an_account');
+  $T_Choose_unique_userid    = $T->h('Choose_unique_userid');
+  $T_Not_a_valid_email       = $T->h('Not_a_valid_email');
+  $T_User_exists_for_email_1 = $T->h('User_exists_for_email_1');
+  $T_User_exists_for_email_2 = $T->h('User_exists_for_email_2');
+  $T_User_exists_for_email_3 = $T->h('User_exists_for_email_3');
+  $T_User_already_taken      = $T->h('User_already_taken');
+  $T_Retyped_pw_mismatch     = $T->h('Retyped_pw_mismatch');
 
   $T_Our_privacy_policy = $T->h('Our_privacy_policy');
 
@@ -123,19 +133,23 @@ EOD1;
         } elseif (empty($email)) {
             $errorMessage = 'You have not given your e-mail address';
         } elseif (validEmail($email)==0) {
-            $errorMessage = 'This is not a valid e-mail address';
+            $errorMessage = $T_Not_a_valid_email;
         } elseif ($stmtEmail->execute() && $stmtEmail->bindColumn(1,$prevUser) && $stmtEmail->fetch()) {
-            $errorMessage = "You already have a Clilstore userid “<b>$prevUser</b>” registered for this e-mail address.";
-            $errorMessage .= "<br>You should <a href=\"login.php?user=$prevUser\" style=\"border:1px solid;border-radius:3px;padding:0 3px\">login</a> as $prevUser.";
-            $errorMessage .= "<br><br><br>Or you can continue and register another Clilstore userid against a <i>different</i> e-mail address if you have one. But this is generally not recommended.";
+            $User_exists_for_email_1 = strtr( $T_User_exists_for_email_1, ['[xxxxxx]' => "<b>$prevUser</b>"] );
+            $User_exists_for_email_2 = strtr( $T_User_exists_for_email_2,
+                                             ['[xxxxxx]' => $prevUser,
+                                              '{' => "<a href=\"login.php?user=$prevUser\" style='border:1px solid;border-radius:3px;padding:0 3px'>",
+                                              '}' => '</a>'] );
+            $User_exists_for_email_3 = strtr( $T_User_exists_for_email_3, ['{'=>'<i>','}'=>'</i>'] );
+            $errorMessage = "$User_exists_for_email_1<br>$User_exists_for_email_2<br><br><br>$User_exists_for_email_3";
         } elseif ($stmtUser->execute() && $stmtUser->fetch()) {
-            $errorMessage = "Sorry, the userid “<b>$userSC</b>” is already taken.  You’ll have to choose something else.";
+            $errorMessage = strtr( $T_User_already_taken, ['[xxxxxx]' => "<b>$userSC</b>"] );
         } elseif (strlen($user)<3) {
             $errorMessage = 'Userids must be at least 3 characters long.  You’ll have to choose something longer.';
         } elseif (strlen($user)>16) {
             $errorMessage = 'Userids cannot be over 16 characters long.  You’ll have to choose something shorter.';
         } elseif ($password<>$password2) {
-            $errorMessage = 'The retyped password does not match. Try again.';
+            $errorMessage = $T_Retyped_pw_mismatch;
         } elseif (strlen($password)<8) {  //Change sometime to more sophisticed check using PHP function crack_check.  Tried, but “pecl install crack” failed.
             $errorMessage = 'This password is too short and insecure';
         } else {
@@ -178,7 +192,7 @@ ENDsuccess;
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
 									</div>
-									<input type="text" class="form-control" name="user" value="$userSC" required pattern=".{3,16}" autofocus placeholder="Choose a unique userid">
+									<input type="text" class="form-control" name="user" value="$userSC" required pattern=".{3,16}" autofocus placeholder="$T_Choose_unique_userid">
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
@@ -194,7 +208,7 @@ ENDsuccess;
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
 									</div>
-									<input type="text" class="form-control" name="fullname" value="$fullnameSC" required pattern=".{8,}" placeholder="Your full name" style="width:22em">
+									<input type="text" class="form-control" name="fullname" value="$fullnameSC" required pattern=".{8,}" style="width:22em">
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
@@ -221,7 +235,7 @@ ENDsuccess;
 						<div class="col-md-12">
 							<div class="form-group">
 								<label>$T_Password</label>
-                                                                <p style="font-size:xx-small">Set a password (at least 8 characters long)</p>
+                                                                <p style="font-size:xx-small">$T_Password_advice</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
@@ -236,13 +250,13 @@ ENDsuccess;
                                         <div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Re-type Password</label>
-                                                                <p style="font-size:xx-small">Reenter the password</p>
+								<label>$T_Retype_password</label>
+                                                                <p style="font-size:xx-small">$T_Retype_pw_advice</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
 									</div>
-									<input class="form-control" type="password" name="password2" value="$password2SC" required pattern=".{8,}" placeholder="Retype to confirm">
+									<input class="form-control" type="password" name="password2" value="$password2SC" required pattern=".{8,}">
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
