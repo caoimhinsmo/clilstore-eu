@@ -11,6 +11,16 @@
     $serverhome = SM_myCLIL::serverhome();
 
     $T = new SM_T('clilstore/login');
+    $T_Email    = $T->h('E-mail');
+    $T_UserID   = $T->h('UserID');
+    $T_Password = $T->h('Password');
+    $T_Login    = $T->h('Log_air');
+    $T_Register = $T->h('Register');
+    $T_Return   = $T->h('Return');
+    $T_No_account_yet          = $T->h('No_account_yet');
+    $T_Forgotten_your_password = $T->h('Forgotten_your_password');
+    $T_Recover_it              = $T->h('Recover_it');
+    $T_Login_to_Clilstore      = $T->h('Login_to_Clilstore');
 
     $formRequired = TRUE;
     $successMessage = $refreshHeader = $formHtml = '';
@@ -81,7 +91,7 @@ ENDfailure;
 	<div class="col-lg col-sm">
 		<div class="card">
 			<div class="card-header bg-primary text-center">
-				<h4>Login to Clilstore</h4>
+				<h4>$T_Login_to_Clilstore</h4>
 			</div>
 			<div class="card-body">
 				<div class="alert text-center" role="alert">
@@ -92,7 +102,7 @@ ENDfailure;
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Email / Usuario</label>
+								<label>$T_Email / $T_UserID</label>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span>
@@ -107,7 +117,7 @@ ENDfailure;
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Contraseña</label>
+								<label>$T_Password</label>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-unlock" aria-hidden="true"></i></span>
@@ -122,15 +132,15 @@ ENDfailure;
 					<div class="row">
 						<div class="col-md-12">
 							<input type="hidden" name="redirect" value="index.php">
-							<input type="submit" class="btn btn-primary btn-lg btn-block mb-2" value="Login" name="submit">
+							<input type="submit" class="btn btn-primary btn-lg btn-block mb-2" value="$T_Login" name="submit">
 						</div>
 					</div>
 				</form>
 				<div class="clear">
 				</div>
-				<i class="fa fa-user fa-fw"></i> ¿No tienes cuenta aún? <a href="register.php">Regístrate</a><br>
-				<i class="fa fa-undo fa-fw"></i> ¿Se te olvidó tu contraseña? <a href="forgotPassword.php">Recupérala</a>
-                                <p class="text-center"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
+				<i class="fa fa-user fa-fw"></i> $T_No_account_yet <a href="register.php">$T_Register</a><br>
+				<i class="fa fa-undo fa-fw"></i> $T_Forgotten_your_password <a href="forgotPassword.php">$T_Recover_it</a>
+                                <p class="text-center"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">$T_Return</a></p>
 			</div>
 		</div>
 	</div>
@@ -146,7 +156,7 @@ ENDform;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login to Clilstore</title>
+    <title>$T_Login_to_Clilstore</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
     <link href="../lone.css" rel="stylesheet">
