@@ -5,6 +5,24 @@
   header("Cache-Control:max-age=0");
 
   $T = new SM_T('clilstore/options');
+  $T_Language   = $T->h('Language');
+  $T_Vocabulary = $T->h('Vocabulary');
+  $T_Fullname   = $T->h('Fullname');
+  $T_Email      = $T->h('E-mail');
+  $T_Verified   = $T->h('Verified');
+  $T_Reverify   = $T->h('Reverify');
+  $T_Unverified = $T->h('Unverified');
+  $T_Verify_now = $T->h('Verify_now');
+  $T_Return     = $T->h('Return');
+  $T_Options_for_user = $T->h('Options_for_user');
+  $T_My_vocabulary    = $T->h('My_vocabulary');
+  $T_Change_password  = $T->h('Change_password');
+  $T_Fullname_advice  = $T->h('Fullname_advice');
+  $T_Email_advice     = $T->h('Email_advice');
+  $T_Add_words_to_vocabulary     = $T->h('Add_words_to_vocabulary');
+  $T_Add_words_to_vocabulary_No  = $T->h('Add_words_to_vocabulary:No');
+  $T_Add_words_to_vocabulary_Yes = $T->h('Add_words_to_vocabulary:Yes');
+  $T_Default_language_for_units  = $T->h('Default_language_for_units');
 
   $menu   = SM_clilHeadFoot::cabecera();
   $footer = SM_clilHeadFoot::pie();
@@ -21,7 +39,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Clilstore options for user</title>
+    <title>$T_Options_for_user</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
     <link href="../lone.css" rel="stylesheet">
@@ -173,14 +191,14 @@ EODtransferHtml;
     $fullnameSC = htmlspecialchars($fullname);
     $emailSC    = htmlspecialchars($email);
     if ($emailVerUtime==0) {
-        $verMessage = "<a class='btn btn-danger btn-lg btn-block mb-2 disabled'><i class='fa fa-close'></i> Unverified</a>";
-        $verLink = 'Verify now';
+        $verMessage = "<a class='btn btn-danger btn-lg btn-block mb-2 disabled'><i class='fa fa-close'></i> $T_Unverified</a>";
+        $verLink = $T_Verify_now;
     } else {
         date_default_timezone_set('UTC');
         $verTimeObj = new DateTime("@$emailVerUtime");
         $verDateTime = date_format($verTimeObj, 'Y-m-d H:i:s');
-        $verMessage = "<a title='Verified at $verDateTime UT' class='btn btn-success btn-lg btn-block mb-2 disabled'><i class='fa fa-check'></i> Verified</a>";
-        $verLink = 'Reverify';
+        $verMessage = "<a title='Verified at $verDateTime UT' class='btn btn-success btn-lg btn-block mb-2 disabled'><i class='fa fa-check'></i> $T_Verified</a>";
+        $verLink = $T_Reverify;
     }
     $verLink = "<a class='btn btn-primary btn-lg btn-block mb-2 text-white' onclick=verifyEmail('$email')>$verLink</a>";
     $verMessage = $verMessage;
@@ -209,8 +227,8 @@ EODtransferHtml;
          '1' => 'Always');
     $highlightRowHtml = optionsHtml($highlightRowArr,$highlightRow);
     $recordArr = array(
-         '0' => 'No',
-         '1' => 'Yes');
+         '0' => $T_Add_words_to_vocabulary_No,
+         '1' => $T_Add_words_to_vocabulary_Yes);
     $recordHtml = optionsHtml($recordArr,$record);
 
     $errorMessage   = ( empty($errorMessage)   ? '' : '<div class="message" style="color:red">' . $errorMessage   . '<br>No changes saved</div>' );
@@ -222,7 +240,7 @@ EODtransferHtml;
 	<div class="col-lg col-sm">
 		<div class="card">
 			<div class="card-header bg-primary text-center">
-				<h4>Clilstore options for user <span style="color:brown">$user</span></h4>
+				<h4>$T_Options_for_user <span style="color:brown">$userSC</span></h4>
 			</div>
 			<div class="card-body">
 				<div class="alert text-center" role="alert">
@@ -230,10 +248,10 @@ EODtransferHtml;
 				</div>
                                 <div class="row">
 						<div class="col-md-6">
-							<a class="btn btn-primary btn-lg btn-block mb-2" href="voc.php?user=$user">My Vocabulary</a>
+							<a class="btn btn-primary btn-lg btn-block mb-2" href="voc.php?user=$user" title="$T_My_vocabulary">$T_Vocabulary</a>
 						</div>
                                                 <div class="col-md-6">
-							<a class="btn btn-primary btn-lg btn-block mb-2" href="changePassword.php?user=$user">Change Password</a>
+							<a class="btn btn-primary btn-lg btn-block mb-2" href="changePassword.php?user=$user">$T_Change_password</a>
 						</div>
 				</div>
                                 <div class="h-divider"></div>
@@ -242,8 +260,8 @@ EODtransferHtml;
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Language</label>
-                                                                <p style="font-size:xx-small">Default language code for units you create</p>
+								<label>$T_Language</label>
+                                                                <p style="font-size:xx-small">$T_Default_language_for_units</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-language" aria-hidden="true"></i></span>
@@ -261,8 +279,8 @@ EODtransferHtml;
                                         <div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Vocabulary list</label>
-                                                                <p style="font-size:xx-small">Add words you click to your vocabulary list?</p>
+								<label>$T_Vocabulary</label>
+                                                                <p style="font-size:xx-small">$T_Add_words_to_vocabulary</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-globe" aria-hidden="true"></i></span>
@@ -280,8 +298,8 @@ EODtransferHtml;
                                         <div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Full Name</label>
-                                                                <p style="font-size:xx-small">Your real name - This will be visible to other users</p>
+								<label>$T_Fullname</label>
+                                                                <p style="font-size:xx-small">$T_Fullname_advice</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
@@ -297,8 +315,8 @@ EODtransferHtml;
                                         <div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Email</label>
-                                                                <p style="font-size:xx-small">This is kept private</p>
+								<label>$T_Email</label>
+                                                                <p style="font-size:xx-small">$T_Email_advice</p>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span>
@@ -325,7 +343,7 @@ EODtransferHtml;
 						</div>
 				</div>
 
-                                <p class="text-center mt-2"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
+                                <p class="text-center mt-2"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">$T_Return</a></p>
 			</div>
 		</div>
 	</div>

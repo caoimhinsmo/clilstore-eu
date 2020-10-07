@@ -21,9 +21,12 @@
     $T_Forgotten_your_password = $T->h('Forgotten_your_password');
     $T_Recover_it              = $T->h('Recover_it');
     $T_Login_to_Clilstore      = $T->h('Login_to_Clilstore');
+    $T_Successfully_logged_in  = $T->h('Successfully_logged_in');
+    $T_Userid_or_pw_incorrect  = $T->h('Userid_or_pw_incorrect');
+    $T_Wait_a_moment           = $T->h('Wait_a_moment');
 
     $formRequired = TRUE;
-    $successMessage = $refreshHeader = $formHtml = '';
+    $successMessage = $failureMessage = $refreshHeader = $formHtml = '';
     $userAsTyped = $passwordAsTyped = $userAutofocus = $passwordAutofocus = '';
 
     $menu   = SM_clilHeadFoot::cabecera();
@@ -69,14 +72,14 @@ if ($password=='' && strlen($passwordAsTyped)>3) {
             SM_csSess::logWrite($user,'login');
             $successMessage = <<<ENDsuccess
 <div class="col-lg-12 text-center">
-            <h4 class="text-white text-center"><img src="loader-icon.gif" height="30" width="30"> Wait a moment... You have successfully logged in</h4>
+            <h4 class="text-white text-center"><img src="loader-icon.gif" height="30" width="30"> $T_Wait_a_moment... $T_Successfully_logged_in</h4>
 </div>
 ENDsuccess;
             $formRequired = FALSE;
             $refreshHeader =  "<meta http-equiv=\"refresh\" content=\"1; url=$serverhome/clilstore/\">";
         } elseif (!isset($_GET['user'])) {
-            $successMessage = <<<ENDfailure
-Userid or password incorrect
+            $failureMessage = <<<ENDfailure
+$T_Userid_or_pw_incorrect
 ENDfailure;
         }
     }
@@ -95,7 +98,7 @@ ENDfailure;
 			</div>
 			<div class="card-body">
 				<div class="alert text-center" role="alert">
-					<h5><span class="badge badge-danger">$successMessage</span></h5>
+					<h5><span class="badge badge-danger">$failureMessage</span></h5>
 				</div>
 				<form data-toggle="validator" role="form" method="post" action="#">
 					<input type="hidden" class="hide" id="csrf_token" name="csrf_token" value="C8nPqbqTxzcML7Hw0jLRu41ry5b9a10a0e2bc2">
@@ -194,7 +197,7 @@ $cookieMessage
     <div class="row h-100 justify-content-center align-items-center">
         $successMessage
         $formHtml
-
+    </div>
     <div class="col-lg-12">
         $footer
     </div>

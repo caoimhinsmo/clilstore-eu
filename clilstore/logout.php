@@ -5,6 +5,8 @@
   header("Cache-Control:max-age=0");
 
   $T = new SM_T('clilstore/logout');
+  $T_Wait_a_moment = $T->h('Wait_a_moment');
+  $T_You_have_been_logged_out = $T->h('You_have_been_logged_out');
 
   $menu   = SM_clilHeadFoot::cabecera($hlSelect,$T_Help,$T_About,$T_Language);
   $footer = SM_clilHeadFoot::pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
@@ -36,7 +38,7 @@ $menu
 <div class="container h100">
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-lg-12 text-center">
-            <h4 class="text-white text-center"><img src="loader-icon.gif" height="30" width="30"> Wait a moment... You have been logged out from Clilstore</h4>
+            <h4 class="text-white text-center"><img src="loader-icon.gif" height="30" width="30"> $T_Wait_a_moment... $T_You_have_been_logged_out</h4>
         </div>
         <div class="col-lg-12">
             $footer
