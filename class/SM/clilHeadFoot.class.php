@@ -9,6 +9,8 @@ class SM_clilHeadFoot {
     $T_Language  = $T->h('Language');
 
     $hlSelect = SM_mdNavbar::hlSelect();
+    $hl = SM_T::hl0();
+    $hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
 
     $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'] .'/';
     $header=<<<END_HEADER
@@ -21,16 +23,7 @@ class SM_clilHeadFoot {
     <div class="collapse navbar-collapse align-items-center" id="navbarResponsive">
       <ul class="navbar-nav ml-auto align-items-center">
         <li class="nav-item"><a class="nav-link" href="$serverhome">$T_Home</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">$T_Help</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Clilstore</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Wordlink</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Multidict</a>
-          </div>
-        </li>
+        <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/">$T_Help</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">$T_About</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">

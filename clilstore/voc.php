@@ -13,6 +13,7 @@
   }
 
   $T = new SM_T('clilstore/voc');
+  $T_Return = $T->h('Return');
 
   $T_Language = $T->h('Language');
   $T_Word     = $T->h('Facal');
@@ -237,7 +238,7 @@ $menu
 
 $HTML
           <div class="col-lg-12">
-            <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
+            <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">$T_Return</a></p>
         </div>
 
         <div class="col-lg-12">
