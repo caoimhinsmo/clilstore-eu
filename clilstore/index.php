@@ -1120,7 +1120,7 @@ $(document).ready(function() {
             extend: 'colvis',
             columns: ':not(.noVis)',
             text: function ( dt, button, config ) {
-                return dt.i18n( 'buttons.colvis', 'Show/Hide Columns' );
+                return dt.i18n( 'buttons.colvis', '$T_DT_buttons_colvis' );
             }
           }
         ]
@@ -1304,6 +1304,52 @@ $(document).ready(function() {
    //Datatable
     var table = $('#mitabla').DataTable( {
 
+        "language": {
+            "sEmptyTable":      "$T_DT_sEmptyTable",
+            "sInfo":            "$T_DT_sInfo",
+            "sInfoEmpty":       "$T_DT_sInfoEmpty",
+            "sInfoFiltered":    "$T_DT_sInfoFiltered",
+//          "sInfoPostFix":     "",
+            "sInfoThousands":   "$T_DT_sInfoThousands",
+            "sLengthMenu":      "$T_DT_sLengthMenu",
+            "sLoadingRecords":  "$T_DT_sLoadingRecords",
+            "sProcessing":      "$T_DT_sProcessing",
+            "sSearch":          "$T_Dt_sSearch",
+            "sZeroRecords":     "$T_DT_sZeroRecords",
+            "oPaginate": {
+                "sFirst":       "$T_DT_oPaginate_sFirst",
+                "sPrevious":    "$T_DT_oPaginate_sPrevious",
+                "sNext":        "$T_DT_oPaginate_sNext",
+                "sLast":        "$T_DT_oPaginate_sLast"
+            },
+            "oAria": {
+                "sSortAscending":  "$T_DT_oAria_sSortAscending",
+                "sSortDescending": "DT_DT_oAria_sSortDescending"
+            },
+            "select": {
+                "rows": {
+                    "_": "%d Zeilen ausgewählt",
+                    "0": "",
+                    "1": "1 Zeile ausgewählt"
+                }
+            },
+            "buttons": {
+                "print":    "Drucken",
+                "colvis":   "$T_DT_buttons_colvis",
+                "copy":     "Kopieren",
+                "copyTitle":    "In Zwischenablage kopieren",
+                "copyKeys": "Taste <i>ctrl</i> oder <i>\u2318</i> + <i>C</i> um Tabelle<br>in Zwischenspeicher zu kopieren.<br><br>Um abzubrechen die Nachricht anklicken oder Escape drücken.",
+                "copySuccess": {
+                    "_": "%d Zeilen kopiert",
+                    "1": "1 Zeile kopiert"
+                },
+                "pageLength": {
+                    "-1": "$T_DT_buttons_pageLength_all",
+                    "_":  "$T_DT_buttons_pageLength_"
+                }
+            }
+        },
+
         "paging": true,
         "order": [[ 0, "desc" ]],
         "searching": true,
@@ -1381,7 +1427,7 @@ $(document).ready(function() {
         dom: 'Bfrtip',
         lengthMenu: [
             [ 10, 25, 50, 100, -1 ],
-            [ '10 rows', '25 rows', '50 rows', '100 rows', 'Show All' ]
+            [ '10 $T_DT_rows', '25 $T_DT_rows', '50 $T_DT_rows', '100 $T_DT_rows', '$T_DT_Show_All' ]
         ],
         buttons: [
             'pageLength',
@@ -1390,7 +1436,7 @@ $(document).ready(function() {
             extend: 'colvis',
             columns: ':not(.noVis)',
             text: function ( dt, button, config ) {
-                return dt.i18n( 'buttons.colvis', 'Show/Hide Columns' );
+                return dt.i18n( 'buttons.colvis', '$T_DT_buttons_colvis' );
             }
           }
         ]
