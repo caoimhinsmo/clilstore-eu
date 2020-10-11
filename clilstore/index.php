@@ -117,6 +117,29 @@
     $T_If_message_persists = sprintf($T_If_message_persists,$T_Got_it);
     $T_CS_is_well_behaved = strtr( $T_CS_is_well_behaved, ['{'=>'<a href=privacyPolicy.php>','}'=>'</a>'] );
 
+    $T_DT_sEmptyTable    = $T->j('DT_sEmptyTable');
+    $T_DT_sInfo          = $T->j('DT_sInfo');
+    $T_DT_sInfoEmpty     = $T->j('DT_sInfoEmpty');
+    $T_DT_sInfoFiltered  = $T->j('DT_sInfoFiltered');
+    $T_DT_sInfoThousands = $T->j('DT_sInfoThousands');
+    $T_DT_sLengthMenu    = $T->j('DT_sLengthMenu');
+    $T_DT_sLoadingRecords= $T->j('DT_sLoadingRecords');
+    $T_DT_sProcessing    = $T->j('DT_sProcessing');
+    $T_DT_sSearch        = $T->j('DT_sSearch');
+    $T_DT_sZeroRecords   = $T->j('DT_sZeroRecords');
+    $T_DT_oPaginate_sFirst       = $T->j('DT_oPaginate_sFirst');
+    $T_DT_oPaginate_sPrevious    = $T->j('DT_oPaginate_sPrevious');
+    $T_DT_oPaginate_sNext        = $T->j('DT_oPaginate_sNext');
+    $T_DT_oPaginate_sLast        = $T->j('DT_oPaginate_sLast');
+    $T_DT_buttons_colvis         = $T->j('DT_buttons_colvis');
+    $T_DT_buttons_pageLength_all = $T->j('DT_buttons_pageLength_all');
+    $T_DT_buttons_pageLength_    = $T->j('DT_buttons_pageLength_');
+    $T_DT_oAria_sSortAscending   = $T->j('DT_oAria_sSortAscending');
+    $T_DT_oAria_sSortDescending  = $T->j('DT_oAria_sSortDescending');
+
+    $T_DT_rows     = $T->j('DT_rows');
+    $T_DT_Show_All = $T->j('DT_Show_All');
+
     $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
 
     if (!isset($_COOKIE['csSessionId'])) $cookieMessage = <<<EOD_cookieMessage
@@ -965,6 +988,52 @@ $(document).ready(function() {
 
     var table = $('#mitabla').DataTable( {
 
+        "language": {
+            "sEmptyTable":      "$T_DT_sEmptyTable",
+            "sInfo":            "$T_DT_sInfo",
+            "sInfoEmpty":       "$T_DT_sInfoEmpty",
+            "sInfoFiltered":    "$T_DT_sInfoFiltered",
+//          "sInfoPostFix":     "",
+            "sInfoThousands":   "$T_DT_sInfoThousands",
+            "sLengthMenu":      "$T_DT_sLengthMenu",
+            "sLoadingRecords":  "$T_DT_sLoadingRecords",
+            "sProcessing":      "$T_DT_sProcessing",
+            "sSearch":          "$T_Dt_sSearch",
+            "sZeroRecords":     "$T_DT_sZeroRecords",
+            "oPaginate": {
+                "sFirst":       "$T_DT_oPaginate_sFirst",
+                "sPrevious":    "$T_DT_oPaginate_sPrevious",
+                "sNext":        "$T_DT_oPaginate_sNext",
+                "sLast":        "$T_DT_oPaginate_sLast"
+            },
+            "oAria": {
+                "sSortAscending":  "$T_DT_oAria_sSortAscending",
+                "sSortDescending": "DT_DT_oAria_sSortDescending"
+            },
+            "select": {
+                "rows": {
+                    "_": "%d Zeilen ausgewählt",
+                    "0": "",
+                    "1": "1 Zeile ausgewählt"
+                }
+            },
+            "buttons": {
+                "print":    "Drucken",
+                "colvis":   "$T_DT_buttons_colvis",
+                "copy":     "Kopieren",
+                "copyTitle":    "In Zwischenablage kopieren",
+                "copyKeys": "Taste <i>ctrl</i> oder <i>\u2318</i> + <i>C</i> um Tabelle<br>in Zwischenspeicher zu kopieren.<br><br>Um abzubrechen die Nachricht anklicken oder Escape drücken.",
+                "copySuccess": {
+                    "_": "%d Zeilen kopiert",
+                    "1": "1 Zeile kopiert"
+                },
+                "pageLength": {
+                    "-1": "$T_DT_buttons_pageLength_all",
+                    "_":  "$T_DT_buttons_pageLength_"
+                }
+            }
+        },
+
         "paging": true,
         "order": [[ 0, "desc" ]],
         "searching": true,
@@ -1043,7 +1112,7 @@ $(document).ready(function() {
         dom: 'Bfrtip',
         lengthMenu: [
             [ 10, 25, 50, 100, -1 ],
-            [ '10 rows', '25 rows', '50 rows', '100 rows', 'Show All' ]
+            [ '10 $T_DT_rows', '25 $T_DT_rows', '50 $T_DT_rows', '100 $T_DT_rows', '$T_DT_Show_All' ]
         ],
         buttons: [
             'pageLength',
@@ -1688,7 +1757,10 @@ if ($mode == 3){
             line-height: 1.3;
          }
 
-
+         div.dropdown-menu { border:1px solid blue; background-color:#ffa; }
+         a.buttons-columnVisibility { padding-left:2em; }
+         a.buttons-columnVisibility.active { padding-left:1em; }
+         a.buttons-columnVisibility.active::before { content:"✓ "; }
 
     </style>
     <script>
