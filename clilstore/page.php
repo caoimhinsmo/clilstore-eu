@@ -12,6 +12,15 @@
   }
   if (isset($_GET['user'])) { $user = $_GET['user']; } //for generating edit button
 
+  $T = new SM_T('clilstore/page');
+
+  $T_Vocabulary = $T->h('Vocabulary');
+  $T_Unit_info  = $T->h('Unit_info');
+  $T_Error_in   = $T->j('Error_in');
+  $T_Voc_Click_to_enable  = $T->h('Voc_Click_to_enable');
+  $T_Voc_Click_to_disable = $T->h('Voc_Click_to_disable');
+  $T_Unit_info_title      = $T->h('Unit_info_title');
+
   try {
     if (!isset($_GET['id'])) { throw new SM_MDexception('No id parameter'); }
     $id = $_GET['id'];
@@ -61,7 +70,7 @@
     }
     $buttonedit = ( $user<>$owner && $user<>'admin'
                   ? ''
-                  : "<a href=\"edit.php?id=$id&amp;view\" class=\"nowordlink btn btn-success btn-sm rounded\" target=\"_parent\" role=\"button\"><i class=\"fa fa-edit\" aria-hidden=\"true\"></i></a>"
+                  : "<a href='edit.php?id=$id&amp;view' class='nowordlink btn btn-success btn-sm rounded' target='_parent' role='button'><i class='fa fa-edit' aria-hidden='true'></i></a>"
                   );
     $stmt = $DbMultidict->prepare('SELECT record FROM users WHERE user=:user');
     $stmt->execute([':user'=>$user]);
@@ -69,10 +78,10 @@
         $record = $stmt->fetch(PDO::FETCH_COLUMN);
         $vocClass = ( $record ? 'vocOn' : 'vocOff');
         $recordVocHtml = "<span class=$vocClass onclick='vocClicked(this.className);'>"
-                        ."<img src='/favicons/recordOff.png' alt='VocOff' title='Vocabulary recording is currently disabled - Click to enable'>"
-                        ."<img src='/favicons/record.gif' alt='VocOn' title='Vocabulary recording is currently enabled - Click to disable'>"
+                        ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
+                        ."<img src='/favicons/record.gif' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>"
-                        ."<a role='button' target='_parent' class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='Open your vocabulary list in a separate tab'>Vocabulario</a>";
+                        ."<a role='button' target='_parent' class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='Open your vocabulary list in a separate tab'>$T_Vocabulary</a>";
        $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
        $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
@@ -107,7 +116,7 @@
     <div class="col-md-4">
              $buttonedit
              $recordVocHtml
-             <a role="button" href="unitinfo.php?id=$id" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" title="Summary and other details on this unit">Unit info</a>
+             <a role="button" href="unitinfo.php?id=$id" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" title="$T_Unit_info_title">$T_Unit_info</a>
     </div>
 </div>
 

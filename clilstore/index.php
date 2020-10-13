@@ -1314,7 +1314,7 @@ $(document).ready(function() {
             "sLengthMenu":      "$T_DT_sLengthMenu",
             "sLoadingRecords":  "$T_DT_sLoadingRecords",
             "sProcessing":      "$T_DT_sProcessing",
-            "sSearch":          "$T_Dt_sSearch",
+            "sSearch":          "$T_DT_sSearch",
             "sZeroRecords":     "$T_DT_sZeroRecords",
             "oPaginate": {
                 "sFirst":       "$T_DT_oPaginate_sFirst",
@@ -1803,7 +1803,7 @@ if ($mode == 3){
             line-height: 1.3;
          }
 
-         div.dropdown-menu { border:1px solid blue; background-color:#ffa; }
+         div.dropdown-menu { border:1px solid #212529; background-color:#f3f3f3; }
          a.buttons-columnVisibility { padding-left:2em; }
          a.buttons-columnVisibility.active { padding-left:1em; }
          a.buttons-columnVisibility.active::before { content:"✓ "; }
