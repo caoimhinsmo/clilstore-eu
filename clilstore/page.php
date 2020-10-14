@@ -16,9 +16,12 @@
 
   $T_Vocabulary = $T->h('Vocabulary');
   $T_Unit_info  = $T->h('Unit_info');
+  $T_Share_via  = $T->h('Share_via');
+  $T_email      = $T->h('e-mail');
   $T_Error_in   = $T->j('Error_in');
   $T_Voc_Click_to_enable  = $T->h('Voc_Click_to_enable');
   $T_Voc_Click_to_disable = $T->h('Voc_Click_to_disable');
+  $T_Open_vocabulary_list = $T->h('Open_vocabulary_list');
   $T_Unit_info_title      = $T->h('Unit_info_title');
 
   try {
@@ -81,7 +84,7 @@
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
                         ."<img src='/favicons/record.gif' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>"
-                        ."<a role='button' target='_parent' class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='Open your vocabulary list in a separate tab'>$T_Vocabulary</a>";
+                        ."<a role='button' target='_parent' class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
        $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
        $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
@@ -96,11 +99,11 @@
 
     $shareTitle = 'Clilstore unit: ' . urlencode($title);
     $shareURL = urlencode("https://clilstore.eu/cs/$id");
-    $sharebuttonFB="<a href='http://www.facebook.com/sharer.php?u=$shareURL' target='_blank' class='nowordlink' title='Share via Facebook'><img src='facebook.png' alt='Facebook' /></a>";
-    $sharebuttonTw = "<a class='nowordlink' target=_blank href='https://twitter.com/intent/tweet?text=$shareTitle&amp;url=$shareURL' title='Share via Twitter'><img src='twitter.png'></a>";
-    $sharebuttonWA = "<a class='nowordlink' target=_blank href='whatsapp://send?text=$shareTitle $shareURL' title='Share via Whatsapp'><img src='whatsapp.png' alt='WA'></a>";
-    $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='Share via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
-    $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='Share via Email'><img src='email.png' alt='Email'></a>";
+    $sharebuttonFB="<a href='http://www.facebook.com/sharer.php?u=$shareURL' target='_blank' class='nowordlink' title='$T_Share_via Facebook'><img src='facebook.png' alt='Facebook' /></a>";
+    $sharebuttonTw = "<a class='nowordlink' target=_blank href='https://twitter.com/intent/tweet?text=$shareTitle&amp;url=$shareURL' title='$T_Share_via Twitter'><img src='twitter.png'></a>";
+    $sharebuttonWA = "<a class='nowordlink' target=_blank href='whatsapp://send?text=$shareTitle $shareURL' title='$T_Share_via Whatsapp'><img src='whatsapp.png' alt='WA'></a>";
+    $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
+    $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
     $navbar1 = <<<EOD_NB1
 <div class="row no-margin" style="background-color: #2c6692;">
