@@ -50,7 +50,7 @@
 
     //Prepare media (or picture)
     if ($medfloat=='') { $medfloat = 'none'; }
-    $scroll = $recordVocHtml = '';
+    $scroll = $recordVocHtml = $loginbutton = '';
     if ($medfloat=='scroll') { $medfloat = 'none'; $scroll='scroll'; }
     $medembedHtml = ( empty($medembed) ? '' : "<div class=\"$medfloat\">$medembed</div>" );
 
@@ -107,6 +107,7 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
+    if (empty($user)) { $loginbutton = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>"; }
     $navbar1 = <<<EOD_NB1
 <div class="row no-margin" style="background-color: #2c6692;">
     <div class="col-md-8" id="share-buttons">
@@ -121,8 +122,8 @@
     <div class="col-md-4">
              $buttonedit
              $recordVocHtml
-             <a role="button" href="unitinfo.php?id=$id" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title">$T_Unit_info</a>
-             <a role="button" href="login.php" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" title="$T_Login_to_Clilstore">$T_Login</a>
+             <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title">$T_Unit_info</a>
+             {$loginbutton}
     </div>
 </div>
 

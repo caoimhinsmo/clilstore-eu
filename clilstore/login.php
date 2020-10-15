@@ -32,6 +32,7 @@
     $menu   = SM_clilHeadFoot::cabecera();
     $footer = SM_clilHeadFoot::pie();
 
+    $returnTo = $_REQUEST['returnTo'] ?? '/clilstore/';
     if (!empty($csSess->getCsSession()->user)) { $userAsTyped = $csSess->getCsSession()->user; }
     if (!empty($_REQUEST['user'])) {
         $userAsTyped     = trim($_REQUEST['user']);
@@ -76,7 +77,7 @@ if ($password=='' && strlen($passwordAsTyped)>3) {
 </div>
 ENDsuccess;
             $formRequired = FALSE;
-            $refreshHeader =  "<meta http-equiv=\"refresh\" content=\"1; url=$serverhome/clilstore/\">";
+            $refreshHeader =  "<meta http-equiv=refresh content='1; url=$serverhome$returnTo'>";
         } elseif (!isset($_GET['user'])) {
             $failureMessage = <<<ENDfailure
 $T_Userid_or_pw_incorrect
