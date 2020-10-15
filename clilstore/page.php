@@ -16,6 +16,7 @@
 
   $T_Vocabulary = $T->h('Vocabulary');
   $T_Unit_info  = $T->h('Unit_info');
+  $T_Login      = $T->h('Log_air');
   $T_Share_via  = $T->h('Share_via');
   $T_email      = $T->h('e-mail');
   $T_Error_in   = $T->j('Error_in');
@@ -23,6 +24,7 @@
   $T_Voc_Click_to_disable = $T->h('Voc_Click_to_disable');
   $T_Open_vocabulary_list = $T->h('Open_vocabulary_list');
   $T_Unit_info_title      = $T->h('Unit_info_title');
+  $T_Login_to_Clilstore   = $T->h('Login_to_Clilstore');
 
   try {
     if (!isset($_GET['id'])) { throw new SM_MDexception('No id parameter'); }
@@ -119,7 +121,8 @@
     <div class="col-md-4">
              $buttonedit
              $recordVocHtml
-             <a role="button" href="unitinfo.php?id=$id" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" title="$T_Unit_info_title">$T_Unit_info</a>
+             <a role="button" href="unitinfo.php?id=$id" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title">$T_Unit_info</a>
+             <a role="button" href="login.php" class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" title="$T_Login_to_Clilstore">$T_Login</a>
     </div>
 </div>
 
