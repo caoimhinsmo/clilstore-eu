@@ -30,8 +30,8 @@
 
     $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan);
 
-    $EUlogo = '/EUlogos/' . SM_T::hl0() . '.jpg';
-    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.jpg'; }
+    $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
+    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
 
     $HTML = <<<END_HTML
 $mdNavbar

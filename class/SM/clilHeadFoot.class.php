@@ -130,7 +130,7 @@ END_HEADER0;
     $T = new SM_T('clilstore/serverhome');
     $T_Disclaimer               = $T->h('Disclaimer');
     $T_Disclaimer_EuropeanCom   = $T->h('Disclaimer_EuropeanCom');
-    $EUlogo = '/EUlogos/' . SM_T::hl0() . '.jpg';
+    $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
     if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
 
     $footer = <<<END_FOOTER
