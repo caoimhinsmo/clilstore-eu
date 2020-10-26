@@ -7,16 +7,29 @@
     $myCLIL = SM_myCLIL::singleton();
 
     $T = new SM_T('clilstore/privacyPolicy');
+    $T_Return = $T->h('Return');
+    $T_Privacy_policy        = $T->h('Privacy_policy');
+    $T_privacy_policy_msg1   = $T->h('privacy_policy_msg1');
+    $T_privacy_policy_msg2   = $T->h('privacy_policy_msg2');
+    $T_privacy_policy_msg3   = $T->h('privacy_policy_msg3');
+    $T_GDPR_policy_statement = $T->h('GDPR_policy_statement');
 
     $menu   = SM_clilHeadFoot::cabecera();
     $footer = SM_clilHeadFoot::pie();
+
+    $GDPR_link_template = "/clilstore/GDPR_statements/GDPR_COOL_{hl}.pdf";
+    $hl = SM_T::hl0();
+    $GDPR_link = str_replace('{hl}',$hl,$GDPR_link_template);
+    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $GDPR_link)) {
+        $GDPR_link = str_replace('{hl}','en',$GDPR_link_template); //Default to English if no local translation
+    }
 
     echo <<<EOD_barr
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login to Clilstore</title>
+    <title>$T_Privacy_policy</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
     <link href="../lone.css" rel="stylesheet">
@@ -34,17 +47,15 @@ $menu
  <div class="container h100">
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-lg-12">
-            <h3 class="text-white">Clilstore privacy policy</h3>
+            <h3 class="text-white">$T_Privacy_policy</h3>
 
-            <p class="text-white">Any user data collected by Clilstore and multidict.net is solely for use within the project and for the benefit of users.</p>
+            <p class="text-white">$T_privacy_policy_msg1</p>
+            <p class="text-white">$T_privacy_policy_msg2</p>
+            <p class="text-white">$T_privacy_policy_msg3</p>
 
-            <p class="text-white">Clilstore and multidict.net will not sell or give personal data to any third parties.</p>
+            <a class="btn btn-outline-light text-uppercase mr-1" href="$GDPR_link" target="_blank"><i class="fa fa-file"></i> $T_GDPR_policy_statement</a>
 
-            <p class="text-white">Clilstore and multidict.net do not use any third-party cookies.  We use only our own cookies, to make the system work, and these contain no personal information.</p>
-
-            <a class="btn btn-outline-light text-uppercase mr-1" href="GDPR_policy.pdf" target="_blank"><i class="fa fa-file"></i> GDPR policy statement</a>
-
-            <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a class="text-white" href="index.php">Volver</a></p>
+            <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a class="text-white" href="index.php">$T_Return</a></p>
         </div>
      <div class="col-lg-12">
         $footer
