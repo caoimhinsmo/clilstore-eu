@@ -57,6 +57,8 @@ END_HEADER;
     $T_My_options    = $T->h('My_options');
     $T_Create_a_unit = $T->h('Create_a_unit');
     $T_My_vocabulary = $T->h('My_vocabulary');
+    $T_Portfolios    = $T->h('Portfolios');
+    $T_My_portfolios = $T->h('My_portfolios');
 
     $hlSelect = SM_mdNavbar::hlSelect();
     $hl = SM_T::hl0();
@@ -73,16 +75,18 @@ END_headerLogin;
         if ($modo<=1) { //Student mode
             $myItems = <<<END_myItemsStudent
         <a href="voc.php?user=$usuario" class="dropdown-item">$T_My_vocabulary</a>
+        <a href="portfolio.php" class="dropdown-item">$T_My_portfolios</a>
 END_myItemsStudent;
         } else { //Teacher mode
             $myItems = <<<END_myItemsTeacher
         <a href="./?owner=$usuario" class="dropdown-item">$T_My_units</a>
         <a href="edit.php?id=0" class="dropdown-item">$T_Create_a_unit</a>
+        <a href="portfolios.php" class="dropdown-item">$T_Portfolios</a>
 END_myItemsTeacher;
         }
         $headerUsuario = <<<END_headerUsuario
   <div class="dropdown" id="dmenu">
-    <button type="button" class="btn btn-outline-light dropdown-toggle ml-2" data-toggle="dropdown" id="navbarDropdown"><i class="fa fa-user"></i>$usuario</button>
+    <button type="button" class="btn btn-outline-light dropdown-toggle ml-2" data-toggle="dropdown" id="navbarDropdown"><i class="fa fa-user"></i> $usuario</button>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a href="options.php?user=$usuario" class="dropdown-item">$T_My_options</a>
 $myItems
