@@ -23,6 +23,7 @@
   $T_Voc_Click_to_enable  = $T->h('Voc_Click_to_enable');
   $T_Voc_Click_to_disable = $T->h('Voc_Click_to_disable');
   $T_Open_vocabulary_list = $T->h('Open_vocabulary_list');
+  $T_Add_to_portfolio     = $T->h('Add_to_portfolio');
   $T_Unit_info_title      = $T->h('Unit_info_title');
   $T_Login_to_Clilstore   = $T->h('Login_to_Clilstore');
 
@@ -50,7 +51,7 @@
 
     //Prepare media (or picture)
     if ($medfloat=='') { $medfloat = 'none'; }
-    $scroll = $recordVocHtml = $loginbutton = '';
+    $scroll = $recordVocHtml = $portfolioHtml = $loginbutton = '';
     if ($medfloat=='scroll') { $medfloat = 'none'; $scroll='scroll'; }
     $medembedHtml = ( empty($medembed) ? '' : "<div class=\"$medfloat\">$medembed</div>" );
 
@@ -84,9 +85,15 @@
         $vocClass = ( $record ? 'vocOn' : 'vocOff');
         $recordVocHtml = "<span class=$vocClass onclick='vocClicked(this.className);'>"
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
-                        ."<img src='/favicons/record.gif' alt='VocOn' title='$T_Voc_Click_to_disable'>"
+                        ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>"
-                        ."<a role='button' target='_parent' class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
+                        ."<a role='button' target='_parent' data-nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
+       $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
+       $stmt->execute([':user'=>$user]);
+       if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
+           $portfolioHtml = "<a href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\">"
+                          . "<img src='/favicons/portfolio.png' title='$T_Add_to_portfolio' alt='PF' style='width:40px;padding:5px'></a>";
+       }
        $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
        $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
@@ -122,6 +129,7 @@
     <div class="col-md-4">
              $buttonedit
              $recordVocHtml
+             $portfolioHtml
              <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title">$T_Unit_info</a>
              {$loginbutton}
     </div>
@@ -190,7 +198,6 @@ EOD_NB2;
             box-shadow: 0;
             display:inline;
         }
-
         span.vocOff img:nth-child(2) {
             width: 40px;
             padding: 5px;
@@ -253,6 +260,16 @@ EOD_NB2;
             }
             vocTogReq.open('GET', '/clilstore/ajax/setVocRecord.php?vocRecord=' + clnew);
             vocTogReq.send();
+        }
+
+
+        function pfAddUnit(unit) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                if (this.status!=200 || this.responseText!='OK') { alert('$T_Error_in pfAddUnit:'+this.status+' '+this.responseText); return; }xc
+            }
+            xhr.open('GET', '/clilstore/ajax/pfAddUnit.php?unit='+unit);
+            xhr.send();
         }
 
         function sizeTextDiv() {

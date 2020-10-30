@@ -100,7 +100,7 @@ END_headerUsuario;
     $header = <<<END_HEADER0
 <nav class="navbar navbar-expand-lg fondo_menu navbar-dark" id="mainNav">
   <div class="container">
-    <a class="navbar-brand text-white" href="https://www.languages.dk/" target="_blank"><img src="../lonelogo/logo.png" width="150px"></a>
+    <img src="../lonelogo/logo.png" width="150px">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>

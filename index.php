@@ -83,18 +83,18 @@ $menu
 
         <div class="col-lg-4">
             <div class="bg-transparent p-2 text-white card-hover clilstore-dropdown ocultar">
-              <p style="font-size:x-small">$T_Clilstore_studentWelcome</p>
-              <p style="font-size:x-small">$T_Clilstore_teacherWelcome</p>
+              <p style="font-size:small">$T_Clilstore_studentWelcome</p>
+              <p style="font-size:small">$T_Clilstore_teacherWelcome</p>
             </div>
         </div>
       <div class="col-lg-4">
                 <div class="bg-transparent p-2 text-white wordlink-dropdown ocultar">
-                  <p style="font-size:x-small">$T_Wordlink_welcome</p>
+                  <p style="font-size:small">$T_Wordlink_welcome</p>
                 </div>
       </div>
       <div class="col-lg-4">
               <div class="bg-transparent p-2 text-white multidict-dropdown ocultar">
-                <p style="font-size:x-small">$T_Multidict_welcome</p>
+                <p style="font-size:small">$T_Multidict_welcome</p>
               </div>
       </div>
 

@@ -3,8 +3,6 @@
     header("Location:https://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
   $T = new SM_T('wordlink/wordlink');
-$hl = $T->hl();
-error_log("Ann an wordlink.php: \$hl=$hl");
 
   $T_Help    = $T->h('Cobhair');
   $T_Process = $T->h('Process');
