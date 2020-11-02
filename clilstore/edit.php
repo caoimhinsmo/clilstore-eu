@@ -223,12 +223,6 @@
       public function __construct ($ord, $but='', $wl=0, $new=0, $link='') {
           $but  = trim(strip_tags($but));
           $link = trim(strip_tags($link));
-          if (   !empty($link)
-              && strpos($link,'://')==0
-              && substr($link,0,7)<>'mailto:'
-              && substr($link,0,5)<>'file:'
-              && !is_numeric($link)
-             ) { $link = "http://$link"; }  //Add http:// on the assumption that it is missing
           $this->ord  = $ord;
           $this->but  = $but;
           $this->wl   = $wl;

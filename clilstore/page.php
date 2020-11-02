@@ -27,6 +27,8 @@
   $T_Unit_info_title      = $T->h('Unit_info_title');
   $T_Login_to_Clilstore   = $T->h('Login_to_Clilstore');
 
+  $hlSelect = SM_mdNavbar::hlSelect();
+
   try {
     if (!isset($_GET['id'])) { throw new SM_MDexception('No id parameter'); }
     $id = $_GET['id'];
@@ -87,7 +89,7 @@
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
                         ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>"
-                        ."<a role='button' target='_parent' data-nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
+                        ."<a role='button' target='_parent' data-nowordlink class='btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
        $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
        $stmt->execute([':user'=>$user]);
        if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -130,6 +132,7 @@
              $buttonedit
              $recordVocHtml
              $portfolioHtml
+             $hlSelect
              <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title">$T_Unit_info</a>
              {$loginbutton}
     </div>
@@ -270,6 +273,23 @@ EOD_NB2;
             }
             xhr.open('GET', '/clilstore/ajax/pfAddUnit.php?unit='+unit);
             xhr.send();
+        }
+
+        function atharraichCanan(hl) {
+            document.cookie = 'Thl=' + hl + '; path=/; max-age=15000000';  //Valid for six months
+            var paramstr = location.search;
+            if (/Trident/.test(navigator.userAgent) || /MSIE/.test(navigator.userAgent)) {
+              //Something really weak for Internet Explorer, which doesn’t understand URLSearchParams. Delete when IE is finally dead.
+                if (paramstr.length==6 && paramstr.substring(0,4)=='?hl=') { paramstr = ''; }
+                paramstr = paramstr;
+            } else {
+                const params = new URLSearchParams(paramstr)
+                params.delete('hl');
+                paramstr = params.toString();
+                if (paramstr!='') { paramstr = '?'+paramstr; }
+            }
+            loc = window.location;
+            location = loc.protocol + '//' + loc.hostname + loc.pathname + paramstr;
         }
 
         function sizeTextDiv() {
