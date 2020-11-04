@@ -17,8 +17,6 @@
   $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
   if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
 
-  $hlSelect = SM_mdNavbar::hlSelect();
-
   $menu = SM_clilHeadFoot::cabecera();
   $footer = SM_clilHeadFoot::pie();
 

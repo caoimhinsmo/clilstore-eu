@@ -48,8 +48,6 @@
   $modeHtmlSs = ( ($mode=='ss') ? $selected : '');
   $nbSlHtml = $wlSession->nbSlHtml();
 
-  $hlSelect = SM_mdNavbar::hlSelect();
-
   $robots = ( empty($wlSession->url) ? 'index,follow' : 'noindex,nofollow' );
   $servername = $_SERVER['SERVER_NAME'];
 

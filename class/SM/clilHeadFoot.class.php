@@ -8,7 +8,8 @@ class SM_clilHeadFoot {
     $T_About    = $T->h('About');
     $T_Language  = $T->h('Language');
 
-    $hlSelect = SM_mdNavbar::hlSelect();
+    $hlSelect   = SM_mdNavbar::hlSelect();
+    $hlSelectJs = SM_mdNavbar::hlSelectJs();
     $hl = SM_T::hl0();
     $hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
 
@@ -34,6 +35,9 @@ class SM_clilHeadFoot {
                 <a class="dropdown-item" href="#">Multidict</a>
           </div>
         </li>
+<script>
+$hlSelectJs
+</script>
         <li class="nav-item"><a class="nav-link">$T_Language: $hlSelect</a></li>
       </ul>
     </div>
@@ -60,7 +64,8 @@ END_HEADER;
     $T_Portfolios    = $T->h('Portfolios');
     $T_My_portfolios = $T->h('My_portfolios');
 
-    $hlSelect = SM_mdNavbar::hlSelect();
+    $hlSelect   = SM_mdNavbar::hlSelect();
+    $hlSelectJs = SM_mdNavbar::hlSelectJs();
     $hl = SM_T::hl0();
     $hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
 
@@ -118,6 +123,9 @@ END_headerUsuario;
                 <a class="dropdown-item" href="#">Multidict</a>
           </div>
         </li>
+<script>
+$hlSelectJs
+</script>
         <li class="nav-item"><a class="nav-link">$T_Language: $hlSelect</a></li>
     </div>
    </ul>

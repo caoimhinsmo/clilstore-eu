@@ -165,8 +165,6 @@ EOD3;
 
   $advSwopHtml = "<span class=toggle title='$T_Swop_basic_advanced' onclick='mdAdvSet(1-mdAdv)'>$advSwopHtml</span>";
 
-  $hlSelect = SM_mdNavbar::hlSelect();
-
   echo <<<EOD4
 <!DOCTYPE html>
 <html>

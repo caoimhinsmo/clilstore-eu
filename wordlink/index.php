@@ -8,8 +8,6 @@
     //Load Menu and Footer
     $T = new SM_T('wordlink/index');
 
-    $mdNavbar = $hlSelect = SM_mdNavbar::hlSelect();
-
     $menu = SM_clilHeadFoot::cabecera();
 
     $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
@@ -176,9 +174,10 @@
 </html>
 EOD1;
     } else if($mode=='ss' && $csid<=0) { echo <<<EOD2
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset='UTF-8'>
     <title>$pagetitle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="$description">
@@ -353,7 +352,7 @@ EOD2;
     }
 
   } catch (exception $e) { echo <<<EOD2
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <title>Wordlink error</title>

@@ -27,7 +27,8 @@
   $T_Unit_info_title      = $T->h('Unit_info_title');
   $T_Login_to_Clilstore   = $T->h('Login_to_Clilstore');
 
-  $hlSelect = SM_mdNavbar::hlSelect();
+  $hlSelect   = SM_mdNavbar::hlSelect();
+  $hlSelectJs = SM_mdNavbar::hlSelectJs();
 
   try {
     if (!isset($_GET['id'])) { throw new SM_MDexception('No id parameter'); }
@@ -133,7 +134,7 @@
              $recordVocHtml
              $portfolioHtml
              $hlSelect
-             <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title">$T_Unit_info</a>
+             <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em;font-style:italic" title="$T_Unit_info_title">$T_Unit_info</a>
              {$loginbutton}
     </div>
 </div>
@@ -265,7 +266,6 @@ EOD_NB2;
             vocTogReq.send();
         }
 
-
         function pfAddUnit(unit) {
             var xhr = new XMLHttpRequest();
             xhr.onload = function() {
@@ -275,21 +275,10 @@ EOD_NB2;
             xhr.send();
         }
 
-        function atharraichCanan(hl) {
-            document.cookie = 'Thl=' + hl + '; path=/; max-age=15000000';  //Valid for six months
-            var paramstr = location.search;
-            if (/Trident/.test(navigator.userAgent) || /MSIE/.test(navigator.userAgent)) {
-              //Something really weak for Internet Explorer, which doesn’t understand URLSearchParams. Delete when IE is finally dead.
-                if (paramstr.length==6 && paramstr.substring(0,4)=='?hl=') { paramstr = ''; }
-                paramstr = paramstr;
-            } else {
-                const params = new URLSearchParams(paramstr)
-                params.delete('hl');
-                paramstr = params.toString();
-                if (paramstr!='') { paramstr = '?'+paramstr; }
-            }
-            loc = window.location;
-            location = loc.protocol + '//' + loc.hostname + loc.pathname + paramstr;
+        function hlSelectJs(hl) {
+            document.cookie = 'Thl=' + hl + '; path=/; samesite=lax; max-age=15000000';  //Valid for six months
+            loc = document.location;
+            window.top.location = loc.protocol + '//' + loc.hostname + '/cs/$id';
         }
 
         function sizeTextDiv() {

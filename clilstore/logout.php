@@ -8,7 +8,7 @@
   $T_Wait_a_moment = $T->h('Wait_a_moment');
   $T_You_have_been_logged_out = $T->h('You_have_been_logged_out');
 
-  $menu   = SM_clilHeadFoot::cabecera($hlSelect,$T_Help,$T_About,$T_Language);
+  $menu   = SM_clilHeadFoot::cabecera();
   $footer = SM_clilHeadFoot::pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
 
   try {

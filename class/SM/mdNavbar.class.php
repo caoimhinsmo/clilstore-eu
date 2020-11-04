@@ -108,6 +108,7 @@ EOD_NAVBAR;
   }
 
   public static function hlSelect() {
+   //Returns html for the hl select dropdown (interface language selection)
       $hl0 = SM_T::hl0();
 
       $T = new SM_T('clilstore/mdNavbar');
@@ -119,29 +120,35 @@ EOD_NAVBAR;
           if (substr($hl,0,4)=='----') { $options .= "<option value='' disabled>&nbsp;_{$hlAinm}_</option>/n"; }  //Divider in the list of select options
             else                       { $options .= "<option value='$hl|en' title='$hlAinm'" . ( $hl==$hl0 ? ' selected' : '' ) . ">$hl</option>\n"; }
       }
-      $hrSelect = <<< END_hrSelect
-<script>
-    function atharraichCanan(hl) {
-        document.cookie = 'Thl=' + hl + '; path=/; max-age=15000000';  //Valid for six months
-        var paramstr = location.search;
-        if (/Trident/.test(navigator.userAgent) || /MSIE/.test(navigator.userAgent)) {
-          //Something really weak for Internet Explorer, which doesn’t understand URLSearchParams. Delete when IE is finally dead.
-            if (paramstr.length==6 && paramstr.substring(0,4)=='?hl=') { paramstr = ''; }
-            paramstr = paramstr;
-        } else {
-            const params = new URLSearchParams(paramstr)
-            params.delete('hl');
-            paramstr = params.toString();
-            if (paramstr!='') { paramstr = '?'+paramstr; }
-        }
-        loc = window.location;
-        location = loc.protocol + '//' + loc.hostname + loc.pathname + paramstr;
-    }
-</script>
-<select class="mySelect language" name="hl" id="language" title="$T_interface_language" onchange="atharraichCanan(this.options[this.selectedIndex].value)" >
+      $hlSelect = <<< END_hlSelect
+<select class="mySelect language" name="hl" id="language" title="$T_interface_language" onchange="hlSelectJs(this.options[this.selectedIndex].value)" >
 $options</select>
-END_hrSelect;
-      return $hrSelect;
+END_hlSelect;
+      return $hlSelect;
+  }
+
+  public static function hlSelectJs() {
+   // Returns generic javascript for action activated by the hl select dropdown (interface language selection),
+   // Sets the Thl cookie, and reloads the window (with any preexisting hl parameter removed).
+      $hlSelectJs = <<< END_hlSelectJs
+        function hlSelectJs(hl) {
+            document.cookie = 'Thl=' + hl + '; path=/; samesite=lax; max-age=15000000';  //Valid for six months
+            var paramstr = location.search;
+            if (/Trident/.test(navigator.userAgent) || /MSIE/.test(navigator.userAgent)) {
+              //Something really weak for Internet Explorer, which doesn’t understand URLSearchParams. Delete when IE is finally dead.
+                if (paramstr.length==6 && paramstr.substring(0,4)=='?hl=') { paramstr = ''; }
+                paramstr = paramstr;
+            } else {
+                const params = new URLSearchParams(paramstr)
+                params.delete('hl');
+                paramstr = params.toString();
+                if (paramstr!='') { paramstr = '?'+paramstr; }
+            }
+            loc = window.location;
+            location = loc.protocol + '//' + loc.hostname + loc.pathname + paramstr;
+        }
+END_hlSelectJs;
+      return $hlSelectJs;
   }
 
 }
