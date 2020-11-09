@@ -19,13 +19,15 @@
   $T_Login      = $T->h('Log_air');
   $T_Share_via  = $T->h('Share_via');
   $T_email      = $T->h('e-mail');
+  $T_Short_url  = $T->h('Short_url');
   $T_Error_in   = $T->j('Error_in');
-  $T_Voc_Click_to_enable  = $T->h('Voc_Click_to_enable');
-  $T_Voc_Click_to_disable = $T->h('Voc_Click_to_disable');
-  $T_Open_vocabulary_list = $T->h('Open_vocabulary_list');
-  $T_Add_to_portfolio     = $T->h('Add_to_portfolio');
-  $T_Unit_info_title      = $T->h('Unit_info_title');
-  $T_Login_to_Clilstore   = $T->h('Login_to_Clilstore');
+  $T_Voc_Click_to_enable   = $T->h('Voc_Click_to_enable');
+  $T_Voc_Click_to_disable  = $T->h('Voc_Click_to_disable');
+  $T_Open_vocabulary_list  = $T->h('Open_vocabulary_list');
+  $T_Add_to_portfolio      = $T->h('Add_to_portfolio');
+  $T_Unit_info_title       = $T->h('Unit_info_title');
+  $T_Login_to_Clilstore    = $T->h('Login_to_Clilstore');
+  $T_Logout_from_Clilstore = $T->h('Logout_from_Clilstore');
 
   $hlSelect   = SM_mdNavbar::hlSelect();
   $hlSelectJs = SM_mdNavbar::hlSelectJs();
@@ -54,7 +56,7 @@
 
     //Prepare media (or picture)
     if ($medfloat=='') { $medfloat = 'none'; }
-    $scroll = $recordVocHtml = $portfolioHtml = $loginbutton = '';
+    $scroll = $recordVocHtml = $portfolioHtml = $loginbutton = $logoutbutton = '';
     if ($medfloat=='scroll') { $medfloat = 'none'; $scroll='scroll'; }
     $medembedHtml = ( empty($medembed) ? '' : "<div class=\"$medfloat\">$medembed</div>" );
 
@@ -117,7 +119,11 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
-    if (empty($user)) { $loginbutton = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>"; }
+    if (empty($user)) {
+        $loginbutton = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
+    } else {
+        $logoutbutton = "<a role=button href='logout.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary btn-sm mt-1 mb-1' title='$T_Logout_from_Clilstore' style='padding:0'><img src='/icons-smo/logout2.png' alt='LO' style='height:30px;padding:2px'></a>";
+    }
     $navbar1 = <<<EOD_NB1
 <div class="row no-margin" style="background-color: #2c6692;">
     <div class="col-md-8" id="share-buttons">
@@ -129,13 +135,14 @@
              $sharebuttonEM
              $likeHtml
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" style="padding-right:0;padding-left:2px">
              $buttonedit
              $recordVocHtml
              $portfolioHtml
              $hlSelect
              <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em;font-style:italic" title="$T_Unit_info_title">$T_Unit_info</a>
-             {$loginbutton}
+             $loginbutton
+             $logoutbutton
     </div>
 </div>
 
@@ -342,7 +349,7 @@ $text
 
 </div>
 $navbar2
-<p style="clear:both;font-size:70%;margin:0;text-align:center">Short url:&nbsp;&nbsp; $serverhome/cs/$id</p>
+<p style="clear:both;font-size:70%;margin:0;text-align:center">$T_Short_url: &nbsp; <a data-nowordlink>$serverhome/cs/$id</a></p>
 </body>
 </html>
 EOD1;

@@ -11,6 +11,7 @@
   $menu   = SM_clilHeadFoot::cabecera();
   $footer = SM_clilHeadFoot::pie($EUlogo, $T_Disclaimer, $T_Disclaimer_EuropeanCom);
 
+  $returnTo = $_REQUEST['returnTo'] ?? '/clilstore/';
   try {
     $myCLIL = SM_myCLIL::singleton();
     $myCLIL::logout();
@@ -23,7 +24,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Logout from Clilstore</title>
-    <meta http-equiv="refresh" content="2; url=$serverhome/clilstore/">
+    <meta http-equiv="refresh" content="2; url=$serverhome$returnTo">
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
