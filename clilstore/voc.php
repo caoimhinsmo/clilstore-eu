@@ -237,10 +237,6 @@ $menu
     <div class="row h-100 justify-content-center align-items-center">
 
 $HTML
-          <div class="col-lg-12">
-            <p class="text-center mt-3"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">$T_Return</a></p>
-        </div>
-
         <div class="col-lg-12">
             $footer
         </div>

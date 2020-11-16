@@ -642,6 +642,7 @@ EODfileInfoForm;
     <meta name="robots" content="noindex">
     <style>
         table#editlinkbuts { margin-bottom:0.5em; }
+        table#editlinkbuts td { padding:0 0.3em; }
         table#editlinkbuts td:nth-child(1) input { width:12em; text-align:center; background-color:#35a4bf; color:white;
                                                    padding:2px 4px; border-radius:6px; }
         table#editlinkbuts td:nth-child(2)       { width:1.5em; text-align:center; }

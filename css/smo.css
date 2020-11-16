@@ -4,6 +4,7 @@ body { background-color:#fff; color:#000; padding:0; margin:0; border-top:1px so
 div.smo-body-indent { clear:both; margin:0 0.25%; padding:0 0.25% 6px 0.25%; border-top:1px solid white; clear: both; }
 
 /* ------------ Ceanglaichean ---------------------------------------------------------------------------------------- */
+/* --commented out, CPD 2020-11-13
 a         { text-decoration:none; }
 a:link    { color: #00f; }
 a:visited { color: #909; }
@@ -13,7 +14,7 @@ a:hover[href^="#"]              { background-color:#008; }
 a:hover[href*=".pdf"]            { color:#fb0; }
 a:hover[href*=".doc"]            { color:#fb0; }
 a img:hover                     { background-color:#ccf; }
-
+*/
 
 img { border:0; }
 

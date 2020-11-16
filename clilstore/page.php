@@ -24,6 +24,7 @@
   $T_Voc_Click_to_enable   = $T->h('Voc_Click_to_enable');
   $T_Voc_Click_to_disable  = $T->h('Voc_Click_to_disable');
   $T_Open_vocabulary_list  = $T->h('Open_vocabulary_list');
+  $T_Edit_this_unit        = $T->h('Edit_this_unit');
   $T_Add_to_portfolio      = $T->h('Add_to_portfolio');
   $T_Unit_info_title       = $T->h('Unit_info_title');
   $T_Login_to_Clilstore    = $T->h('Login_to_Clilstore');
@@ -81,7 +82,7 @@
     }
     $buttonedit = ( $user<>$owner && $user<>'admin'
                   ? ''
-                  : "<a href='edit.php?id=$id&amp;view' class='nowordlink btn btn-success btn-sm rounded' target='_parent' role='button'><i class='fa fa-edit' aria-hidden='true'></i></a>"
+                  : "<a href='edit.php?id=$id&amp;view' title='$T_Edit_this_unit' class='nowordlink btn btn-success btn-sm rounded' target='_parent' role='button'><i class='fa fa-edit' aria-hidden='true'></i></a>"
                   );
     $stmt = $DbMultidict->prepare('SELECT record FROM users WHERE user=:user');
     $stmt->execute([':user'=>$user]);
@@ -92,7 +93,7 @@
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
                         ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>"
-                        ."<a role='button' target='_parent' data-nowordlink class='btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
+                        ."<a role='button' data-nowordlink class='btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
        $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
        $stmt->execute([':user'=>$user]);
        if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -244,7 +245,7 @@ EOD_NB2;
 
     </style>
     <script>
-        function likeClicked() {
+        function likeClicked_SGUAB() {
             var likeEl = document.getElementById('likeLI');
             var newLikeStatus = 'unliked', increment = -1;
             if (likeEl.className=='unliked') { newLikeStatus = 'liked'; increment = 1; }
@@ -254,6 +255,25 @@ EOD_NB2;
                 likeEl.className = newLikeStatus;
                 var lbEl = document.getElementById('likesBadge');
                 lbEl.innerHTML = parseInt(lbEl.innerHTML,10) + increment;
+            }
+            xhr.open('GET', '/clilstore/ajax/setLike.php?unit=$id&newLikeStatus=' + newLikeStatus);
+            xhr.send();
+        }
+
+        function likeClicked() {
+            var likeEl = document.getElementById('likeLI');
+            var newLikeStatus = 'unliked', increment = -1;
+            if (likeEl.className=='unliked') { newLikeStatus = 'liked'; increment = 1; }
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                var found;
+                if ( this.status!=200 || !(found = this.responseText.match(/^OK:(\d+)$/)) )
+                    { alert('$T_Error_in likeClicked:'+this.status+' '+this.responseText); return; }
+                var likesTotal = found[1];
+                likeEl.className = newLikeStatus;
+                likeEl.title = likesTotal + ' $T_totalj';
+                var lbEl = document.getElementById('likesBadge');
+                lbEl.innerHTML = likesTotal;
             }
             xhr.open('GET', '/clilstore/ajax/setLike.php?unit=$id&newLikeStatus=' + newLikeStatus);
             xhr.send();
