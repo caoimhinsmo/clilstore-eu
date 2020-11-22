@@ -12,6 +12,8 @@
       $myCLIL->toradh = $e->getMessage();
   }
 
+  $footer = SM_clilHeadFoot::pie();
+  
   $T = new SM_T('clilstore/portfolios');
 
   $T_Portfolio    = $T->h('Portfolio');
@@ -41,7 +43,7 @@
                                    . ' WHERE teacher=:teacher AND cspf.pf=cspfPermit.pf AND cspf.user=users.user ORDER BY student ASC, prio DESC');
     $stmtPfs->execute([':teacher'=>$user]);
     $rows = $stmtPfs->fetchAll(PDO::FETCH_ASSOC);
-
+    $menu = SM_clilHeadFoot::cabecera0($user, 2);
     foreach ($rows as $row) {
         extract($row);
         $studentSC  = htmlspecialchars($student);
@@ -51,28 +53,39 @@
         if ($hidden) { $rowClass= 'class=hidden'; $hiddenChecked = 'checked'; }
         $pfHtml .= <<<END_pfHtml
 <tr id=row$pid $rowClass>
-<td>
+<td class="separacion" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC; text-align: center">
 <label class=toggle-switchy for=hidden$pid data-size=xxs onChange="toggleHidden('$pid')">
   <input type=checkbox id=hidden$pid $hiddenChecked>
   <span class=toggle title='$T_hideShow'><span class=switch></span></span>
 </label>
 </td>
-<td><a href="userinfo.php?user=$student">$studentSC</a></td>
-<td>$fullnameSC</td>
-<td><a href="portfolio.php?pf=$pf">$titleSC</a></td>
+<td class="separacion" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC; text-align: center; color: #fff"><a href="userinfo.php?user=$student">$studentSC</a></td>
+<td class="separacion" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC; text-align: center; color: #fff">$fullnameSC</td>
+<td style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC; text-align: center; color: #fff"><a class="btn  btn-success" role="button" href="portfolio.php?pf=$pf">$titleSC</a></td>
 </tr>
 END_pfHtml;
     }
 
     $pfTableHtml = <<<END_pfTable
-<table id=pftab class=hiding>
-<tr id=pftabhead><td style="font-size:70%;font-weight:normal;text-align:center">$T_Hide</td><td>$T_Student_id</td><td>$T_Student_name</td><td>$T_Portfolio</td></tr>
-$pfHtml
-</table>
+<div class="table-responsive">
+    <table id=pftab class="hiding table">
+       <thead>
+           <tr id=pftabhead>
+               <th class="separacion back-th">$T_Hide</th>
+               <th class="separacion back-th">$T_Student_id</th>
+               <th class="separacion back-th">$T_Student_name</th>
+               <th class="back-th">$T_Portfolio</th>
+            </tr>     
+       <thead>
+        <tbody>
+           $pfHtml     
+        </tbody>
+    </table>
+</div>
 END_pfTable;
 
     $HTML = <<<EOD
-<h1 style="font-size:140%;margin:0.5em 0">$T_Portfolios_viewable_by <span style="color:brown">$userSC</span></h1>
+
 
 $pfTableHtml
 <label class=toggle-switchy for=showHidden data-size=xxs style="margin:1em 0 1.5em 0" onChange="toggleHiding()">
@@ -90,25 +103,62 @@ EOD;
 <head>
     <meta charset="UTF-8">
     <title>$T_Portfolios_viewable_by $userSC</title>
-    <link rel="stylesheet" href="/css/smo.css">
-    <link rel="stylesheet" href="style.css">
+   
+    
     <link rel="StyleSheet" href="/css/toggle-switchy.css">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/scripts.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <link href="../css/login.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <style>
-        table#pftab { border-collapse:collapse; border:1px solid grey; margin-bottom:0.3em; }
-        table#pftab tr#pftabhead { background-color:grey; color:white; font-weight:bold; }
-        table#pftab tr:nth-child(odd)  { background-color:#ddf; }
-        table#pftab tr:nth-child(even) { background-color:#fff; }
-        table#pftab tr:nth-child(odd):hover  { background-color:#fe6; }
-        table#pftab tr:nth-child(even):hover { background-color:#fe6; }
-        table#pftab td { padding:1px 5px; }
-        table#pftab td:nth-child(1) { padding:1px; text-align:center; }
-        table#pftab tr + tr > td { border-left:1px solid #aaa; }
+          
+        a {
+            color: #ffffff;
+            text-decoration: none;
+            background-color: transparent;
+        }
+          
+         .separacion{
+           border-right: 15px solid #59BDDC;
+        } 
+          
+        .borderless td, .borderless th {
+            border: none;
+        }
+            
+        .back-th{
+           background-color: #8cc1dd;
+           text-align: center;
+           color: #fff;
+        }  
+        
         table#pftab.hiding tr.hidden { display:none; }
-        a#emptyBut { border:0; padding:1px 3px; border-radius:6px; background-color:#27b; color:white; text-decoration:none; }
-        a#emptyBut:hover,
-        a#emptyBut:active,
-        a#emptyBut:focus  { background-color:#f00; color:white; }
+          
+        .fila_titulo {
+            flex: 0 0 auto;
+            /* only manually resize */
+            padding: 5px;
+            width: 100%;
+            min-height: 50px;
+            min-width: 150px;
+            white-space: nowrap;
+            background: #696B73;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+
+        .titulo {
+            padding: 5px;
+            margin-bottom: 0rem;
+        }  
+        
+       
     </style>
     <script>
         function toggleHiding() {
@@ -133,13 +183,21 @@ EOD;
     </script>
 </head>
 <body>
-$mdNavbar
-<div class="smo-body-indent">
-
-$HTML
-
+$menu
+<div class="fila_titulo">
+       <div class="container">
+          <div class="row">   
+             <p class="titulo display-4 text-white" style="font-size: 1.8rem;"><a href="/clilstore">CLILSTORE</a> | $T_Portfolios_viewable_by <span>$userSC</span></p>
+        </div>
+    </div>  
+</div>          
+<div class="container">           
+    <div class="row">
+       $HTML
+    </div>
 </div>
-$mdNavbar
+$footer
+
 </body>
 </html>
 END_HTMLDOC;
