@@ -104,9 +104,6 @@
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
        $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
        $stmtGetLikes->execute([':id'=>$id]);
-
-//$likes = $stmtGetLike->fetchColumn();
-//error_log("\$likes=$likes");
        if ($stmtGetLike->fetchColumn()>0) { $likeClass = 'liked'; } else { $likeClass = 'unliked'; }
        $likes = $stmtGetLikes->fetchColumn();
        $likeHtml = "<span id=likeLI class='$likeClass' onclick='likeClicked();'><img id=heartUnliked src='/favicons/unlike.png' alt='unlike'><img id=heartLiked src='/favicons/like.png' alt='like'></span><span id='likesBadge' class='badge badge-pill badge-danger'>$likes</span>";
