@@ -25,6 +25,10 @@
   $T_Promote        = $T->h('Promote');
   $T_Move_up        = $T->h('Move_up');
   $T_Move_down      = $T->h('Move_down');
+  $T_Edit_this_item = $T->h('Edit_this_item');
+  $T_Add_an_item    = $T->h('Add_an_item');
+  $T_Work           = $T->h('Work');
+  $T_Close          = $T->h('Close');
   $T_Error_in       = $T->j('Error_in');
   $T_Is_this_OK     = $T->j('Is_this_OK');
 
@@ -94,7 +98,7 @@
         $itemEditHtml = "<span class=upArrow title='$T_Move_up' onClick=moveItem(this,'up')><img src='/icons-smo/up-arrow.png' width='24' style='cursor: pointer; margin-left: 3px'></span>"
                       . "<span class=downArrow title='$T_Move_down' onClick=moveItem(this,'down')><img src='/icons-smo/down-arrow.png' width='24' style='cursor: pointer; margin-left: 3px'></span> "
                       . "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Delete_this_item' onClick='itemDelete(this)' width='24' style='cursor: pointer; margin-left: 3px'>";
-        $LitemEditHtml = "<img src='/icons-smo/pencil.png' class=editIcon alt='Edit' title='Edit this item' width='24' style='cursor: pointer; margin-left: 3px' onClick='LitemEdit(this)'>"
+        $LitemEditHtml = "<img src='/icons-smo/pencil.png' class=editIcon alt='Edit' title='$T_Edit_this_item' width='24' style='cursor: pointer; margin-left: 3px' onClick='LitemEdit(this)'>"
                        . "<img src='/icons-smo/save.png' class=saveIcon alt='Save' width='24' style='cursor: pointer; margin-left: 3px' title='Save your edits' onClick='LitemSave(this)'> "
                        . $itemEditHtml;
         $itemEditHtml  = "<span class=edit>$itemEditHtml</span>";
@@ -162,7 +166,7 @@ END_unitsTableHtml;
                 extract ($pfuLRow);
                 $learnedHtml .= "<li  class=\"list-group-item list-group-item-light mb-1\" id=pfuL$pfuL><span id=pfuLtext$pfuL onKeypress='keypress(event,this)'>$learned</span> $LitemEditHtml\n";
             }
-            if ($edit) { $newLearnedItem = "<input id=pfuLnew$pfu class=\"edit form-control\" placeholder='Add an item' onChange=\"pfuLadd('$pfu')\">"; }
+            if ($edit) { $newLearnedItem = "<input id=pfuLnew$pfu class=\"edit form-control\" placeholder='$T_Add_an_item' onChange=\"pfuLadd('$pfu')\">"; }
             $learnedHtml = <<<END_learnedHtml
 <ul id=pfuLul$pfu class="list-group list-group-flush">
 $learnedHtml
@@ -177,7 +181,7 @@ END_learnedHtml;
                 $workHtml .= "<li class=\"list-group-item list-group-item-light mb-1\" id=pfuW$pfuW><a href='$workurl'>$work</a> $itemEditHtml\n";
             }
             if ($edit) {
-                $newWorkItem = "<input placeholder='Work' class=\"form-control mb-1\" id=pfuWnewWork$pfu><input class=\"form-control\" placeholder='URL' id=pfuWnewURL$pfu>";
+                $newWorkItem = "<input placeholder='$T_Work' class=\"form-control mb-1\" id=pfuWnewWork$pfu><input class=\"form-control\" placeholder='URL' id=pfuWnewURL$pfu>";
                 $newWorkItem = "<span class=edit onChange=\"pfuWadd('$pfu')\">$newWorkItem</span>";
             }
             $workHtml = <<<END_workHtml
@@ -305,7 +309,7 @@ END_pt;
     <div class="modal-content">
       <div class="modal-header text-center">
         <span style='font-size: 1.5em; font-weigth: bold; color: #fff'><img src='/icons-smo/PORTAFOLIO.png' width='50' alt='My Portfolios' title='$T_Create_a_new_portfolio'>$T_Create_a_new_portfolio</span>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="$T_Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -326,7 +330,7 @@ END_pt;
                 </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>                   
+        <button type="button" class="btn btn-danger" data-dismiss="modal">$T_Close</button>                   
         <button type="button" class="btn btn-success sendPort">$T_Create</button>
       </div>
     </div>
