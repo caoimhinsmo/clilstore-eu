@@ -155,11 +155,11 @@ END_unitsTableHtml;
             $unitidHtml = str_replace('_','&nbsp;',$unitidHtml);
             $rowClass = ( $csUnit==$unitToEdit ? 'class=edit' : '');
             if ($edit) {
+                $upArrowHtml   = "<span title='$T_Move_up'   class=upArrowUnit   onClick=moveUnit(this,'up')>⇧</span>";
+                $downArrowHtml = "<span title='$T_Move_down' class=downArrowUnit onClick=moveUnit(this,'down')>⇩</span>";
+                $moveUnitHtml   = $upArrowHtml . $downArrowHtml;
                 $removeUnitHtml = "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Remove_unit_from_portfolio' onClick=\"removeUnit('$pfu')\" width='24' style='cursor: pointer; margin-left: 3px'>";
                 $editUnitHtml   = "<img src='/icons-smo/pencil.png' class=editIcon alt='Edit' title='$T_Edit_unit_in_portfolio' onClick=\"toggleUnitEdit('$pfu')\" width='24' style='cursor: pointer; margin-left: 3px'>";
-                $moveUnitHtml   = "<span class=upArrowUnit title='$T_Move_up' onClick=moveUnit(this,'up')>⇧</span>"
-                                . "<span class=downArrowUnit title='$T_Move_down' onClick=moveUnit(this,'down')>⇩</span>";
-                $editToolsHtml = "$editUnitHtml &nbsp;&nbsp; <span class=edit>$moveUnitHtml &nbsp;&nbsp; $removeUnitHtml</span>";
             }
             $pfuLRows = $stmtPfuL->fetchAll(PDO::FETCH_ASSOC);
             foreach ($pfuLRows as $pfuLRow) {
@@ -204,6 +204,9 @@ END_workHtml;
         <td style="background-color: #70a0b3; vertical-align: middle; text-align: right">                  
              $editUnitHtml
         </td>  
+         <td style="background-color: #70a0b3; vertical-align: middle; text-align: right">                  
+             <span class=edit>$moveUnitHtml</span>
+         </td>    
          <td style="background-color: #70a0b3; vertical-align: middle; text-align: right">                  
              <span class=edit>$removeUnitHtml</span>
          </td>    
@@ -496,9 +499,9 @@ EOD;
         li.editing img.saveIcon { display:inline; }
         li:first-child span.upArrow { display:none; }
         li:last-child span.downArrow { display:none; }
-        tr:nth-child(2) span.upArrowUnit { display:none; }
-        tr:last-child span.downArrowUnit { display:none; }
-          
+        table#unitstab > tbody > tr:nth-child(2) span.upArrowUnit { display:none; }
+        table#unitstab > tbody > tr:last-child span.downArrowUnit { display:none; }
+
         .list-group-flush .list-group-item{
             border-radius: 5px;
             background-color: #5e878e;
@@ -743,7 +746,7 @@ EOD;
         }
 
         function moveUnit(el,direction) {
-            var trEl = el.closest('tr');
+            var trEl = el.closest('table#unitstab > tbody > tr');
             if       (direction=='up')   { var swopEl = trEl.previousElementSibling; }
              else if (direction=='down') { var swopEl = trEl.nextElementSibling;     }
              else { alert('$T_Error_in moveItem. Invalid direction:'+direction); }
