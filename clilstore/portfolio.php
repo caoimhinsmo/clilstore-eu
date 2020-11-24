@@ -29,6 +29,7 @@
   $T_Add_an_item    = $T->h('Add_an_item');
   $T_Work           = $T->h('Work');
   $T_Close          = $T->h('Close');
+  $T_Sharing        = $T->h('Sharing');
   $T_Error_in       = $T->j('Error_in');
   $T_Is_this_OK     = $T->j('Is_this_OK');
 
@@ -262,7 +263,7 @@ END_addTeacher;
     <div class="col-md-6">
         <div class="card">
             <div class="card-header text-center">
-              <span style='font-size: 1.5em; font-weigth: bold; color: #fff'><img src='/icons-smo/shared.png' width='50' alt='My Portfolios'>Shared<span>
+              <span style='font-size: 1.5em; font-weigth: bold; color: #fff'><img src='/icons-smo/shared.png' width='50' alt='My Portfolios'>$T_Sharing<span>
             </div>
             <table class="card-table table">
             <tbody>

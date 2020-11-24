@@ -13,7 +13,7 @@
   }
 
   $footer = SM_clilHeadFoot::pie();
-  
+
   $T = new SM_T('clilstore/portfolios');
 
   $T_Portfolio    = $T->h('Portfolio');
@@ -75,10 +75,10 @@ END_pfHtml;
                <th class="separacion back-th">$T_Student_id</th>
                <th class="separacion back-th">$T_Student_name</th>
                <th class="back-th">$T_Portfolio</th>
-            </tr>     
+            </tr>
        <thead>
         <tbody>
-           $pfHtml     
+           $pfHtml
         </tbody>
     </table>
 </div>
@@ -103,8 +103,8 @@ EOD;
 <head>
     <meta charset="UTF-8">
     <title>$T_Portfolios_viewable_by $userSC</title>
-   
-    
+
+
     <link rel="StyleSheet" href="/css/toggle-switchy.css">
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
@@ -116,29 +116,29 @@ EOD;
     <link href="../css/login.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <style>
-          
+
         a {
             color: #ffffff;
             text-decoration: none;
             background-color: transparent;
         }
-          
+
          .separacion{
            border-right: 15px solid #59BDDC;
-        } 
-          
+        }
+
         .borderless td, .borderless th {
             border: none;
         }
-            
+
         .back-th{
            background-color: #8cc1dd;
            text-align: center;
            color: #fff;
-        }  
-        
+        }
+
         table#pftab.hiding tr.hidden { display:none; }
-          
+
         .fila_titulo {
             flex: 0 0 auto;
             /* only manually resize */
@@ -156,9 +156,9 @@ EOD;
         .titulo {
             padding: 5px;
             margin-bottom: 0rem;
-        }  
-        
-       
+        }
+
+
     </style>
     <script>
         function toggleHiding() {
@@ -186,12 +186,12 @@ EOD;
 $menu
 <div class="fila_titulo">
        <div class="container">
-          <div class="row">   
+          <div class="row">
              <p class="titulo display-4 text-white" style="font-size: 1.8rem;"><a href="/clilstore">CLILSTORE</a> | $T_Portfolios_viewable_by <span>$userSC</span></p>
         </div>
-    </div>  
-</div>          
-<div class="container">           
+    </div>
+</div>
+<div class="container">
     <div class="row">
        $HTML
     </div>
