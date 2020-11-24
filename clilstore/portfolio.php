@@ -11,8 +11,8 @@
   } catch (Exception $e) {
       $myCLIL->toradh = $e->getMessage();
   }
-  
-  
+
+
   $footer = SM_clilHeadFoot::pie();
 
   $T = new SM_T('clilstore/portfolio');
@@ -95,11 +95,11 @@
     }
     $edit = ( in_array($loggedinUser, [$user,'admin']) ? 1 : 0 ); //$edit=1 indicates that the user has edit rights over the portfolio
     if ($edit) {
-        $itemEditHtml = "<span class=upArrow title='$T_Move_up' onClick=moveItem(this,'up')><img src='/icons-smo/up-arrow.png' width='24' style='cursor: pointer; margin-left: 3px'></span>"
-                      . "<span class=downArrow title='$T_Move_down' onClick=moveItem(this,'down')><img src='/icons-smo/down-arrow.png' width='24' style='cursor: pointer; margin-left: 3px'></span> "
-                      . "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Delete_this_item' onClick='itemDelete(this)' width='24' style='cursor: pointer; margin-left: 3px'>";
-        $LitemEditHtml = "<img src='/icons-smo/pencil.png' class=editIcon alt='Edit' title='$T_Edit_this_item' width='24' style='cursor: pointer; margin-left: 3px' onClick='LitemEdit(this)'>"
-                       . "<img src='/icons-smo/save.png' class=saveIcon alt='Save' width='24' style='cursor: pointer; margin-left: 3px' title='Save your edits' onClick='LitemSave(this)'> "
+        $itemEditHtml = "<span class=upArrow title='$T_Move_up' onClick=moveItem(this,'up')><img src='/icons-smo/up-arrow.png' class=tool></span>"
+                      . "<span class=downArrow title='$T_Move_down' onClick=moveItem(this,'down')><img src='/icons-smo/down-arrow.png' class=tool></span>"
+                      . "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Delete_this_item' onClick='itemDelete(this)' class=tool>";
+        $LitemEditHtml = "<img src='/icons-smo/pencil.png' alt='Edit' title='$T_Edit_this_item' onClick='LitemEdit(this)' class='tool editIcon'>"
+                       . "<img src='/icons-smo/save.png' class=saveIcon alt='Save' title='Save your edits' onClick='LitemSave(this)' class=tool> "
                        . $itemEditHtml;
         $itemEditHtml  = "<span class=edit>$itemEditHtml</span>";
         $LitemEditHtml = "<span class=edit>$LitemEditHtml</span>";
@@ -108,7 +108,7 @@
     $userSC = htmlspecialchars($user) ?? '';
     $titulo = htmlspecialchars($title);
     if ($pf==0) { $h1 = $T_Create_a_new_portfolio; }
-      else      { $h1 = "<span>$T_Portfolio_for_user_ <span style='color:white'>$user</span></span>"; 
+      else      { $h1 = "<span>$T_Portfolio_for_user_ <span style='color:white'>$user</span></span>";
       $h2 = "<div class=\"col-md-12 mb-3 mt-3\"><h4 style='color:white'>$T_active_portfolio : $titulo</h4></div>";
       }
 
@@ -124,7 +124,7 @@ $T_Title_of_your_portfolio<br>
 <input id=createTitle required style="width:80%;max-width:50em">
 </div>
 
-                
+
 <table style="margin-top:1em">
 <tr style="vertical-align:top">
 <td>$T_Your_teachers_Clilstore_id<br>
@@ -155,11 +155,11 @@ END_unitsTableHtml;
             $unitidHtml = str_replace('_','&nbsp;',$unitidHtml);
             $rowClass = ( $csUnit==$unitToEdit ? 'class=edit' : '');
             if ($edit) {
-                $upArrowHtml   = "<span title='$T_Move_up'   class=upArrowUnit   onClick=moveUnit(this,'up')>⇧</span>";
-                $downArrowHtml = "<span title='$T_Move_down' class=downArrowUnit onClick=moveUnit(this,'down')>⇩</span>";
-                $moveUnitHtml   = $upArrowHtml . $downArrowHtml;
-                $removeUnitHtml = "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Remove_unit_from_portfolio' onClick=\"removeUnit('$pfu')\" width='24' style='cursor: pointer; margin-left: 3px'>";
-                $editUnitHtml   = "<img src='/icons-smo/pencil.png' class=editIcon alt='Edit' title='$T_Edit_unit_in_portfolio' onClick=\"toggleUnitEdit('$pfu')\" width='24' style='cursor: pointer; margin-left: 3px'>";
+                $upArrowHtml   = "<img title='$T_Move_up'   onClick=moveUnit(this,'up') src='/icons-smo/up-arrow.png' class='tool upArrow'>";
+                $downArrowHtml = "<img title='$T_Move_down' onClick=moveUnit(this,'down') src='/icons-smo/down-arrow.png' class='tool downArrow'>";
+                $moveUnitHtml   = "<span style='white-space:nowrap'>$upArrowHtml$downArrowHtml</span>";
+                $removeUnitHtml = "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Remove_unit_from_portfolio' onClick=\"removeUnit('$pfu')\" class=tool>";
+                $editUnitHtml   = "<img src='/icons-smo/pencil.png' alt='Edit' title='$T_Edit_unit_in_portfolio' onClick=\"toggleUnitEdit('$pfu')\" class='tool editIcon'>";
             }
             $pfuLRows = $stmtPfuL->fetchAll(PDO::FETCH_ASSOC);
             foreach ($pfuLRows as $pfuLRow) {
@@ -194,24 +194,24 @@ END_workHtml;
 <tr id=pfuRow$pfu $rowClass>
 <td class="separacion" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC;" width="33%">
     <table class="table borderless">
-      <tr>
-        <td style="background-color: #70a0b3; vertical-align: middle; text-align: left">
-           <a href='/cs/$csUnit'>$unitidHtml</a>         
+      <tr style='backgroud=color:#70a0b3'>
+        <td style="vertical-align: middle; text-align: left">
+           <a href='/cs/$csUnit'>$unitidHtml</a>
         </td>
-        <td style="background-color: #70a0b3; vertical-align: middle; text-align: left">                  
+        <td style="vertical-align: middle; text-align: left">
              <a href='/cs/$csUnit'>$csTitle</a>
         </td>
-        <td style="background-color: #70a0b3; vertical-align: middle; text-align: right">                  
+        <td style="vertical-align: middle; text-align: right">
              $editUnitHtml
-        </td>  
-         <td style="background-color: #70a0b3; vertical-align: middle; text-align: right">                  
+        </td>
+         <td style="vertical-align: middle; text-align: right">
              <span class=edit>$moveUnitHtml</span>
-         </td>    
-         <td style="background-color: #70a0b3; vertical-align: middle; text-align: right">                  
+         </td>
+         <td style="vertical-align: middle; text-align: right">
              <span class=edit>$removeUnitHtml</span>
-         </td>    
-       </tr> 
-    </table>      
+         </td>
+       </tr>
+    </table>
 </td>
 <td width="33%" class="separacion" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC;">$learnedHtml <!-- <span id="\$vocid-tick" class=change>✔<span> --></td>
 <td width="33%" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC;">$workHtml</td>
@@ -230,11 +230,11 @@ END_unitsHtml;
 <tr id=unitstabhead>
     <th width="33%" scope="col" class="separacion back-th rounded-top"><font color="#fff">$T_Clilstore_unit</font></th>
     <th width="33%" scope="col" class="separacion back-th rounded-top"><font color="#fff">$T_What_I_have_learned</font></th>
-    <th width="33%" scope="col" class="back-th rounded-top"><font color="#fff">$T_Links_to_my_work</font></th>     
+    <th width="33%" scope="col" class="back-th rounded-top"><font color="#fff">$T_Links_to_my_work</font></th>
 </tr>
 $unitsHtml
 </table>
-</div>               
+</div>
 END_unitsTable;
 
         $stmtPermit = $DbMultidict->prepare('SELECT cspfPermit.id AS permitId, teacher,fullname FROM cspfPermit,users WHERE teacher=user AND pf=:pf ORDER BY teacher');
@@ -244,7 +244,7 @@ END_unitsTable;
             extract($row);
             $editHtml = '';
             if ($edit) {
-                $editHtml = "<img src='/icons-smo/trash.png' alt='Remove' width='24' style='cursor: pointer; margin-left: 3px' title='$T_Remove_permission_from_teacher' onclick=\"pfRemovePermit('$permitId')\">";
+                $editHtml = "<img src='/icons-smo/trash.png' alt='Remove'class=tool title='$T_Remove_permission_from_teacher' onclick=\"pfRemovePermit('$permitId')\">";
             }
             $permitTableHtml .= "<tr id=permitRow$permitId><td>$editHtml</td><td  style='color:#fff'> $teacher ($fullname)</td></tr>\n";
         }
@@ -259,21 +259,21 @@ END_addTeacher;
         }
         $permitTableHtml = <<<END_pt
 
-    <div class="col-md-6">           
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header text-center">
-              <span style='font-size: 1.5em; font-weigth: bold; color: #fff'><img src='/icons-smo/shared.png' width='50' alt='My Portfolios'>Shared<span>                
+              <span style='font-size: 1.5em; font-weigth: bold; color: #fff'><img src='/icons-smo/shared.png' width='50' alt='My Portfolios'>Shared<span>
             </div>
-            <table class="card-table table"> 
+            <table class="card-table table">
             <tbody>
-            <tr><td colspan=2 class='text-center mb-0'><p style='font-size: small; color: #fff'>$teachersMessage</p></td></tr>    
+            <tr><td colspan=2 class='text-center mb-0'><p style='font-size: small; color: #fff'>$teachersMessage</p></td></tr>
             $permitTableHtml
             $addTeacherHtml
-            </tbody>    
+            </tbody>
             </table>
          </div>
     </div>
-               
+
 END_pt;
 
         if ($edit) {
@@ -285,24 +285,24 @@ END_pt;
                 if ($n==0) { $promoteHtml = "<span style='font-weigth: bold; color: #fff'><b>$T_active_portfolio</b>";
                              $title = "<b>$title</b>"; }
                  else      { $promoteHtml = "<a class=\"btn  btn-outline-danger\" href=\"#\" role=\"button\" title='$T_Promote_to_active_portfolio' onClick=\"pfPromote('$portf')\"><span class='fa fa-arrow-up fa-sm' aria-hidden='true'></span> $T_Promote</a>"; }
-                $editHtml = "<img src='/icons-smo/trash.png' width='24' style='cursor: pointer; margin-left: 3px' alt='Delete' title='$T_Delete_this_portfolio' onclick=\"pfDelete('$portf','$pf','$n')\">";
+                $editHtml = "<img src='/icons-smo/trash.png' class=tool alt='Delete' title='$T_Delete_this_portfolio' onclick=\"pfDelete('$portf','$pf','$n')\">";
                 if ($portf==$pf) { $promoteHtml .= " &nbsp; [$T_this_portfolio]</span>"; }
                 $promoteHtml = "<span>$promoteHtml</span>";
                 $pfsTableHtml .= "<tr id=pfsRow$portf><td>$editHtml </td><td><a href='./portfolio.php?pf=$portf'>$title</a> </td><td>$promoteHtml</td></tr>\n";
             }
             $pfsTableHtml = <<<END_pfstab
 
-<div class="col-md-6"> 
+<div class="col-md-6">
       <div class="card">
             <div class="card-header text-center">
               <span style='font-size: 1.5em; font-weigth: bold; color: #fff'><img src='/icons-smo/PORTAFOLIO.png' width='50' alt='My Portfolios' title='$T_My_portfolios'>$T_My_portfolios<span>
-            </div> 
-       
-            <table class="card-table table">                
+            </div>
+
+            <table class="card-table table">
                 <tbody>
                 $pfsTableHtml
                 <tr><td colspan=3 class='text-center'><a class="btn btn-success" role="button" href="portfolio.php?pf=0" data-toggle="modal" data-target="#createNewPortfolio">$T_Create_a_new_portfolio</a></td></tr>
-                <tbody>    
+                <tbody>
             </table>
        </div>
 </div>
@@ -323,43 +323,43 @@ END_pt;
                 <div class="form-group">
                     <label for="Port">$T_Title_of_your_portfolio</label>
                     <input id="Port" required class="form-control">
-                </div>    
+                </div>
                  <div class="alert alert-success" role="alert">
                     $T_New_teacher_advice
-                </div>    
+                </div>
                 <div class="form-group">
                     <label for="teacher_port">$T_Your_teachers_Clilstore_id</label>
                     <input id="teacher_port" required class="form-control">
                 </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">$T_Close</button>                   
+        <button type="button" class="btn btn-danger" data-dismiss="modal">$T_Close</button>
         <button type="button" class="btn btn-success sendPort">$T_Create</button>
       </div>
     </div>
   </div>
-</div>                    
+</div>
 END_pfstab;
         }
     }
 
     $HTML = <<<EOD
-<div class="container">     
+<div class="container">
 <div class="row">
 $h2
-</div>  
-</div>  
-<div class="container">     
-<div class="row">    
+</div>
+</div>
+<div class="container">
+<div class="row">
 $unitsTableHtml
-</div>  
-</div>            
-<div class="container">     
-<div class="row">             
+</div>
+</div>
+<div class="container">
+<div class="row">
 $permitTableHtml
 $pfsTableHtml
-</div>  
-</div>     
+</div>
+</div>
 EOD;
 
   } catch (Exception $e) { $HTML = $e; }
@@ -382,17 +382,17 @@ EOD;
     <style>
         .separacion{
            border-right: 15px solid #59BDDC;
-        } 
-          
+        }
+
         .borderless td, .borderless th {
             border: none;
         }
-            
+
         .back-th{
            background-color: #8cc1dd;
            text-align: center;
         }
-          
+
         .card {
                 position: relative;
                 display: flex;
@@ -403,15 +403,15 @@ EOD;
                 background-clip: border-box;
                 border: 0px solid rgba(0, 0, 0, 0.125);
                 border-radius: 0.25rem;
-        }  
-          
+        }
+
         .card-header {
             padding: 0.75rem 1.25rem;
             margin-bottom: 0;
             background-color: #8cc1dd;
             border-bottom: 1px solid #8cc1dd;
         }
-          
+
         .modal-header {
             display: flex;
             align-items: flex-start;
@@ -422,14 +422,14 @@ EOD;
             border-top-left-radius: calc(0.3rem - 1px);
             border-top-right-radius: calc(0.3rem - 1px);
         }
-          
+
         .modal-body {
             position: relative;
             flex: 1 1 auto;
             padding: 1rem;
             background-color: #70a0b3;
         }
-          
+
         .modal-footer {
             display: flex;
             flex-wrap: wrap;
@@ -441,11 +441,11 @@ EOD;
             border-bottom-right-radius: calc(0.3rem - 1px);
             border-bottom-left-radius: calc(0.3rem - 1px);
         }
-            
+
         .back-tr{
-           background-color: #70a0b3;           
-        }  
-          
+           background-color: #70a0b3;
+        }
+
         .bg-primary {
            background-color: #35a4bf !important;
         }
@@ -464,7 +464,7 @@ EOD;
             text-decoration: none;
             background-color: transparent;
         }
-          
+
          .fila_titulo {
             flex: 0 0 auto;
             /* only manually resize */
@@ -482,35 +482,37 @@ EOD;
             padding: 5px;
             margin-bottom: 0rem;
         }
-          
-     
-        
+
+
+
         table#unitstab tr      td .edit { display:none; }
         table#unitstab tr.edit td .edit { display:inline; }
-       
-        
+
+
         a#emptyBut:hover,
         a#emptyBut:active,
-       
+
         li img.editIcon { display:inline; }
         li img.saveIcon { display:none; }
-       
+
+        img.tool { width:24px; margin-left:3px; cursor:pointer; }
+
         li.editing img.editIcon { display:none; }
         li.editing img.saveIcon { display:inline; }
         li:first-child span.upArrow { display:none; }
         li:last-child span.downArrow { display:none; }
-        table#unitstab > tbody > tr:nth-child(2) span.upArrowUnit { display:none; }
-        table#unitstab > tbody > tr:last-child span.downArrowUnit { display:none; }
+        table#unitstab > tbody > tr:nth-child(2) img.upArrow   { display:none; }
+        table#unitstab > tbody > tr:last-child   img.downArrow { display:none; }
 
         .list-group-flush .list-group-item{
             border-radius: 5px;
             background-color: #5e878e;
             color: #ffffff;
         }
-          
-        
+
+
     </style>
-    <script>  
+    <script>
         function createPortfolio(title_port,teacher_port) {
             var title   = title_port;
             var teacher = teacher_port;
@@ -530,8 +532,8 @@ EOD;
             xhr.open('POST', 'ajax/pfCreate.php');
             xhr.send(formData);
         }
-          
-       
+
+
         function removeUnit (pfu) {
             if (confirm('$T_Completely_remove_unit')) {
                 var xhr = new XMLHttpRequest();
@@ -654,7 +656,7 @@ EOD;
                 newURL = 'http:/' + newURL;
                 urlEl.value = newURL;
                 var message = '$T_A_URL_must_begin_with_'.replace('{http}','http://').replace('{https}','https;//') + nl+nl
-                            + '$T_Have_changed_URL_to_' + nl+nl + newURL + nl+nl 
+                            + '$T_Have_changed_URL_to_' + nl+nl + newURL + nl+nl
                             + '$T_Is_this_OK';
                 if (!confirm(message)) { return; }
             }
@@ -764,31 +766,31 @@ EOD;
             xhr.send();
         }
     </script>
-        
+
 </head>
 <body>
 $menu
 <div class="fila_titulo">
        <div class="container">
-          <div class="row">   
+          <div class="row">
              <p class="titulo display-4 text-white" style="font-size: 1.8rem;"><a href="/clilstore">CLILSTORE</a> | $h1</p>
         </div>
-    </div>  
-</div>          
+    </div>
+</div>
 <div class="container">
-           
+
     <div class="row">
        $HTML
     </div>
 </div>
 $footer
-<script>      
-    $('.sendPort').click(function(){         
+<script>
+    $('.sendPort').click(function(){
 	var port = $('#Port').val();
-        var teacher_port = $('#teacher_port').val();        
-        createPortfolio(port,teacher_port);         
-    });     
-</script>            
+        var teacher_port = $('#teacher_port').val();
+        createPortfolio(port,teacher_port);
+    });
+</script>
 </body>
 </html>
 END_HTMLDOC;
