@@ -27,7 +27,7 @@
   $T_Move_down      = $T->h('Move_down');
   $T_Edit_this_item = $T->h('Edit_this_item');
   $T_Add_an_item    = $T->h('Add_an_item');
-  $T_Work           = $T->h('Work');
+  $T_My_work        = $T->h('My_work');
   $T_Close          = $T->h('Close');
   $T_Sharing        = $T->h('Sharing');
   $T_Error_in       = $T->j('Error_in');
@@ -182,7 +182,7 @@ END_learnedHtml;
                 $workHtml .= "<li class=\"list-group-item list-group-item-light mb-1\" id=pfuW$pfuW><a href='$workurl'>$work</a> $itemEditHtml\n";
             }
             if ($edit) {
-                $newWorkItem = "<input placeholder='$T_Work' class=\"form-control mb-1\" id=pfuWnewWork$pfu><input class=\"form-control\" placeholder='URL' id=pfuWnewURL$pfu>";
+                $newWorkItem = "<input placeholder='$T_My_work' class=\"form-control mb-1\" id=pfuWnewWork$pfu><input class=\"form-control\" placeholder='URL' id=pfuWnewURL$pfu>";
                 $newWorkItem = "<span class=edit onChange=\"pfuWadd('$pfu')\">$newWorkItem</span>";
             }
             $workHtml = <<<END_workHtml

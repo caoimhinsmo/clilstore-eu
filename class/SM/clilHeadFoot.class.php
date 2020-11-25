@@ -56,13 +56,12 @@ END_HEADER;
     $T_Language = $T->h('Language');
     $T_Login    = $T->h('Log_air');
     $T_Logout   = $T->h('Logout');
-    $T_My_units = $T->h('My_units');
+    $T_Units    = $T->h('Units');
     $T_Register = ucfirst($T->h('Register'));
-    $T_My_options    = $T->h('My_options');
+    $T_Options       = $T->h('Options');
     $T_Create_a_unit = $T->h('Create_a_unit');
-    $T_My_vocabulary = $T->h('My_vocabulary');
+    $T_Vocabulary    = $T->h('Vocabulary');
     $T_Portfolios    = $T->h('Portfolios');
-    $T_My_portfolios = $T->h('My_portfolios');
 
     $hlSelect   = SM_mdNavbar::hlSelect();
     $hlSelectJs = SM_mdNavbar::hlSelectJs();
@@ -79,12 +78,12 @@ END_headerLogin;
     } else {
         if ($modo<=1) { //Student mode
             $myItems = <<<END_myItemsStudent
-        <a href="voc.php?user=$usuario" class="dropdown-item">$T_My_vocabulary</a>
-        <a href="portfolio.php" class="dropdown-item">$T_My_portfolios</a>
+        <a href="voc.php?user=$usuario" class="dropdown-item">$T_Vocabulary</a>
+        <a href="portfolio.php" class="dropdown-item">$T_Portfolios</a>
 END_myItemsStudent;
         } else { //Teacher mode
             $myItems = <<<END_myItemsTeacher
-        <a href="./?owner=$usuario" class="dropdown-item">$T_My_units</a>
+        <a href="./?owner=$usuario" class="dropdown-item">$T_Units</a>
         <a href="edit.php?id=0" class="dropdown-item">$T_Create_a_unit</a>
         <a href="portfolios.php" class="dropdown-item">$T_Portfolios</a>
 END_myItemsTeacher;
@@ -93,7 +92,7 @@ END_myItemsTeacher;
   <div class="dropdown" id="dmenu">
     <button type="button" class="btn btn-outline-light dropdown-toggle ml-2" data-toggle="dropdown" id="navbarDropdown"><i class="fa fa-user"></i> $usuario</button>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a href="options.php?user=$usuario" class="dropdown-item">$T_My_options</a>
+        <a href="options.php?user=$usuario" class="dropdown-item">$T_Options</a>
 $myItems
         <div class="dropdown-divider"></div>
         <a href="logout.php" class="dropdown-item">$T_Logout</a>

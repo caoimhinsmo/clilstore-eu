@@ -59,6 +59,7 @@
     $T_Buttons                = $T->h('csCol_buttons');
     $T_Files                  = $T->h('csCol_files');
     $T_Title                  = $T->h('Title');
+    $T_Summary                = $T->h('csCol_summary');
     $T_TextOrSummary          = $T->h('csCol_text');
 
     $T_UnitID_title           = $T->h('UnitID_title');
@@ -228,9 +229,9 @@ EOD_cookieMessage;
         $wideChecked    = ( $mode==3 ?  : '' );
         $checkboxesHtml = <<<CHECKBOXES
         <form id="filterForm2" method="post">
-<input type="checkbox" class="custom-control-input" name="incTest2" id="incTest2" $incTestChecked tabindex=2 title="include test units" onChange="submitFForm2()" value="1">
+<input type="checkbox" class="custom-control-input" name="incTest2" id="incTest2" $incTestChecked tabindex=2 onChange="submitFForm2()" value="1">
 <label for="incTest2" class="custom-control-label">$incTestLabel</label>
-         </form>
+        </form>
 CHECKBOXES;
     }
 
@@ -675,16 +676,12 @@ ENDtabletopChoices;
  <th>$T_Buttons</th>
  <th>$T_Files</th>
  <th>$T_Title</th>
- <th>Summary</th>
- <th>Action</th>
+ <th>$T_Summary</th>
+ <th style="min-width:48px"></th>
  <th>$T_Likes</th>
 </tr>
 </thead>
 END_tableHtmlBarr;
-
-
-
-
 
 
         $orderClause = $csSess->orderClause();
@@ -1942,7 +1939,7 @@ $cookieMessage
                                 <span class="input-group-text"><i class="fa fa-language mr-1" aria-hidden="true"></i>$T_Owner</span>
                             </div>
                             <select id="userTypeFilter" class="form-control form-control-sm rounded-0 ampliar">
-                            <option value="All">All</option>
+                            <option value="All"></option>
                             $owOptionsHtml
                             </select>
                     </div>
