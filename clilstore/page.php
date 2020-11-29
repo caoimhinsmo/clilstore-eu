@@ -138,7 +138,7 @@
              $recordVocHtml
              $portfolioHtml
              <div class="btn" style="display:inline-block;vertical-align:middle">$hlSelect</div>
-             <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em;font-style:italic" title="$T_Unit_info_title">$T_Unit_info</a>
+             <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title"><img src=/icons-smo/infoButton.png style="width:24px"></a>
              $loginbutton
              $logoutbutton
     </div>

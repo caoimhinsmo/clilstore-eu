@@ -56,7 +56,7 @@ END_HEADER;
     $T_Language = $T->h('Language');
     $T_Login    = $T->h('Log_air');
     $T_Logout   = $T->h('Logout');
-    $T_Units    = $T->h('Units');
+    $T_My_units = $T->h('My_units');
     $T_Register = ucfirst($T->h('Register'));
     $T_Options       = $T->h('Options');
     $T_Create_a_unit = $T->h('Create_a_unit');
@@ -83,7 +83,7 @@ END_headerLogin;
 END_myItemsStudent;
         } else { //Teacher mode
             $myItems = <<<END_myItemsTeacher
-        <a href="./?owner=$usuario" class="dropdown-item">$T_Units</a>
+        <a href="./?owner=$usuario" class="dropdown-item">$T_My_units</a>
         <a href="edit.php?id=0" class="dropdown-item">$T_Create_a_unit</a>
         <a href="portfolios.php" class="dropdown-item">$T_Portfolios</a>
 END_myItemsTeacher;
