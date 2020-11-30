@@ -248,10 +248,9 @@ EODtransferHtml;
 				</div>
                                 <div class="row">
 						<div class="col-md-6">
-							<a class="btn btn-primary btn-lg btn-block mb-2" href="voc.php?user=$user" title="$T_My_vocabulary">$T_Vocabulary</a>
+							<a class="btn btn-primary btn-lg btn-block mb-2" href="changePassword.php?user=$user">$T_Change_password</a>
 						</div>
                                                 <div class="col-md-6">
-							<a class="btn btn-primary btn-lg btn-block mb-2" href="changePassword.php?user=$user">$T_Change_password</a>
 						</div>
 				</div>
                                 <div class="h-divider"></div>
