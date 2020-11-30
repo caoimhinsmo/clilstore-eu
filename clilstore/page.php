@@ -11,15 +11,19 @@
       $myCLIL->toradh = $e->getMessage();
   }
   if (isset($_GET['user'])) { $user = $_GET['user']; } //for generating edit button
+  $userSC = htmlspecialchars($user);
 
   $T = new SM_T('clilstore/page');
 
   $T_Vocabulary = $T->h('Vocabulary');
   $T_Unit_info  = $T->h('Unit_info');
   $T_Login      = $T->h('Log_air');
+  $T_Logout     = $T->h('Logout');
+  $T_Options    = $T->h('Options');
   $T_Share_via  = $T->h('Share_via');
   $T_email      = $T->h('e-mail');
   $T_Short_url  = $T->h('Short_url');
+  $T_Portfolio  = $T->h('Portfolio');
   $T_Error_in   = $T->j('Error_in');
   $T_Voc_Click_to_enable   = $T->h('Voc_Click_to_enable');
   $T_Voc_Click_to_disable  = $T->h('Voc_Click_to_disable');
@@ -29,6 +33,7 @@
   $T_Unit_info_title       = $T->h('Unit_info_title');
   $T_Login_to_Clilstore    = $T->h('Login_to_Clilstore');
   $T_Logout_from_Clilstore = $T->h('Logout_from_Clilstore');
+  $T_Options_title         = $T->h('Options_title');
 
   $hlSelect   = SM_mdNavbar::hlSelect();
   $hlSelectJs = SM_mdNavbar::hlSelectJs();
@@ -57,7 +62,7 @@
 
     //Prepare media (or picture)
     if ($medfloat=='') { $medfloat = 'none'; }
-    $scroll = $recordVocHtml = $portfolioHtml = $loginbutton = $logoutbutton = '';
+    $scroll = $recordVocHtml = $portfolioHtml = $userMenuHtml = '';
     if ($medfloat=='scroll') { $medfloat = 'none'; $scroll='scroll'; }
     $medembedHtml = ( empty($medembed) ? '' : "<div class=\"$medfloat\">$medembed</div>" );
 
@@ -92,13 +97,11 @@
         $recordVocHtml = "<span class=$vocClass onclick='vocClicked(this.className);'>"
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
                         ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
-                        ."</span>"
-                        ."<a role='button' data-nowordlink class='btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>";
+                        ."</span>";
        $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
        $stmt->execute([':user'=>$user]);
        if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
-           $portfolioHtml = "<a href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\">"
-                          . "<img src='/favicons/portfolio.png' title='$T_Add_to_portfolio' alt='PF' style='width:40px;padding:5px'></a>";
+           $portfolioHtml = "<a role=button class='btn btn-primary text-white btn-sm mt-1 mb-1' href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\" title='$T_Add_to_portfolio'>$T_Portfolio</a><br>";
        }
        $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
@@ -117,10 +120,20 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
+    $unitinfoHtml = "<a role=button href='unitinfo.php?id=$id' target=_top data-nowordlink class='btn btn-primary btn-sm mt-1 mb-1' style='margin-left:0.5em' title='$T_Unit_info_title'><img src=/icons-smo/infoButton.png style='width:16px'></a>";
     if (empty($user)) {
-        $loginbutton = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
-    } else {
-        $logoutbutton = "<a role=button href='logout.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary btn-sm mt-1 mb-1' title='$T_Logout_from_Clilstore' style='padding:0'><img src='/icons-smo/logout2.png' alt='LO' style='height:30px;padding:2px'></a>";
+        $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
+    } else { $userMenuHtml = <<<EOD_UserMenuHtml
+<div class=ddown>
+  <button class='btn btn-primary text-white'><a data-nowordlink>$userSC</a></button>
+  <div class="ddown-content">
+    <a role='button' class='btn btn-primary text-white btn-sm mt-1 mb-1' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a><br>
+    <a role='button' class='btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a><br>
+    $portfolioHtml
+    <a role=button href='logout.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary btn-sm mt-1 mb-1' title='$T_Logout_from_Clilstore'>$T_Logout</a>
+  </div>
+</div>
+EOD_UserMenuHtml;
     }
     $navbar1 = <<<EOD_NB1
 <div class="row no-margin" style="background-color: #2c6692;">
@@ -134,13 +147,11 @@
              $likeHtml
     </div>
     <div class="col-md-4" style="padding-right:0;padding-left:2px">
+             $userMenuHtml
              $buttonedit
              $recordVocHtml
-             $portfolioHtml
-             <div class="btn" style="display:inline-block;vertical-align:middle">$hlSelect</div>
-             <a role="button" href="unitinfo.php?id=$id" target=_top class="nowordlink btn btn-primary text-white btn-sm float-right mt-1 mb-1" style="margin-left:0.5em" title="$T_Unit_info_title"><img src=/icons-smo/infoButton.png style="width:24px"></a>
-             $loginbutton
-             $logoutbutton
+             <div class="btn" style="display:inline-block">$hlSelect</div>
+             $unitinfoHtml
     </div>
 </div>
 
@@ -172,6 +183,9 @@ EOD_NB2;
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <style>
+        .ddown { display:inline-block; overflow2:hidden; }
+        .ddown-content { display:none; position:absolute; padding:2px; background-color:#f9f9f9; white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
+        .ddown:hover .ddown-content { display:block; }
         #share-buttons img {
             width: 40px;
             padding: 5px;
