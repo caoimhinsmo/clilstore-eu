@@ -128,7 +128,9 @@ EOD1;
         $stmtUser = $DbMultidict->prepare('SELECT user FROM users WHERE user=:user');
         $stmtUser->bindParam(':user',$user);
 
-        if (empty($fullname) || strlen($fullname)<8) {
+        if ( $user <> strtr($user,'^!£$%^&"*()=+{}[]\\/|:;\'@~#<>,?',
+                                  '________________________________') ) {
+        } elseif (empty($fullname) || strlen($fullname)<8) {
             $errorMessage = 'You have not given your full name';
         } elseif (empty($email)) {
             $errorMessage = 'You have not given your e-mail address';
@@ -192,7 +194,7 @@ ENDsuccess;
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
 									</div>
-									<input type="text" class="form-control" name="user" value="$userSC" required pattern=".{3,16}" autofocus placeholder="$T_Choose_unique_userid">
+									<input type="text" class="form-control" name="user" value="$userSC" required pattern="[^!£$%^&amp;&quot;*()=+{}\[\]\\\/|:;'@~#<>,?]{3,16}" autofocus placeholder="$T_Choose_unique_userid">
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
