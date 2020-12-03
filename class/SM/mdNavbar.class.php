@@ -55,7 +55,7 @@ class SM_mdNavbar {
       } else {
           $homeLink = '';
       }
-      $unitLink = ( isset($unit)
+      $unitLink = ( !empty($unit)
                   ? "<li><a href='/cs/$unit'>$T_Unit $unit</a></li>"
                   : ''
                   );
