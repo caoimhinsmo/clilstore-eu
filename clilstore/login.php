@@ -29,6 +29,12 @@
     $successMessage = $failureMessage = $refreshHeader = $formHtml = '';
     $userAsTyped = $passwordAsTyped = $userAutofocus = $passwordAutofocus = '';
 
+    if      (!empty($_REQUEST['returnTo']))    { $refreshURL = $_REQUEST['returnTo'];
+                                                   if (substr($refreshURL,0,4)<>'http') { $refreshURL = $serverhome . $refreshURL; }
+                                               }
+     elseif (!empty($_SERVER['HTTP_REFERER'])) { $refreshURL = $_SERVER['HTTP_REFERER']; }
+     else                                      { $refreshURL = "$serverhome/clilstore"; }
+
     $menu   = SM_clilHeadFoot::cabecera();
     $footer = SM_clilHeadFoot::pie();
 
@@ -77,7 +83,7 @@ if ($password=='' && strlen($passwordAsTyped)>3) {
 </div>
 ENDsuccess;
             $formRequired = FALSE;
-            $refreshHeader =  "<meta http-equiv=refresh content='1; url=$serverhome$returnTo'>";
+            $refreshHeader =  "<meta http-equiv=refresh content='1; url=$refreshURL'>";
         } elseif (!isset($_GET['user'])) {
             $failureMessage = <<<ENDfailure
 $T_Userid_or_pw_incorrect
@@ -101,7 +107,7 @@ ENDfailure;
 				<div class="alert text-center" role="alert">
 					<h5><span class="badge badge-danger">$failureMessage</span></h5>
 				</div>
-				<form data-toggle="validator" role="form" method="post" action="#">
+				<form data-toggle="validator" role="form" method="post" action="/clilstore/login.php?returnTo=$refreshURL">
 					<input type="hidden" class="hide" id="csrf_token" name="csrf_token" value="C8nPqbqTxzcML7Hw0jLRu41ry5b9a10a0e2bc2">
 					<div class="row">
 						<div class="col-md-12">
