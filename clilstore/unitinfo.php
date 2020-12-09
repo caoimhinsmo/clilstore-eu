@@ -25,6 +25,7 @@
   $T_Licence   = $T->h('csCol_licence');
   $T_Views     = $T->h('csCol_views');
   $T_Likes     = $T->h('csCol_likes');
+  $T_Offer     = $T->h('Offer');
   $T_Language_notes  = $T->h('Language_notes');
   $T_Word_count      = $T->h('Word_count');
   $T_Clicks_on_words = $T->h('Clicks_on_words');
@@ -32,10 +33,21 @@
   $T_Parameter_p_a_dhith   = $T->h('Parameter_p_a_dhith');
   $T_Raw_unit_unwordlinked = $T->h('Raw_unit_unwordlinked');
   $T_Google_translated     = $T->h('Google_translated');
+  $T_Ownership_transfer    = $T->h('Ownership_transfer');
+  $T_Offer_to_transfer_    = $T->h('Offer_to_transfer_');
+  $T_No_such_userid_as_    = $T->h('No_such_userid_as_');
+  $T_The_unit_is_on_offer_ = $T->h('The_unit_is_on_offer_');
+  $T_Withdraw_the_offer    = $T->h('Withdraw_the_offer');
+  $T_User_can_accept_      = $T->h('User_can_accept_');
+  $T_Offer_it_instead_to_  = $T->h('Offer_it_instead_to_');
+  $T_Clilstore_user_id     = $T->h('Clilstore_user_id');
+  $T_Details_for_unit_     = $T->h('Details_for_unit_');
+  $T_The_unit_was_on_offer = $T->h('The_unit_was_on_offer');
 
   $id = $_REQUEST['id'] ?? NULL;
   $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan,$id);
   $T_Raw_unit_unwordlinked = strtr($T_Raw_unit_unwordlinked,[ '{'=>"<a href=/clilstore/page.php?id=$id>", '}'=>'</a>', '('=>'<i>(', ')'=>')</i>' ]);
+  $T_Details_for_unit_ = strtr($T_Details_for_unit_, ['{unitNo}'=>$id]);
 
   try {
     if (is_null($id))     { throw new SM_MDexception(sprintf($T_Parameter_p_a_dhith,'id')); }
@@ -48,29 +60,27 @@
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
 
     if (isset($_REQUEST['offerSubmit'])) {
-        $offerSubmit = $_REQUEST['offerSubmit'];
-        if ($offerSubmit=='Withdraw the offer') {
-            $stmt = $DbMultidict->prepare("UPDATE clilstore SET offer=NULL,offerTime=0 WHERE id=:id AND (owner=:user OR '$user'='admin')");
-            $stmt->execute(array('id'=>$id,':user'=>$user));
-            SM_csSess::logWrite($user,'offerWithdraw',"User $user withdrew the offer on unit $id");
-        } else if ($offerSubmit=='Offer') {
-            $offer = (isset($_REQUEST['offer']) ? $_REQUEST['offer'] : '');
-            if (!empty($offer)) {
-                $stmt = $DbMultidict->prepare('SELECT user FROM users WHERE user=:user');
-                $stmt->execute(array(':user'=>$offer));
-                if (!$stmt->fetch()) {
-                    $errorMessage = '<p style="color:red">No such user as ' . htmlspecialchars($offer) .'<p>';
-                } elseif ($offer==$user) {
-                    $errorMessage = '<p style="color:red">You can’t transfer ownership from yourself to yourself</p>';
-                } else {
-                    $offerTime = time();
-                    $stmt = $DbMultidict->prepare("UPDATE clilstore SET offer=:offer,offerTime=:offerTime where id=:id AND (owner=:user OR '$user'='admin')");
-                    $stmt->execute( array(':id'=>$id, ':user'=>$user, ':offer'=>$offer, ':offerTime'=>$offerTime) );
-                    SM_csSess::logWrite($user,'offerMake',"User $user offered unit $id to user $offer",$offer);
-                }
+        $offer = $_REQUEST['offer'] ?? '';
+        if (!empty($offer)) {
+            $stmt = $DbMultidict->prepare('SELECT user FROM users WHERE user=:user');
+            $stmt->execute(array(':user'=>$offer));
+            if (!$stmt->fetch()) {
+                $errorMessage = '<p style="color:red">' . strtr($T_No_such_userid_as_,['{userid}'=>$offer]) . '<p>';
+            } elseif ($offer==$user) {
+                $errorMessage = '<p style="color:red">You can’t transfer ownership from yourself to yourself</p>';
+            } else {
+                $offerTime = time();
+                $stmt = $DbMultidict->prepare("UPDATE clilstore SET offer=:offer,offerTime=:offerTime where id=:id AND (owner=:user OR '$user'='admin')");
+                $stmt->execute( array(':id'=>$id, ':user'=>$user, ':offer'=>$offer, ':offerTime'=>$offerTime) );
+                SM_csSess::logWrite($user,'offerMake',"User $user offered unit $id to user $offer",$offer);
             }
-        } else { throw new SM_MDexception('Invalid offerSubmit parameter '.htmlspecialchars($offerSubmit)); }
-     }
+        }
+    }
+    if (isset($_REQUEST['withdrawSubmit'])) {
+        $stmt = $DbMultidict->prepare("UPDATE clilstore SET offer=NULL,offerTime=0 WHERE id=:id AND (owner=:user OR '$user'='admin')");
+        $stmt->execute(array('id'=>$id,':user'=>$user));
+        SM_csSess::logWrite($user,'offerWithdraw',"User $user withdrew the offer on unit $id");
+    }
 
     $query = 'SELECT sl,level,owner,medtype,medlen,title,summary,langnotes,words,created,changed,licence,views,clicks,likes,offer,offerTime,fullname'
             .' FROM clilstore, users WHERE id=:id AND clilstore.owner=users.user';
@@ -121,25 +131,33 @@
         $stmt = null;
         $offerMess = "<datalist id=\"userList\">\n$userListHtml\n</datalist>\n";
         if (empty($offer)) {
-            $offerMess .= "Offer to transfer ownership of this unit to user: ";
+            $offerMess .= "$T_Offer_to_transfer_";
         } else {
             if (!empty($offerTime)) {
                 $offerTimeObj = new DateTime("@$offerTime");
                 $offerDateTime = date_format($offerTimeObj, 'Y-m-d H:i:s');
-                $offerMess .= "<form method=\"POST\" action=\"unitinfo.php?id=$id\">\n"
-                            . "The unit is on offer from you to <b><a href=\"userinfo.php?user=$offer\">$offer</a></b> <span style=\"font-size:80%;color:grey\">(since $offerDateTime)</span>\n"
-                            . '<input type="submit" name="offerSubmit" value="Withdraw the offer" style="margin-left:0.5em"><br>'
-                            . "</form>"
-                            . "<span class=\"info\">&nbsp;&nbsp;&nbsp;User $offer can accept or reject the offer via his/her Clilstore Options</span><br><br>\n";
+                $T_The_unit_is_on_offer_ = strtr($T_The_unit_is_on_offer_,
+                  [ '{userid}' => "<a href='userinfo.php?user=$offer' style='font-weight:bold'>$offer</a>",
+                    '{dateTime}' => $offerDateTime,
+                    '(' => '<span style="font-size:80%;color:grey">', ')' => '</span>' ]);
+                $T_User_can_accept_ = strtr($T_User_can_accept_, ['{userid}'=>$offer]);
+                $offerMess .= <<<END_offerMess
+<form method=post>
+$T_The_unit_is_on_offer_
+<input type=submit name="withdrawSubmit" value="$T_Withdraw_the_offer" style="margin-left:0.5em"><br>
+</form>
+<span class="info" style="padding-left:2em">$T_User_can_accept_</span><br><br>
+END_offerMess;
             } else {
-                $offerMess .= "The unit was on offer to <a href=\"userinfo.php?user=$offer\">$offer</a> but has been rejected.<br>\n";
+                $T_The_unit_was_on_offer = strtr($T_The_unit_was_on_offer, ['{userid}' => "<a href='/userinfo.php?user=$oxsffer'>$offer</a>"]);
+                $offerMess .= "$T_The_unit_was_on_offer<br>\n";
             }
-            $offerMess .= 'Offer it instead to user: ';
+            $offerMess .= $T_Offer_it_instead_to_;
         }
         $offerMess .= "<form action=\"unitinfo.php?id=$id\" method=\"post\">\n"
-                    . '<input name="offer" list="userList" placeholder="Clilstore user id"> <input type="submit" name="offerSubmit" value="Offer"></form>'."\n";
+                    . "<input name='offer' list='userList' placeholder='$T_Clilstore_user_id'> <input type=submit name='offerSubmit' value='$T_Offer'></form>\n";
         $ownerHtml = <<<EODowner
-<fieldset id="transfer"><legend>Ownership transfer</legend>$offerMess</fieldset>
+<fieldset id="transfer"><legend>$T_Ownership_transfer</legend>$offerMess</fieldset>
 EODowner;
     }
 
@@ -149,7 +167,7 @@ EODowner;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Details for Clilstore unit $id</title>
+    <title>$T_Details_for_unit_</title>
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <link rel="StyleSheet" href="/css/smo.css">
     <link rel="StyleSheet" href="style.css?version=2014-04-15">
@@ -172,7 +190,7 @@ $mdNavbar
 
 $errorMessage
 
-<h1 style="font-size:130%">Details for Clilstore unit $id</h1>
+<h1 style="font-size:130%">$T_Details_for_unit_</h1>
 
 <table id="priomh">
 <tr><td>$T_Title:</td><td style="font-weight:bold;font-size:130%">$title</td></tr>
