@@ -25,6 +25,7 @@
   $T_Short_url  = $T->h('Short_url');
   $T_Portfolio  = $T->h('Portfolio');
   $T_Error_in   = $T->j('Error_in');
+  $T_totalj     = $T->j('total');
   $T_Voc_Click_to_enable   = $T->h('Voc_Click_to_enable');
   $T_Voc_Click_to_disable  = $T->h('Voc_Click_to_disable');
   $T_Open_vocabulary_list  = $T->h('Open_vocabulary_list');
