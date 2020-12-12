@@ -14,6 +14,7 @@
   $T_Return     = $T->h('Return');
   $T_UserID     = $T->h('UserID');
   $T_Register   = $T->h('Register');
+  $T_Login      = $T->h('Log_air'); 
   $T_Retype_password         = $T->h('Retype_password');
   $T_UserID_advice           = $T->h('UserID_advice');
   $T_Fullname_advice         = $T->h('Fullname_advice');
@@ -29,6 +30,8 @@
   $T_User_exists_for_email_3 = $T->h('User_exists_for_email_3');
   $T_User_already_taken      = $T->h('User_already_taken');
   $T_Retyped_pw_mismatch     = $T->h('Retyped_pw_mismatch');
+  $T_Userid_successfully_reg = $T->h('Userid_successfully_reg');
+  $T_You_may_now_            = $T->h('You_may_now_');
 
   $T_Our_privacy_policy = $T->h('Our_privacy_policy');
 
@@ -165,8 +168,10 @@ EOD1;
             $stmtInsert->bindParam(':joined',  $utime);
             $stmtInsert->bindParam(':password',$passwordCrypt);
             if (!$stmtInsert->execute()) { throw new SM_MDexception('Failed to insert user record'); }
+            $T_Userid_successfully_reg = strtr($T_Userid_successfully_reg, ['{#userid}'=>"<b>$userSC</b>"]);
             echo <<<ENDsuccess
-<h2 class="text-white">User ID <b>$user</b> has been successfully registered. You may now </h2><a class="btn btn-outline-light text-uppercase ml-2" href="login.php">$T_Login</a>
+<h2 class="text-white">$T_Userid_successfully_reg. $T_You_may_now_Login </h2>
+<a class="btn btn-outline-light text-uppercase ml-2" href="login.php?user=$userSC&amp;returnTo=/clilstore/">$T_Login</a>
 ENDsuccess;
             $formRequired = 0;
         }
