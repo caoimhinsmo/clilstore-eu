@@ -74,6 +74,8 @@
   }
 
   try {
+    $returnTo = $_REQUEST['returnTo'] ?? '/clilstore/';
+
     echo <<<EOD1
 <!DOCTYPE html>
 <html lang="en">
@@ -170,8 +172,8 @@ EOD1;
             if (!$stmtInsert->execute()) { throw new SM_MDexception('Failed to insert user record'); }
             $T_Userid_successfully_reg = strtr($T_Userid_successfully_reg, ['{#userid}'=>"<b>$userSC</b>"]);
             echo <<<ENDsuccess
-<h2 class="text-white">$T_Userid_successfully_reg. $T_You_may_now_Login </h2>
-<a class="btn btn-outline-light text-uppercase ml-2" href="login.php?user=$userSC&amp;returnTo=/clilstore/">$T_Login</a>
+<h2 class="text-white">$T_Userid_successfully_reg.<br>
+$T_You_may_now_ <a class="btn btn-outline-light text-uppercase ml-2" href="login.php?user=$userSC&amp;returnTo=$returnTo">$T_Login</a></h2>
 ENDsuccess;
             $formRequired = 0;
         }

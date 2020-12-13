@@ -148,7 +148,7 @@ ENDfailure;
 				</form>
 				<div class="clear">
 				</div>
-				<i class="fa fa-user fa-fw"></i> $T_No_account_yet <a href="register.php">$T_Register</a><br>
+				<i class="fa fa-user fa-fw"></i> $T_No_account_yet <a href="register.php?returnTo=$returnTo">$T_Register</a><br>
 				<i class="fa fa-undo fa-fw"></i> $T_Forgotten_your_password <a href="forgotPassword.php">$T_Recover_it</a>
                                 <p class="text-center"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">$T_Return</a></p>
 			</div>
