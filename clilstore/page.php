@@ -88,21 +88,21 @@
     }
     $buttonedit = ( $user<>$owner && $user<>'admin'
                   ? ''
-                  : "<a href='edit.php?id=$id&amp;view' title='$T_Edit_this_unit' class='nowordlink btn btn-success btn-sm rounded' target='_parent' role='button'><i class='fa fa-edit' aria-hidden='true'></i></a>"
+                  : "<a href='edit.php?id=$id&amp;view' title='$T_Edit_this_unit' class='nowordlink' target='_parent' role='button'><img src=/icons-smo/edit.png style='width:30px'></a>"
                   );
     $stmt = $DbMultidict->prepare('SELECT record FROM users WHERE user=:user');
     $stmt->execute([':user'=>$user]);
     if (!empty($user)) {
         $record = $stmt->fetch(PDO::FETCH_COLUMN);
         $vocClass = ( $record ? 'vocOn' : 'vocOff');
-        $recordVocHtml = "<span class=$vocClass onclick='vocClicked(this.className);'>"
+        $recordVocHtml = "<span class=$vocClass onclick='vocClicked(this.className);' style='cursor: pointer'>"
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
                         ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>";
        $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
        $stmt->execute([':user'=>$user]);
        if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
-           $portfolioHtml = "<a role=button class='btn btn-primary text-white btn-sm mt-1 mb-1' href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\" title='$T_Add_to_portfolio'>$T_Portfolio</a><br>";
+           $portfolioHtml = "<a class='dropdown-item' href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\" title='$T_Add_to_portfolio'>$T_Portfolio</a>";
        }
        $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
@@ -121,17 +121,17 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
-    $unitinfoHtml = "<a role=button href='unitinfo.php?id=$id' target=_top data-nowordlink class='btn btn-primary btn-sm mt-1 mb-1' style='margin-left:0.5em' title='$T_Unit_info_title'><img src=/icons-smo/infoButton.png style='width:16px'></a>";
+    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><img src=/icons-smo/infoButton.png style='margin-left: 5px; width:30px'></a>";
     if (empty($user)) {
         $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
-<div class=ddown>
-  <button class='btn btn-primary text-white'><a data-nowordlink>$userSC</a></button>
-  <div class="ddown-content">
-    <a role='button' class='btn btn-primary text-white btn-sm mt-1 mb-1' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a><br>
-    <a role='button' class='btn btn-primary text-white btn-sm mt-1 mb-1' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a><br>
+<div class="btn-group">
+  <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a data-nowordlink>$userSC</a></button>
+  <div class="dropdown-menu">
+    <a class='dropdown-item' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a>
+    <a class='dropdown-item' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>
     $portfolioHtml
-    <a role=button href='logout.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary btn-sm mt-1 mb-1' title='$T_Logout_from_Clilstore'>$T_Logout</a>
+    <a class='dropdown-item' href='logout.php?returnTo=/cs/$id' target=_top title='$T_Logout_from_Clilstore'>$T_Logout</a>
   </div>
 </div>
 EOD_UserMenuHtml;
@@ -148,11 +148,11 @@ EOD_UserMenuHtml;
              $likeHtml
     </div>
     <div class="col-md-4" style="padding-right:0;padding-left:2px">
-             $userMenuHtml
-             $buttonedit
              $recordVocHtml
-             <div class="btn" style="display:inline-block">$hlSelect</div>
+             $buttonedit
              $unitinfoHtml
+             <div class="btn" style="display:inline-block">$hlSelect</div>
+             $userMenuHtml
     </div>
 </div>
 
@@ -254,6 +254,17 @@ EOD_NB2;
     margin-right: 0px;
     margin-left: 0px;
    }
+
+   .dropdown-menu {
+        background-color: rgba(255, 255, 255, .8);
+    }
+
+
+    .dropdown-item:hover, .dropdown-item:focus {
+        color: #16181b;
+        text-decoration: none;
+        background-color: #f7ac99;
+    }
 
     </style>
     <script>
