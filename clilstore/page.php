@@ -88,7 +88,7 @@
     }
     $buttonedit = ( $user<>$owner && $user<>'admin'
                   ? ''
-                  : "<a href='edit.php?id=$id&amp;view' title='$T_Edit_this_unit' class='nowordlink' target='_parent' role='button'><img src=/icons-smo/edit.png style='width:30px'></a>"
+                  : "<a href='edit.php?id=$id&amp;view' title='$T_Edit_this_unit' class='nowordlink' target='_parent' role='button'><div class='cardinfo'><img src=/icons-smo/edit.png width='30'><img src=/icons-smo/edit_hover.png class='img-top' width='30'></div></a>"
                   );
     $stmt = $DbMultidict->prepare('SELECT record FROM users WHERE user=:user');
     $stmt->execute([':user'=>$user]);
@@ -110,7 +110,7 @@
        $stmtGetLikes->execute([':id'=>$id]);
        if ($stmtGetLike->fetchColumn()>0) { $likeClass = 'liked'; } else { $likeClass = 'unliked'; }
        $likes = $stmtGetLikes->fetchColumn();
-       $likeHtml = "<span id=likeLI class='$likeClass' onclick='likeClicked();'><img id=heartUnliked src='/favicons/unlike.png' alt='unlike'><img id=heartLiked src='/favicons/like.png' alt='like'></span><span id='likesBadge' class='badge badge-pill badge-danger'>$likes</span>";
+       $likeHtml = "<span id=likeLI class='$likeClass' onclick='likeClicked();'><img id=heartUnliked src='/favicons/unlike.png' alt='unlike'><img id=heartLiked src='/favicons/like.png' alt='like'></span><span id='likesBadge' class='badge badge-pill badge-danger' style='margin-left:-1em'>$likes</span>";
     }
 
     $shareTitle = 'Clilstore unit: ' . urlencode($title);
@@ -121,7 +121,7 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
-    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><img src=/icons-smo/infoButton.png style='margin-left: 5px; width:30px'></a>";
+    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButton_hover.png class='img-top' width='30'></div></a>";   
     if (empty($user)) {
         $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
@@ -130,7 +130,7 @@
   <div class="dropdown-menu">
     <a class='dropdown-item' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a>
     <a class='dropdown-item' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>
-    $portfolioHtml
+    $portfolioHtml    
     <a class='dropdown-item' href='logout.php?returnTo=/cs/$id' target=_top title='$T_Logout_from_Clilstore'>$T_Logout</a>
   </div>
 </div>
@@ -138,7 +138,7 @@ EOD_UserMenuHtml;
     }
     $navbar1 = <<<EOD_NB1
 <div class="row no-margin" style="background-color: #2c6692;">
-    <div class="col-md-8" id="share-buttons">
+    <div class="col-md-8 col-sm-8" id="share-buttons">
         <a role="button" href="/clilstore" class="nowordlink btn btn-primary text-white btn-sm align-middle ml-1 mt-1 mb-1 mr-1" title="Clilstore index page" target="_parent">Clilstore</a>
              $sharebuttonFB
              $sharebuttonTw
@@ -147,10 +147,10 @@ EOD_UserMenuHtml;
              $sharebuttonEM
              $likeHtml
     </div>
-    <div class="col-md-4" style="padding-right:0;padding-left:2px">
+    <div class="col-md-4 col-sm-4" style="padding-right:0;padding-left:2px">
              $recordVocHtml
              $buttonedit
-             $unitinfoHtml
+             $unitinfoHtml 
              <div class="btn" style="display:inline-block">$hlSelect</div>
              $userMenuHtml
     </div>
@@ -254,18 +254,35 @@ EOD_NB2;
     margin-right: 0px;
     margin-left: 0px;
    }
-
-   .dropdown-menu {
-        background-color: rgba(255, 255, 255, .8);
+     
+   .dropdown-menu {       
+        background-color: rgba(255, 255, 255, .8);       
     }
-
-
+            
+            
     .dropdown-item:hover, .dropdown-item:focus {
         color: #16181b;
         text-decoration: none;
         background-color: #f7ac99;
     }
 
+    .cardinfo {
+        width: 30px;
+        height: 30px;
+        position: relative;
+        display: inline-block;
+            
+    }
+    .cardinfo .img-top {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 99;
+    }
+    .cardinfo:hover .img-top {
+        display: inline;
+    }       
     </style>
     <script>
         function likeClicked_SGUAB() {
