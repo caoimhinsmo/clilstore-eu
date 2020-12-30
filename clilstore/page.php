@@ -147,12 +147,16 @@ EOD_UserMenuHtml;
              $sharebuttonEM
              $likeHtml
     </div>
-    <div class="col-md-4 col-sm-4" style="padding-right:0;padding-left:2px">
+    <div class="col-md-4 col-sm-4">
+           <div class="float-md-right float-sm-right" role="group">
              $recordVocHtml
              $buttonedit
              $unitinfoHtml 
-             <div class="btn" style="display:inline-block">$hlSelect</div>
-             $userMenuHtml
+             <div class="btn" style="display:inline-block; ">$hlSelect</div>
+            $userMenuHtml
+            </div>
+             
+            
     </div>
 </div>
 
