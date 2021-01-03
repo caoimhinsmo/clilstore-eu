@@ -126,13 +126,17 @@
         $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
 <div class="btn-group">
-  <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a data-nowordlink>$userSC</a></button>
+  <div class="dropdown">
+  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    $userSC
+  </button>  
   <div class="dropdown-menu">
     <a class='dropdown-item' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a>
     <a class='dropdown-item' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>
     $portfolioHtml    
     <a class='dropdown-item' href='logout.php?returnTo=/cs/$id' target=_top title='$T_Logout_from_Clilstore'>$T_Logout</a>
   </div>
+  </div>          
 </div>
 EOD_UserMenuHtml;
     }
@@ -269,6 +273,15 @@ EOD_NB2;
         text-decoration: none;
         background-color: #f7ac99;
     }
+            
+    .dropdown:hover>.dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown>.dropdown-toggle:active {
+        /*Without this, clicking will make it sticky*/
+          // pointer-events: none;
+      }
 
     .cardinfo {
         width: 30px;

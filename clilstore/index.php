@@ -1805,6 +1805,8 @@ if ($mode == 3){
          a.buttons-columnVisibility.active { padding-left:1em; }
          a.buttons-columnVisibility.active::before { content:"✓ "; }
 
+         div#dmenu:hover > .dropdown-menu { display:block; }
+
     </style>
     <script>
         function clearFields () {
