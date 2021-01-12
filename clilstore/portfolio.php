@@ -75,7 +75,7 @@
 
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
 
-    $unitsHtml = $titleHtml = $permitTableHtml = $pfsTableHtml = $addTeacherHtml = $itemEditHtml = '';
+    $unitsHtml = $unitsTableHtml = $titleHtml = $permitTableHtml = $pfsTableHtml = $addTeacherHtml = $itemEditHtml = '';
 
     $pf = $_REQUEST['pf'] ?? -1;
     if ($pf == -1) {
@@ -113,85 +113,57 @@
       $h2 = "<div class=\"col-md-12 mb-3 mt-3\"><h4 style='color:white'>$T_active_portfolio : $titulo</h4></div>";
       }
 
-    if ($pf==0) {
+    $unitToEdit = $_REQUEST['unit'] ?? 0;
 
-        $unitsTableHtml = <<<END_unitsTableHtml
-<div style="float:left;margin:0 0 1em 5em;border:1px solid green;background-color:#dfd;border-radius:0.3em">
-<p style="margin:0;padding:0.5em 0.5em 0.5em 2em;text-indent:-1.5em;color:green;font-size:85%">$T_New_portfolio_advice</p>
-</div>
-
-<div style="clear:both">
-$T_Title_of_your_portfolio<br>
-<input id=createTitle required style="width:80%;max-width:50em">
-</div>
-
-
-<table style="margin-top:1em">
-<tr style="vertical-align:top">
-<td>$T_Your_teachers_Clilstore_id<br>
-<input id=createTeacher style="width:16em"></td>
-<td style="padding-left:0.5em">
-<div style="float:left;border:1px solid green;border-radius:0.3em;padding:0.2em 0.4em;margin:0;color:green;font-size:80%;background-color:#dfd">
-$T_New_teacher_advice</div>
-</tr>
-</table>
-
-<p style="margin:1em 0 3em 0"><a class=button onClick="createPortfolio()">$T_Create</a></p>
-END_unitsTableHtml;
-
-    } else {
-
-        $unitToEdit = $_REQUEST['unit'] ?? 0;
-
-        $stmtPfu = $DbMultidict->prepare('SELECT cspfUnit.pfu, cspfUnit.unit AS csUnit, clilstore.title AS csTitle FROM cspfUnit,clilstore'
+    $stmtPfu = $DbMultidict->prepare('SELECT cspfUnit.pfu, cspfUnit.unit AS csUnit, clilstore.title AS csTitle FROM cspfUnit,clilstore'
                                     . ' WHERE pf=:pf AND unit=clilstore.id ORDER BY ord');
-        $stmtPfu->execute([':pf'=>$pf]);
-        $pfuRows = $stmtPfu->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($pfuRows as $pfuRow) {
-            extract($pfuRow);
-            $stmtPfuL = $DbMultidict->prepare('SELECT id AS pfuL, learned FROM cspfUnitLearned WHERE pfu=:pfu ORDER BY ord');
-            $stmtPfuL->execute([':pfu'=>$pfu]);
-            $learnedHtml = $workHtml = $newLearnedItem = $newWorkItem = '';
-            $unitidHtml = str_pad($csUnit, 5, '_', STR_PAD_LEFT);
-            $unitidHtml = str_replace('_','&nbsp;',$unitidHtml);
-            $rowClass = ( $csUnit==$unitToEdit ? 'class=edit' : '');
-            if ($edit) {
-                $upArrowHtml   = "<img title='$T_Move_up'   onClick=moveUnit(this,'up') src='/icons-smo/up-arrow.png' class='tool upArrow'>";
-                $downArrowHtml = "<img title='$T_Move_down' onClick=moveUnit(this,'down') src='/icons-smo/down-arrow.png' class='tool downArrow'>";
-                $moveUnitHtml   = "<span style='white-space:nowrap'>$upArrowHtml$downArrowHtml</span>";
-                $removeUnitHtml = "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Remove_unit_from_portfolio' onClick=\"removeUnit('$pfu')\" class=tool>";
-                $editUnitHtml   = "<img src='/icons-smo/pencil.png' alt='Edit' title='$T_Edit_unit_in_portfolio' onClick=\"toggleUnitEdit('$pfu')\" class='tool editIcon'>";
-            }
-            $pfuLRows = $stmtPfuL->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($pfuLRows as $pfuLRow) {
-                extract ($pfuLRow);
-                $learnedHtml .= "<li  class=\"list-group-item list-group-item-light mb-1\" id=pfuL$pfuL><span id=pfuLtext$pfuL onKeypress='keypress(event,this)'>$learned</span> $LitemEditHtml\n";
-            }
-            if ($edit) { $newLearnedItem = "<input id=pfuLnew$pfu class=\"edit form-control\" placeholder='$T_Add_an_item' onChange=\"pfuLadd('$pfu')\">"; }
-            $learnedHtml = <<<END_learnedHtml
+    $stmtPfu->execute([':pf'=>$pf]);
+    $pfuRows = $stmtPfu->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($pfuRows as $pfuRow) {
+        extract($pfuRow);
+        $stmtPfuL = $DbMultidict->prepare('SELECT id AS pfuL, learned FROM cspfUnitLearned WHERE pfu=:pfu ORDER BY ord');
+        $stmtPfuL->execute([':pfu'=>$pfu]);
+        $learnedHtml = $workHtml = $newLearnedItem = $newWorkItem = '';
+        $unitidHtml = str_pad($csUnit, 5, '_', STR_PAD_LEFT);
+        $unitidHtml = str_replace('_','&nbsp;',$unitidHtml);
+        $rowClass = ( $csUnit==$unitToEdit ? 'class=edit' : '');
+        if ($edit) {
+            $upArrowHtml   = "<img title='$T_Move_up'   onClick=moveUnit(this,'up') src='/icons-smo/up-arrow.png' class='tool upArrow'>";
+            $downArrowHtml = "<img title='$T_Move_down' onClick=moveUnit(this,'down') src='/icons-smo/down-arrow.png' class='tool downArrow'>";
+            $moveUnitHtml   = "<span style='white-space:nowrap'>$upArrowHtml$downArrowHtml</span>";
+            $removeUnitHtml = "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Remove_unit_from_portfolio' onClick=\"removeUnit('$pfu')\" class=tool>";
+            $editUnitHtml   = "<img src='/icons-smo/pencil.png' alt='Edit' title='$T_Edit_unit_in_portfolio' onClick=\"toggleUnitEdit('$pfu')\" class='tool editIcon'>";
+        }
+        $pfuLRows = $stmtPfuL->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($pfuLRows as $pfuLRow) {
+            extract ($pfuLRow);
+            $learnedHtml .= "<li  class=\"list-group-item list-group-item-light mb-1\" id=pfuL$pfuL><span id=pfuLtext$pfuL onKeypress='keypress(event,this)'>$learned</span> $LitemEditHtml\n";
+        }
+        if ($edit) { $newLearnedItem = "<input id=pfuLnew$pfu class=\"edit form-control\" placeholder='$T_Add_an_item' onChange=\"pfuLadd('$pfu')\">"; }
+        $learnedHtml = <<<END_learnedHtml
 <ul id=pfuLul$pfu class="list-group list-group-flush">
 $learnedHtml
 </ul>
 $newLearnedItem
 END_learnedHtml;
-            $stmtPfuW = $DbMultidict->prepare('SELECT id AS pfuW, work, url AS workurl FROM cspfUnitWork WHERE pfu=:pfu ORDER BY ord');
-            $stmtPfuW->execute([':pfu'=>$pfu]);
-            $pfuWRows = $stmtPfuW->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($pfuWRows as $pfuWRow) {
-                extract ($pfuWRow);
-                $workHtml .= "<li class=\"list-group-item list-group-item-light mb-1\" id=pfuW$pfuW><a href='$workurl'>$work</a> $itemEditHtml\n";
-            }
-            if ($edit) {
-                $newWorkItem = "<input placeholder='$T_My_work' class=\"form-control mb-1\" id=pfuWnewWork$pfu><input class=\"form-control\" placeholder='URL' id=pfuWnewURL$pfu>";
-                $newWorkItem = "<span class=edit onChange=\"pfuWadd('$pfu')\">$newWorkItem</span>";
-            }
-            $workHtml = <<<END_workHtml
+        $stmtPfuW = $DbMultidict->prepare('SELECT id AS pfuW, work, url AS workurl FROM cspfUnitWork WHERE pfu=:pfu ORDER BY ord');
+        $stmtPfuW->execute([':pfu'=>$pfu]);
+        $pfuWRows = $stmtPfuW->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($pfuWRows as $pfuWRow) {
+            extract ($pfuWRow);
+            $workHtml .= "<li class=\"list-group-item list-group-item-light mb-1\" id=pfuW$pfuW><a href='$workurl'>$work</a> $itemEditHtml\n";
+        }
+        if ($edit) {
+            $newWorkItem = "<input placeholder='$T_My_work' class=\"form-control mb-1\" id=pfuWnewWork$pfu><input class=\"form-control\" placeholder='URL' id=pfuWnewURL$pfu>";
+            $newWorkItem = "<span class=edit onChange=\"pfuWadd('$pfu')\">$newWorkItem</span>";
+        }
+        $workHtml = <<<END_workHtml
 <ul id=pfuWul$pfu class="list-group list-group-flush">
 $workHtml
 </ul>
 $newWorkItem
 END_workHtml;
-            $unitsHtml .= <<<END_unitsHtml
+        $unitsHtml .= <<<END_unitsHtml
 <tr id=pfuRow$pfu $rowClass>
 <td class="separacion" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC;" width="33%">
     <table class="table borderless">
@@ -218,13 +190,14 @@ END_workHtml;
 <td width="33%" style="background-color: #70a0b3; border-bottom: 8px solid #59BDDC;">$workHtml</td>
 </tr>
 END_unitsHtml;
-        }
-        if (empty($unitsHtml)) {
-            if ($edit) { $unitsHtml = "<i>$T_You_can_add_Clilstore_units</i>"; }
-             else      { $unitsHtml = "<i>$T_Portfolio_contains_no_units</i>"; }
-           $unitsHtml = "<tr><td colspan=3>$unitsHtml</td></tr>";
-       }
+    }
+    if (empty($unitsHtml)) {
+        if ($edit) { $unitsHtml = "<i>$T_You_can_add_Clilstore_units</i>"; }
+         else      { $unitsHtml = "<i>$T_Portfolio_contains_no_units</i>"; }
+       $unitsHtml = "<tr><td colspan=3>$unitsHtml</td></tr>";
+    }
 
+    if ($pf<>0) {
         $unitsTableHtml = <<<END_unitsTable
 <div class="table-responsive">
 <table id=unitstab class="table">
@@ -259,7 +232,6 @@ END_unitsTable;
 END_addTeacher;
         }
         $permitTableHtml = <<<END_pt
-
     <div class="col-md-6">
         <div class="card">
             <div class="card-header text-center">
@@ -274,25 +246,25 @@ END_addTeacher;
             </table>
          </div>
     </div>
-
 END_pt;
+    }
 
-        if ($edit) {
-            $stmtPfs = $DbMultidict->prepare('SELECT pf AS portf,title FROM cspf WHERE user=:user ORDER BY prio DESC');
-            $stmtPfs->execute([':user'=>$user]);
-            $rows = $stmtPfs->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $n=>$row) {
-                extract($row);
-                if ($n==0) { $promoteHtml = "<span style='font-weigth: bold; color: #fff'><b>$T_active_portfolio</b>";
-                             $title = "<b>$title</b>"; }
-                 else      { $promoteHtml = "<a class=\"btn  btn-outline-danger\" href=\"#\" role=\"button\" title='$T_Promote_to_active_portfolio' onClick=\"pfPromote('$portf')\"><span class='fa fa-arrow-up fa-sm' aria-hidden='true'></span> $T_Promote</a>"; }
-                $editHtml = "<img src='/icons-smo/trash.png' class=tool alt='Delete' title='$T_Delete_this_portfolio' onclick=\"pfDelete('$portf','$pf','$n')\">";
-                if ($portf==$pf) { $promoteHtml .= " &nbsp; [$T_this_portfolio]</span>"; }
-                $promoteHtml = "<span>$promoteHtml</span>";
-                $pfsTableHtml .= "<tr id=pfsRow$portf><td>$editHtml </td><td><a href='./portfolio.php?pf=$portf'>$title</a> </td><td>$promoteHtml</td></tr>\n";
-            }
-            $pfsTableHtml = <<<END_pfstab
-
+    if ($edit) {
+        $stmtPfs = $DbMultidict->prepare('SELECT pf AS portf,title FROM cspf WHERE user=:user ORDER BY prio DESC');
+        $stmtPfs->execute([':user'=>$user]);
+        $rows = $stmtPfs->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $n=>$row) {
+            extract($row);
+            if ($n==0) { $promoteHtml = "<span style='font-weigth: bold; color: #fff'><b>$T_active_portfolio</b>";
+                         $title = "<b>$title</b>"; }
+             else      { $promoteHtml = "<a class=\"btn  btn-outline-danger\" href=\"#\" role=\"button\" title='$T_Promote_to_active_portfolio' onClick=\"pfPromote('$portf')\"><span class='fa fa-arrow-up fa-sm' aria-hidden='true'></span> $T_Promote</a>"; }
+            $editHtml = "<img src='/icons-smo/trash.png' class=tool alt='Delete' title='$T_Delete_this_portfolio' onclick=\"pfDelete('$portf','$pf','$n')\">";
+            if ($portf==$pf) { $promoteHtml .= " &nbsp; [$T_this_portfolio]</span>"; }
+            $promoteHtml = "<span>$promoteHtml</span>";
+            $pfsTableHtml .= "<tr id=pfsRow$portf><td>$editHtml </td><td><a href='./portfolio.php?pf=$portf'>$title</a> </td><td>$promoteHtml</td></tr>\n";
+        }
+        if ($pfsTableHtml=='') { $pfsTableHtml = "<tr><td colspan=3 style='text-align:center'>You have no portfolios</td></tr>"; }
+        $pfsTableHtml = <<<END_pfstab
 <div class="col-md-6">
       <div class="card">
             <div class="card-header text-center">
@@ -302,7 +274,7 @@ END_pt;
             <table class="card-table table">
                 <tbody>
                 $pfsTableHtml
-                <tr><td colspan=3 class='text-center'><a class="btn btn-success" role="button" href="portfolio.php?pf=0" data-toggle="modal" data-target="#createNewPortfolio">$T_Create_a_new_portfolio</a></td></tr>
+                <tr><td colspan=3 class='text-center'><a class="btn btn-success" role="button" href="portfolio.php?pf=0" data-toggle="modal" data-target="#createNewPortfolio">{$T_Create_a_new_portfolio}...</a></td></tr>
                 <tbody>
             </table>
        </div>
@@ -341,7 +313,6 @@ END_pt;
   </div>
 </div>
 END_pfstab;
-        }
     }
 
     $HTML = <<<EOD
