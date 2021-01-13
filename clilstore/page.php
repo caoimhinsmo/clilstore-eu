@@ -99,11 +99,12 @@
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
                         ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>";
-       $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
-       $stmt->execute([':user'=>$user]);
-       if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
+// Conditional code commented out. Now showing Portfolio link whether or not the user has any portfolios.
+//       $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1'); 
+//       $stmt->execute([':user'=>$user]);
+//       if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
            $portfolioHtml = "<a class='dropdown-item' href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\" title='$T_Add_to_portfolio'>$T_Portfolio</a>";
-       }
+//       }
        $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
        $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
@@ -127,7 +128,7 @@
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
 <div class="btn-group">
   <div class="dropdown">
-  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="min-width:8em">
     $userSC
   </button>  
   <div class="dropdown-menu">
@@ -156,7 +157,7 @@ EOD_UserMenuHtml;
              $recordVocHtml
              $buttonedit
              $unitinfoHtml 
-             <div class="btn" style="display:inline-block; ">$hlSelect</div>
+             <div class="btn" style="display:inline-block;padding:0">$hlSelect</div>
             $userMenuHtml
             </div>
              
