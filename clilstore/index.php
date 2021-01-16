@@ -1800,7 +1800,7 @@ if ($mode == 3){
             line-height: 1.3;
          }
 
-         div.dropdown-menu { border:1px solid #212529; background-color:#f3f3f3; }
+         div.dropdown-menu { border:1px solid #212529; background-color:#f3f3f3; margin-top:0; }
          a.buttons-columnVisibility { padding-left:2em; }
          a.buttons-columnVisibility.active { padding-left:1em; }
          a.buttons-columnVisibility.active::before { content:"✓ "; }

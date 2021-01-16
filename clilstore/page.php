@@ -265,7 +265,8 @@ EOD_NB2;
    }
      
    .dropdown-menu {       
-        background-color: rgba(255, 255, 255, .8);       
+        background-color: rgba(255, 255, 255, .8);
+        margin-top:0;
     }
             
             
