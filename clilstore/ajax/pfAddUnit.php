@@ -15,12 +15,12 @@
   $stmtFindPf = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
   $stmtFindPf->execute([':user'=>$loggedinUser]);
   $pf = $stmtFindPf->fetchColumn();
-  if (!$pf) { die('You have no portfolio'); }
+  if ($pf) {
+     //Add the unit
+      $ord = time();
+      $stmtAddUnit = $DbMultidict->prepare('INSERT IGNORE INTO cspfUnit (pf,unit,ord) VALUES (:pf,:unit,:ord)');
+      $stmtAddUnit->execute([ ':pf'=>$pf, ':unit'=>$unit, ':ord'=>$ord ]);
+  }
 
- //Add the unit
-  $ord = time();
-  $stmtAddUnit = $DbMultidict->prepare('INSERT IGNORE INTO cspfUnit (pf,unit,ord) VALUES (:pf,:unit,:ord)');
-  $stmtAddUnit->execute([ ':pf'=>$pf, ':unit'=>$unit, ':ord'=>$ord ]);
-  
   echo 'OK';
 ?>

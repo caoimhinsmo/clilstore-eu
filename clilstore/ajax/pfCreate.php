@@ -1,5 +1,6 @@
 <?php
-//Accept title and teacher POST parameters and create a new student portfolio
+//Accept title and teacher POST parameters and create a new student portfolio.
+//If there is a unit parameter, add this unit to the new portfolio.
   if (!include('autoload.inc.php')) { die('include autoload failed'); }
   try {
       $myCLIL = SM_myCLIL::singleton();
@@ -11,6 +12,7 @@
   if (!isset($_REQUEST['teacher'])) { die('Missing teacher parameter'); }
   $title   = $_REQUEST['title'];
   $teacher = $_REQUEST['teacher'];
+  $unit = $_REQUEST['unit'] ?? 0;
   $utime = time();
 
   $DbMultidict = SM_DbMultidictPDO::singleton('rw');
@@ -24,13 +26,18 @@
   $stmt = $DbMultidict->prepare('INSERT INTO cspf(user,title,prio) VALUES (:user,:title,:prio)');
   $result = $stmt->execute([ ':user'=>$user, ':title'=>$title, ':prio'=>$utime ]);
   if (!$result) { die('Create portfolio failed'); }
+  $pf = $DbMultidict->lastInsertId();
 
   if (!empty($teacher)) {
-      $pf = $DbMultidict->lastInsertId();
       $stmt2 = $DbMultidict->prepare('INSERT INTO cspfPermit (pf,teacher) VALUES (:pf,:teacher)');
       $result2 = $stmt2->execute([ ':pf'=>$pf, ':teacher'=>$teacher ]);
       if (!$result2) { die('Add teacher failed'); }
   }
-  
+
+  if (!empty($unit)) {
+      $stmt3 = $DbMultidict->prepare('INSERT IGNORE INTO cspfUnit (pf,unit) VALUES (:pf,:unit)');
+      $stmt3->execute([ ':pf'=>$pf, ':unit'=>$unit ]);
+  }
+
   echo 'OK';
 ?>

@@ -65,6 +65,7 @@
   $T_Remove_unit_from_portfolio     = $T->h('Remove_unit_from_portfolio');
   $T_Completely_delete_portfolio    = $T->j('Completely_delete_portfolio');
   $T_Teacher_already_has_access     = $T->j('Teacher_already_has_access');
+  $T_Must_give_portfolio_a_name     = $T->j('Must_give_portfolio_a_name');
 
   $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan);
 
@@ -81,8 +82,7 @@
     if ($pf == -1) {
         $stmt = $DbMultidict->prepare('SELECT pf,title FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
         $stmt->execute([':user'=>$user]);
-        if (!($row = $stmt->fetch(PDO::FETCH_ASSOC))) { $pf = 0; }
-        extract($row);
+        if (($row = $stmt->fetch(PDO::FETCH_ASSOC))) { extract($row); } else { $pf = 0; $title = ''; }
     } elseif ( $pf <> 0 ) {
         $stmt = $DbMultidict->prepare('SELECT title,user FROM cspf WHERE pf=:pf');
         $stmt->execute([':pf'=>$pf]);
@@ -108,10 +108,10 @@
 
     $userSC = htmlspecialchars($user) ?? '';
     $titulo = htmlspecialchars($title);
-    if ($pf==0) { $h1 = $T_Create_a_new_portfolio; }
+    if ($pf==0) { $h1 = $T_Create_a_new_portfolio;
+                  $h2 = ''; }
       else      { $h1 = "<span>$T_Portfolio_for_user_ <span style='color:white'>$user</span></span>";
-      $h2 = "<div class=\"col-md-12 mb-3 mt-3\"><h4 style='color:white'>$T_active_portfolio : $titulo</h4></div>";
-      }
+                  $h2 = "<div class=\"col-md-12 mb-3 mt-3\"><h4 style='color:white'>$T_active_portfolio : $titulo</h4></div>"; }
 
     $unitToEdit = $_REQUEST['unit'] ?? 0;
 
@@ -274,7 +274,7 @@ END_pt;
             <table class="card-table table">
                 <tbody>
                 $pfsTableHtml
-                <tr><td colspan=3 class='text-center'><a class="btn btn-success" role="button" href="portfolio.php?pf=0" data-toggle="modal" data-target="#createNewPortfolio">{$T_Create_a_new_portfolio}...</a></td></tr>
+                <tr><td colspan=3 class='text-center'><a class="btn btn-success" role="button" href="portfolio.php?pf=0&amp;unit=$unitToEdit" data-toggle="modal" data-target="#createNewPortfolio">{$T_Create_a_new_portfolio}...</a></td></tr>
                 <tbody>
             </table>
        </div>
@@ -294,8 +294,8 @@ END_pt;
                     $T_New_portfolio_advice
                 </div>
                 <div class="form-group">
-                    <label for="Port">$T_Title_of_your_portfolio</label>
-                    <input id="Port" required class="form-control">
+                    <label for="title_port">$T_Title_of_your_portfolio</label>
+                    <input id="title_port" required class="form-control">
                 </div>
                  <div class="alert alert-success" role="alert">
                     $T_New_teacher_advice
@@ -306,6 +306,7 @@ END_pt;
                 </div>
       </div>
       <div class="modal-footer">
+        <input type="hidden" id="unit_port" value = '$unitToEdit'>
         <button type="button" class="btn btn-danger" data-dismiss="modal">$T_Close</button>
         <button type="button" class="btn btn-success sendPort">$T_Create</button>
       </div>
@@ -485,22 +486,21 @@ EOD;
 
     </style>
     <script>
-        function createPortfolio(title_port,teacher_port) {
-            var title   = title_port;
-            var teacher = teacher_port;
-            if (title=='') { alert('You must give your portfolio a name'); return; }
+        function createPortfolio(title,teacher,unit) {
+            if (title=='') { alert('$T_Must_give_portfolio_a_name'); return; }
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     var resp = this.responseText;
-                    if       (resp=='OK')     { window.location.href = '/clilstore/portfolio.php'; }
-                     else if (resp=='nouser') { alert('There is no such Clilstore userid as '+teacher); }
+                    if       (resp=='OK')     { window.location.href = '/clilstore/portfolio.php?unit='+unit; }
+                     else if (resp=='nouser') { alert('$T_No_such_userid_as_'.replace('{userid}',teacher)); }
                      else                     { alert('$T_Error_in pfCreate: '+resp); }
                 }
             }
             var formData = new FormData();
             formData.append('title',title);
             formData.append('teacher',teacher);
+            formData.append('unit',unit);
             xhr.open('POST', 'ajax/pfCreate.php');
             xhr.send(formData);
         }
@@ -758,9 +758,10 @@ $menu
 $footer
 <script>
     $('.sendPort').click(function(){
-	var port = $('#Port').val();
+	var title_port = $('#title_port').val();
         var teacher_port = $('#teacher_port').val();
-        createPortfolio(port,teacher_port);
+        var unit_port = $('#unit_port').val();
+        createPortfolio(title_port,teacher_port,unit_port);
     });
 </script>
 </body>
