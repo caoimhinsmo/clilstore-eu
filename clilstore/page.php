@@ -100,7 +100,7 @@
                         ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>";
 // Conditional code commented out. Now showing Portfolio link whether or not the user has any portfolios.
-//       $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1'); 
+//       $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
 //       $stmt->execute([':user'=>$user]);
 //       if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
            $portfolioHtml = "<a class='dropdown-item' href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\" title='$T_Add_to_portfolio'>$T_Portfolio</a>";
@@ -122,22 +122,22 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
-    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButton_hover.png class='img-top' width='30'></div></a>";   
+    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButton_hover.png class='img-top' width='30'></div></a>";
     if (empty($user)) {
         $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
 <div class="btn-group">
   <div class="dropdown">
   <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="min-width:8em">
-    $userSC
-  </button>  
+    <a data-nowordlink>$userSC</a>
+  </button>
   <div class="dropdown-menu">
     <a class='dropdown-item' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a>
     <a class='dropdown-item' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>
-    $portfolioHtml    
+    $portfolioHtml
     <a class='dropdown-item' href='logout.php?returnTo=/cs/$id' target=_top title='$T_Logout_from_Clilstore'>$T_Logout</a>
   </div>
-  </div>          
+  </div>
 </div>
 EOD_UserMenuHtml;
     }
@@ -156,12 +156,12 @@ EOD_UserMenuHtml;
            <div class="float-md-right float-sm-right" role="group">
              $recordVocHtml
              $buttonedit
-             $unitinfoHtml 
+             $unitinfoHtml
              <div class="btn" style="display:inline-block;padding:0">$hlSelect</div>
             $userMenuHtml
             </div>
-             
-            
+
+
     </div>
 </div>
 
@@ -263,23 +263,23 @@ EOD_NB2;
     margin-right: 0px;
     margin-left: 0px;
    }
-     
-   .dropdown-menu {       
+
+   .dropdown-menu {
         background-color: rgba(255, 255, 255, .8);
         margin-top:0;
     }
-            
-            
+
+
     .dropdown-item:hover, .dropdown-item:focus {
         color: #16181b;
         text-decoration: none;
         background-color: #f7ac99;
     }
-            
+
     .dropdown:hover>.dropdown-menu {
         display: block;
     }
-    
+
     .dropdown>.dropdown-toggle:active {
         /*Without this, clicking will make it sticky*/
           // pointer-events: none;
@@ -290,7 +290,7 @@ EOD_NB2;
         height: 30px;
         position: relative;
         display: inline-block;
-            
+
     }
     .cardinfo .img-top {
         display: none;
@@ -301,7 +301,7 @@ EOD_NB2;
     }
     .cardinfo:hover .img-top {
         display: inline;
-    }       
+    }
     </style>
     <script>
         function likeClicked_SGUAB() {

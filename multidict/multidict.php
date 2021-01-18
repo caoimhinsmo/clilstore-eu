@@ -290,8 +290,6 @@ $hl = 'ENG';
                     else  { $req->setMethod('GET');  }
 //    $req->setConfig('proxy_host','wwwcache.uhi.ac.uk');
 //    $req->setConfig('proxy_port',8080);
-// Following line can seemingly be deleted since no longer required -- CPD, 2019-11-24
-//if ($dict=='IATE') { $req->setConfig('protocol_version','1.0'); } //Hack for IATE because ->getBody() suddenly started giving a gzinflate() error for IATE, failing to decompress the body returned by IATE under HTTP 1.1 -- 2014-08-01
     $req->setConfig('timeout',20);
     $req->setHeader('Referer',"$server/multidict/");
 
