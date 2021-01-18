@@ -17,7 +17,7 @@ class SM_clilHeadFoot {
     $header=<<<END_HEADER
 <nav class="navbar navbar-expand-lg fondo_menu navbar-dark" id="mainNav">
   <div class="container">
-    <a class="navbar-brand text-white" href="https://www.languages.dk/" target="_blank"><img src="../lonelogo/logo.png" width="150px"></a>
+    <a class="navbar-brand text-white" href="https://languages.dk/" target="_blank"><img src="../lonelogo/logo.png" width="150px"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -111,7 +111,7 @@ END_headerUsuario;
     <div class="collapse navbar-collapse align-items-center" id="navbarResponsive">
       <ul class="navbar-nav ml-auto align-items-center list-unstyled">
         <li class="nav-item"><a class="nav-link" href="$serverhome">$T_Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/">$T_Help</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/create_unit.html">$T_Help</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">$T_About</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
