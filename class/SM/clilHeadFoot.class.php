@@ -24,7 +24,7 @@ class SM_clilHeadFoot {
     <div class="collapse navbar-collapse align-items-center" id="navbarResponsive">
       <ul class="navbar-nav ml-auto align-items-center">
         <li class="nav-item"><a class="nav-link" href="$serverhome">$T_Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/">$T_Help</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/page2.html">$T_Help</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">$T_About</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -67,6 +67,9 @@ END_HEADER;
     $hlSelectJs = SM_mdNavbar::hlSelectJs();
     $hl = SM_T::hl0();
     $hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
+    $helpFile = ( substr($_SERVER['SCRIPT_NAME'],-8)=='edit.php'
+                ? 'create_unit.html'
+                : 'page2.html' );
 
     $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'] .'/';
 
@@ -111,7 +114,7 @@ END_headerUsuario;
     <div class="collapse navbar-collapse align-items-center" id="navbarResponsive">
       <ul class="navbar-nav ml-auto align-items-center list-unstyled">
         <li class="nav-item"><a class="nav-link" href="$serverhome">$T_Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/create_unit.html">$T_Help</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/$helpFile">$T_Help</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">$T_About</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
