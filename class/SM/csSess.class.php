@@ -507,7 +507,7 @@ END_addColHtml;
       $counts[-1] = $totalCount;
       for ($cefr=-1; $cefr<=5; $cefr++ ) {
           $label = $labels[$cefr];
-          $href = "$hrefSelf?levelBut=$label";
+          $href = "$hrefSelf?levelBut=" . ( $cefr==-1 ? 'All' : $label );
           $count = $counts[$cefr];
           $class = 'btn btn-primary btn-sm mr-1 text-uppercase';
           if ($count==0) {
@@ -518,7 +518,7 @@ END_addColHtml;
               $class .= ' active';
               $href = '';
           }
-          $button[$cefr] = "<a role=\"button\" href=\"$href\" title=\"$count units\" class=\"$class\">$label</a>";
+          $button[$cefr] = "<a role='button' href='$href' title='$count units' class='$class'>$label</a>";
       }
       $buttonAny = $button[-1];
       $buttonA1  = $button[0];
@@ -549,10 +549,6 @@ END_addColHtml;
             </div>
         </div>
     </div>
-
-
-
-
 
 ENDHTML;
       return $html;
