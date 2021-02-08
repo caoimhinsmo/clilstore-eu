@@ -90,6 +90,8 @@
   $T_View_this_file      = $T->h('View_this_file');
   $T_Link_address        = $T->h('Link_address');
   $T_Link_address_info   = $T->h('Link_address_info');
+  $T_Add_a_button        = $T->h('Add_a_button');
+  $T_Add_a_button_info   = $T->h('Add_a_button_info');
 
   $T_CC_BY_message       = $T->j('CC_BY_message');
   $T_CC_SA_message       = $T->j('CC_SA_message');
@@ -507,7 +509,7 @@ EOD2;
                 $legend = sprintf($legend,$id);
                 $cruth  = 'html';
             }
-            if (count($buttons)<8) { $buttons[] = new button(count($buttons)); } // Always create at least one blank button, up to a maximum of 8 buttons
+            $buttons[] = new button(count($buttons));  // Always create at least one blank button
             for ($ord=count($buttons);$ord<4;$ord++) { $buttons[] = new button($ord); } //Create new blank buttons if necessary, to give a minimum of 4 buttons
         }
         $clonech = ( empty($clone) ? '' : ' checked' );
@@ -560,8 +562,9 @@ EODfilesButton;
             $wlch  = ( $b->wl  ? 'checked' : '');
             $newch = ( $b->new ? 'checked' : '');
             $link  = $b->link;
+            $butInvisible = ( $ord==count($buttons)-1 ? "style='display:none'" : ''); //Make the last row invisible, to act as a template for duplication
             $buttonsHtml  .= <<<EODbutHtml
-<tr>
+<tr $butInvisible>
 <td><input name="but[]" class="form-control mr-2 mb-2" value="$but" placeholder="$T_You_can_write_here"></td>
 <td><input type="checkbox" name="wl[]" $wlch value="$ord" title="$T_Whether_to_WL_link\n$T_Whether_to_WL_info"></td>
 <td><input type="checkbox"  name="new[]" $newch value="$ord" title="$T_Whether_to_new_tab"></td>
@@ -648,13 +651,17 @@ EODfileInfoForm;
 
     <meta name="robots" content="noindex">
     <style>
-        table#editlinkbuts { margin-bottom:0.5em; }
+        table#editlinkbuts { margin-bottom:0.3em; }
         table#editlinkbuts td { padding:0 0.3em; }
         table#editlinkbuts td:nth-child(1) input { width:12em; text-align:center; background-color:#35a4bf; color:white;
                                                    padding:2px 4px; border-radius:6px; }
+        table#editlinkbuts td:nth-child(1)::placeholder { font-style:italic; opacity:1; }
         table#editlinkbuts td:nth-child(2)       { width:1.5em; text-align:center; }
         table#editlinkbuts td:nth-child(3)       { width:1.8em; text-align:center; }
         table#editlinkbuts td:nth-child(4) input { min-width:60em; }
+        a#addLinkButton { display:block; font-size:85%; margin-left:6px; width:14em; text-align:center; padding:6px 4px;
+                          border:1px dashed black; border-radius:6px; background-color:white; font-weight:bold; }
+        a#addLinkButton:hover { background-color:#ccf; }
         label.rad { border:1px solid black; padding:1px 3px; border-radius:3px; background-color:#35a4bf; }
         label.highlighted    { background-color:#35a4bf;}
         label.bithighlighted { background-color:#f24516; color: white;}
@@ -928,13 +935,19 @@ EODfileInfoForm;
             xhr.send(formData);
         }
 
-/* example - Sgudal - delete
-    // Check the file type
-    if (!file.type.match('image.*')) {
-        statusP.innerHTML = 'The file selected is not an image.';
-        return;
-    }
-*/
+        function addLinkButton() {
+            var tbody = document.querySelector("table#editlinkbuts > tbody");
+            var lastTR = document.querySelector("table#editlinkbuts tr:last-child");
+            lastTR.style.display = 'table-row'; //Make the hidden template row visible
+            var lastValue = lastTR.querySelector("input[type='checkbox']").value;
+            var newTR = lastTR.cloneNode(true);
+            var newValue = parseInt(lastValue,10)+1;
+            var checkboxes = newTR.querySelectorAll("input[type='checkbox']");
+            checkboxes.forEach( function(chb) { chb.value=newValue; } );
+            newTR.style.display = 'none'; //Make the new template row invisible
+            tbody.appendChild(newTR);
+            return false;
+        }
 
     </script>
 
@@ -980,6 +993,8 @@ $T_Text <span class="info" style="padding-left:2em">$textAdvice</span><br>
 </tr>
 $buttonsHtml
 </table>
+<a href="#null" onClick="addLinkButton()" id=addLinkButton title="$T_Add_a_button_info">$T_Add_a_button</a>
+
 </fieldset>
 $fileInfoForm
 <fieldset style="margin:6px;border:1px solid green;padding:10px;border-radius:5px;">
