@@ -97,7 +97,7 @@ FORMHTML;
   }
 
   function createClick($url,$message,$sid) {
-      // This will create a button to click to open the dictionary results in a new tab
+      // This will create a page with a button to click to open the dictionary results manually
       if ($message) { $message = "<br>\n<span style=color:red>$message</span>"; }
       $html = <<<CLICKHTML
 <!DOCTYPE html>
@@ -110,10 +110,12 @@ FORMHTML;
         a.button:hover { background-color:blue; color:white; }
     </style>
 </head>
-<body>
+<body style='font-family:Verdana,sans-serif'>
 <p>Click “Submit” to look up the word in the dictionary</p>
-<p><a href='$url' target='dictab$sid' class=button>Submit</a></p>
-<p>The results will be opened in a new tab$message</p>
+<p><a href='$url' target='dictab$sid' class=button>Submit</a> - <i>The results will be opened in a new tab$message</i></p>
+<p><i>or</i></p>
+<p><a href='$url' target='_top' class=button>Submit2</a> - <i>The results will be opened in this tab$message</i></p>
+<p>$message</p>
 </body>
 </html>
 CLICKHTML;
