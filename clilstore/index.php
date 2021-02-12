@@ -685,7 +685,7 @@ END_tableHtmlBarr;
 
 
         $orderClause = $csSess->orderClause();
-        $query = 'SELECT clilstore.id,owner,fullname,sl,endonym,level,words,medtype,medlen,buttons,files,title,text,summary,created,changed,licence,test,views,clicks,likes'
+        $query = 'SELECT clilstore.id,owner,fullname,sl,endonym,level,words,medtype,medlen,buttons,files,title,summary,created,changed,licence,test,views,clicks,likes'
                 .' FROM clilstore,users,lang'
                 ." WHERE $whereClause ORDER BY $orderClause";
 
@@ -738,7 +738,6 @@ END_tableHtmlBarr;
             $buttons = $page->buttons;
             $files   = $page->files;
             $title   = $page->title;
-            $text    = $page->text;
             $summary = htmlspecialchars($page->summary);
             $created = $page->created;
             $changed = $page->changed;
