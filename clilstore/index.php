@@ -994,7 +994,7 @@ $(document).ready(function() {
             "sLengthMenu":      "$T_DT_sLengthMenu",
             "sLoadingRecords":  "$T_DT_sLoadingRecords",
             "sProcessing":      "$T_DT_sProcessing",
-            "sSearch":          "$T_Dt_sSearch",
+            "sSearch":          "$T_DT_sSearch",
             "sZeroRecords":     "$T_DT_sZeroRecords",
             "oPaginate": {
                 "sFirst":       "$T_DT_oPaginate_sFirst",
