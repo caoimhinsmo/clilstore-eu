@@ -1508,8 +1508,9 @@ $(document).ready(function() {
       $("#media_aud").bootstrapToggle('off');
       $("#media_vid").bootstrapToggle('off');
       $("#media_doc").bootstrapToggle('off');
-      $("#incTest2").prop("checked", false);
-//      document.getElementById('filterForm2').submit(); --Not needed, delete completely sometime --CPD 2021-02-25
+//Delete the next 2 lines sometime. Clear filter no longer sets the test unit toggle to off
+//      $("#incTest2").prop("checked", false);
+//      document.getElementById('filterForm2').submit();
     });
 
 });
