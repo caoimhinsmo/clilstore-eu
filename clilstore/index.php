@@ -688,7 +688,7 @@ END_tableHtmlBarr;
         $query = 'SELECT clilstore.id,owner,fullname,sl,endonym,level,words,medtype,medlen,buttons,files,title,summary,created,changed,licence,test,views,clicks,likes'
                 .' FROM clilstore,users,lang'
                 ." WHERE $whereClause ORDER BY $orderClause";
-
+error_log($query);
         $stmt = $DbMultidict->prepare($query);
         $i = 1;
         if (!empty($whereClauses['id']))         { $stmt->bindParam($i++,$idFil);       }
@@ -1509,7 +1509,7 @@ $(document).ready(function() {
       $("#media_vid").bootstrapToggle('off');
       $("#media_doc").bootstrapToggle('off');
       $("#incTest2").prop("checked", false);
-      document.getElementById('filterForm2').submit();
+//      document.getElementById('filterForm2').submit(); --Not needed, delete completely sometime --CPD 2021-02-25
     });
 
 });
