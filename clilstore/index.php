@@ -1,8 +1,9 @@
 <?php if (!include('autoload.inc.php'))
   header("Location:http://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
-  header('Cache-Control: no-cache, no-store, must-revalidate');
-  header("Cache-Control:max-age=0");
+//  header('Cache-Control: no-cache, no-store, must-revalidate');
+//  header("Cache-Control:max-age=0");
+  header("Cache-Control:max-age=300"); //Cache for up to 5 minutes - temporary(?) measure while loading is so slow
 
   try {
     $T = new SM_T('clilstore/index');

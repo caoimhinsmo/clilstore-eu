@@ -1,1 +1,0 @@
-$hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
