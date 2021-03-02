@@ -26,6 +26,7 @@
   $T_Move_up        = $T->h('Move_up');
   $T_Move_down      = $T->h('Move_down');
   $T_Edit_this_item = $T->h('Edit_this_item');
+  $T_Save_your_edit = $T->h('Save_your_edit');
   $T_Add_an_item    = $T->h('Add_an_item');
   $T_My_work        = $T->h('My_work');
   $T_Close          = $T->h('Close');
@@ -77,6 +78,7 @@
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
 
     $unitsHtml = $unitsTableHtml = $titleHtml = $permitTableHtml = $pfsTableHtml = $addTeacherHtml = $itemEditHtml = '';
+    $maxItemlen = 250;
 
     $pf = $_REQUEST['pf'] ?? -1;
     if ($pf == -1) {
@@ -100,7 +102,7 @@
                       . "<span class=downArrow title='$T_Move_down' onClick=moveItem(this,'down')><img src='/icons-smo/down-arrow.png' class=tool></span>"
                       . "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Delete_this_item' onClick='itemDelete(this)' class=tool>";
         $LitemEditHtml = "<img src='/icons-smo/pencil.png' alt='Edit' title='$T_Edit_this_item' onClick='LitemEdit(this)' class='tool editIcon'>"
-                       . "<img src='/icons-smo/save.png' class=saveIcon alt='Save' title='Save your edits' onClick='LitemSave(this)' class=tool> "
+                       . "<img src='/icons-smo/save.png' class=saveIcon alt='Save' title='Save_your_edit' onClick='LitemSave(this)' class=tool> "
                        . $itemEditHtml;
         $itemEditHtml  = "<span class=edit>$itemEditHtml</span>";
         $LitemEditHtml = "<span class=edit>$LitemEditHtml</span>";
@@ -139,7 +141,7 @@
             extract ($pfuLRow);
             $learnedHtml .= "<li  class=\"list-group-item list-group-item-light mb-1\" id=pfuL$pfuL><span id=pfuLtext$pfuL onKeypress='keypress(event,this)'>$learned</span> $LitemEditHtml\n";
         }
-        if ($edit) { $newLearnedItem = "<input id=pfuLnew$pfu class=\"edit form-control\" placeholder='$T_Add_an_item' onChange=\"pfuLadd('$pfu')\">"; }
+        if ($edit) { $newLearnedItem = "<input id=pfuLnew$pfu class='edit form-control' maxlength=$maxItemlen placeholder='$T_Add_an_item' onChange=\"pfuLadd('$pfu')\">"; }
         $learnedHtml = <<<END_learnedHtml
 <ul id=pfuLul$pfu class="list-group list-group-flush">
 $learnedHtml
@@ -154,7 +156,8 @@ END_learnedHtml;
             $workHtml .= "<li class=\"list-group-item list-group-item-light mb-1\" id=pfuW$pfuW><a href='$workurl'>$work</a> $itemEditHtml\n";
         }
         if ($edit) {
-            $newWorkItem = "<input placeholder='$T_My_work' class=\"form-control mb-1\" id=pfuWnewWork$pfu><input class=\"form-control\" placeholder='URL' id=pfuWnewURL$pfu>";
+            $newWorkItem = "<input placeholder='$T_My_work' class='form-control mb-1' maxlength=$maxItemlen id=pfuWnewWork$pfu>"
+                         . "<input class='form-control' placeholder='URL' maxlength=$maxItemlen id=pfuWnewURL$pfu>";
             $newWorkItem = "<span class=edit onChange=\"pfuWadd('$pfu')\">$newWorkItem</span>";
         }
         $workHtml = <<<END_workHtml
@@ -673,6 +676,7 @@ EOD;
             var textEl = document.getElementById('pfuLtext'+pfuL);
             liEl.classList.add('editing');
             textEl.setAttribute('contenteditable','true');
+            textEl.focus();
         }
 
         function LitemSave(el) {
@@ -686,9 +690,16 @@ EOD;
                 liEl.classList.remove('editing');
                 textEl.setAttribute('contenteditable','false');
             }
+            var newtxt = textEl.innerText;
+            var maxItemlen = $maxItemlen;
+            if (newtxt.length>maxItemlen) {
+                newtxt = newtxt.substring(0,maxItemlen);
+                textEl.innerHTML = newtxt;
+                alert('Too long - Truncated to ' + maxItemlen + ' characters');
+            }
             var formData = new FormData();
             formData.append('pfuL',pfuL);
-            formData.append('text',textEl.innerText);
+            formData.append('text',newtxt);
             xhr.open('POST', 'ajax/pfuLsave.php'); //Safer to use POST in case of rubbish in the text
             xhr.send(formData);
         }
@@ -697,6 +708,8 @@ EOD;
             if (event.keyCode === 13) {
                 event.preventDefault();
                 LitemSave(el);
+            } else if (el.innerHTML.length > $maxItemlen-1) {
+                alert('Too long');
             }
         }
 
