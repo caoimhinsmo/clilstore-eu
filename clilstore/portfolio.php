@@ -139,7 +139,7 @@
         $pfuLRows = $stmtPfuL->fetchAll(PDO::FETCH_ASSOC);
         foreach ($pfuLRows as $pfuLRow) {
             extract ($pfuLRow);
-            $learnedHtml .= "<li  class=\"list-group-item list-group-item-light mb-1\" id=pfuL$pfuL><span id=pfuLtext$pfuL onKeypress='keypress(event,this)'>$learned</span> $LitemEditHtml\n";
+            $learnedHtml .= "<li  class=\"list-group-item list-group-item-light mb-1\" id=pfuL$pfuL><span id=pfuLtext$pfuL onBlur='LitemSave(this)' onKeypress='keypress(event,this)' style='padding:1px'>$learned</span> $LitemEditHtml\n";
         }
         if ($edit) { $newLearnedItem = "<input id=pfuLnew$pfu class='edit form-control' maxlength=$maxItemlen placeholder='$T_Add_an_item' onChange=\"pfuLadd('$pfu')\">"; }
         $learnedHtml = <<<END_learnedHtml
@@ -606,7 +606,7 @@ EOD;
                     var pfuL = found[1];
                     newLI.className = 'list-group-item list-group-item-light mb-1';
                     newLI.id = 'pfuL' + pfuL;
-                    newLI.innerHTML = '<span id=pfuLtext' + pfuL + ' onKeypress=keypress(event)>' + newText + '</span> ' + "$LitemEditHtml";
+                    newLI.innerHTML = '<span id=pfuLtext' + pfuL + ' onBlur=LitemSave(this) onKeypress=keypress(event,this) style=padding:1px>' + newText + '</span> ' + "$LitemEditHtml";
                     document.getElementById('pfuLul'+pfu).appendChild(newLI);
                     inputEl.value = '';
                 }
