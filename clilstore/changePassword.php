@@ -69,7 +69,7 @@ EOD_barr;
     }
 
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-    $errorMessage = $oldPass = $password = $password2 = '';
+    $errorMessage = $oldpass = $password = $password2 = '';
     $formRequired = 1;
 
     $stmt = $DbMultidict->prepare('SELECT password FROM users WHERE user=:user');
