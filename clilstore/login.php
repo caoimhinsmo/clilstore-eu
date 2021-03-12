@@ -30,10 +30,11 @@
     $userAsTyped = $passwordAsTyped = $userAutofocus = $passwordAutofocus = '';
 
     if      (!empty($_REQUEST['returnTo']))    { $refreshURL = $_REQUEST['returnTo'];
-                                                   if (substr($refreshURL,0,4)<>'http') { $refreshURL = $serverhome . $refreshURL; }
+                                                 if (substr($refreshURL,0,4)<>'http') { $refreshURL = $serverhome . $refreshURL; }
                                                }
      elseif (!empty($_SERVER['HTTP_REFERER'])) { $refreshURL = $_SERVER['HTTP_REFERER']; }
-     else                                      { $refreshURL = "$serverhome/clilstore"; }
+     else                                      { $refreshURL = "$serverhome/clilstore/"; }
+    $refreshURL .= ( parse_url($refreshURL,PHP_URL_QUERY) ? '&' : '?' ) . 'refresh=' . time(); //Add a cache-busting dummy parameter
 
     $menu   = SM_clilHeadFoot::cabecera();
     $footer = SM_clilHeadFoot::pie();
@@ -52,12 +53,6 @@
         if  ($stmt1->execute()
           && $stmt1->fetch()
           && (crypt($passwordAsTyped,$password)==$password || $password=='')) {
-//------- Temporary measure to reset about 20 passwords accidentally set to null.  Just set the password to the first password the user attempts.
-if ($password=='' && strlen($passwordAsTyped)>3) {
-    $passwordCrypt = crypt($passwordAsTyped,'$2a$07$rudeiginLanLanAmaideach');
-    $stmt2 = $DbMultidict->prepare('UPDATE users SET password=:password WHERE user=:user');
-    $stmt2->execute([':password'=>$passwordCrypt,':user'=>$user]);
-}
            //Copy filter parameters from the most recent previous Clilstore session (if any) for this user. Remember the new csid.
             $newCsid = $_COOKIE['csSessionId'];
             if (!empty($csid)) {
@@ -72,8 +67,6 @@ if ($password=='' && strlen($passwordAsTyped)>3) {
             $stmt4 = $DbMultidict->prepare('UPDATE users SET csid=:newCsid WHERE user=:user');
             $stmt4->execute([':newCsid'=>$newCsid,':user'=>$user]);
            //Create cookie
-            $cookieDomain = $servername;
-            if (preg_match('|www\d*\.(.*)|',$cookieDomain,$matches)) { $cookieDomain = $matches[1]; }   // Remove www., www2., etc. e.g. www2.smo.uhi.ac.uk->smo.uhi.ac.uk
             $myCLIL::cuirCookie('myCLIL_authentication',$user,0,108000); //Cookie expires at session end, or max 30 hours
             $csSess->setUser($user);  //Remember $user, to make the next login easier
             SM_csSess::logWrite($user,'login');
@@ -117,7 +110,7 @@ ENDfailure;
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span>
 									</div>
-									<input type="text" class="form-control" name="user" value="$userSC" required $userautofocus>
+									<input type="text" class="form-control" name="user" value="$userSC" required $userAutofocus>
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
@@ -132,7 +125,7 @@ ENDfailure;
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-unlock" aria-hidden="true"></i></span>
 									</div>
-									<input type="password" name="password" value="$passwordSC" required $passwordautofocus class="form-control" pattern=".{4,}" title="Cuatro(4) o mas caracteres">
+									<input type="password" name="password" value="$passwordSC" required $passwordAutofocus class="form-control" pattern=".{4,}" title="Cuatro(4) o mas caracteres">
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
@@ -199,7 +192,6 @@ $refreshHeader
 </head>
 <body>
 $menu
-$cookieMessage
 <div class="container h100">
     <div class="row h-100 justify-content-center align-items-center">
         $successMessage

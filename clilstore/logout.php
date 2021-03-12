@@ -18,13 +18,20 @@
     $servername = SM_myCLIL::servername();
     $serverhome = SM_myCLIL::serverhome();
 
+    if      (!empty($_REQUEST['returnTo']))    { $refreshURL = $_REQUEST['returnTo'];
+                                                 if (substr($refreshURL,0,4)<>'http') { $refreshURL = $serverhome . $refreshURL; }
+                                               }
+     elseif (!empty($_SERVER['HTTP_REFERER'])) { $refreshURL = $_SERVER['HTTP_REFERER']; }
+     else                                      { $refreshURL = "$serverhome/clilstore/"; }
+    $refreshURL .= ( parse_url($refreshURL,PHP_URL_QUERY) ? '&' : '?' ) . 'refresh=' . time(); //Add a cache-busting dummy parameter
+
     echo <<<EOD1
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Logout from Clilstore</title>
-    <meta http-equiv="refresh" content="2; url=$serverhome$returnTo">
+    <meta http-equiv="refresh" content="1; url=$refreshURL">
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">

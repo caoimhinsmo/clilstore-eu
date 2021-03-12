@@ -164,8 +164,6 @@ EOD_cookieMessage;
 
     $idioma = SM_T::hl0();
 
-    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
-
 //    if (isset($_GET['mode']))         { $csSess->setMode($_GET['mode']            ); }
     if (!empty($_GET['sortCol']))     { $csSess->sortCol($_GET['sortCol']         ); }
 //    if (!empty($_GET['deleteCol']))   { $csSess->deleteCol($_GET['deleteCol']     ); }
@@ -177,7 +175,7 @@ EOD_cookieMessage;
     //Modo
     $mode    = $csSess->getCsSession()->mode;
 
-    $autor = $_GET['owner'];
+    $autor = $_GET['owner'] ?? '';
 
     //$incTest = 0;
 
@@ -594,9 +592,7 @@ END_USER2;
         $endonym = $lang['endonym'];
         $sl      = $lang['sl'];
         $selected = ( $sl==$slFil ? ' selected' : '');
-//      $codeInfo = ( $wideChecked ? " ($sl)" : '' );
-        $codeInfo = " ($sl)";  //Decided to always include the language code
-        $slOptions[] = "<option value=\"$sl\"$selected>$endonym$codeInfo</option>";
+        $slOptions[] = "<option value=\"$sl\"$selected>$endonym ($sl)</option>";
     }
     $slOptionsHtml = implode("\n",$slOptions);
     $slSelectColor = ( $slFil=='' ? 'white' : 'yellow' );
@@ -610,11 +606,8 @@ END_USER2;
     }
     $owOptionsHtml = implode("\n",$owOptions);
 
-
-
         $levelButHtml = $csSess->levelButHtml();
         $tabletopChoices = <<<ENDtabletopChoices
-
 
         <form id="selectForm" method="post">
 
@@ -689,7 +682,6 @@ END_tableHtmlBarr;
         $query = 'SELECT clilstore.id,owner,fullname,sl,endonym,level,words,medtype,medlen,buttons,files,title,summary,created,changed,licence,test,views,clicks,likes'
                 .' FROM clilstore,users,lang'
                 ." WHERE $whereClause ORDER BY $orderClause";
-error_log($query);
         $stmt = $DbMultidict->prepare($query);
         $i = 1;
         if (!empty($whereClauses['id']))         { $stmt->bindParam($i++,$idFil);       }
@@ -722,7 +714,8 @@ error_log($query);
        //Initialise statistics
         $nunits = 0;
         $cnt['level'] = $cnt['medlen'] = 0;
-        $tot['views'] = $tot['clicks'] = $tot['created'] = $tot['created2'] = $tot['changed'] = $tot['level'] = $tot['words'] = $tot['medlen'] = $tot['buttons'] = $tot['files'] = 0;
+        $tot['views'] = $tot['clicks'] = $tot['likes'] = $tot['created'] = $tot['created2'] = $tot['changed'] = $tot['level']
+                      = $tot['words'] = $tot['medlen'] = $tot['buttons'] = $tot['files'] = 0;
         $totalsRow = $avgRow = '';
        //
         while ($page = $stmt->fetch(PDO::FETCH_OBJ)) {
@@ -856,13 +849,6 @@ error_log($query);
              }
         }
 
-        $mostrar='';
-
-        if ($autor<>''){
-            $mostrar = "show";
-        } else {
-            $mostrar = '';
-        }
         $tableHtml .= <<<END_tableHtmlBun
    <tfoot class="text-primary">
         <tr>
