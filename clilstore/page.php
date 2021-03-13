@@ -63,7 +63,7 @@
 
     //Prepare media (or picture)
     if ($medfloat=='') { $medfloat = 'none'; }
-    $scroll = $recordVocHtml = $portfolioHtml = $userMenuHtml = '';
+    $scroll = $recordVocHtml = $portfolioHtml = $userMenuHtml = $likeHtml = '';
     if ($medfloat=='scroll') { $medfloat = 'none'; $scroll='scroll'; }
     $medembedHtml = ( empty($medembed) ? '' : "<div class=\"$medfloat\">$medembed</div>" );
 
