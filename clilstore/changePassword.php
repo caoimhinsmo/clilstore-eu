@@ -4,8 +4,24 @@
 
   header('Cache-Control:max-age=0');
 
+  $T = new SM_T('clilstore/changePassword');
+  $T_Return          = $T->h('Return');
+  $T_Change_password = $T->h('Change_password');
+  $T_Old_password    = $T->h('Old_password');
+  $T_New_password    = $T->h('New_password');
+  $T_Password_advice = $T->h('Password_advice');
+  $T_Retype_password = $T->h('Retype_password');
+  $T_Retype_new_password      = $T->h('Retype_new_password');
+  $T_Retype_to_confirm        = $T->h('Retype_to_confirm');
+  $T_Change_password_for_user = $T->h('Change_password_for_user_');
+  $T_Retyped_pw_mismatch      = $T->h('Retyped_pw_mismatch');
+  $T_Old_password_missing     = $T->h('Old_password_missing');
+  $T_Old_password_incorrect   = $T->h('Old_password_incorrect');
+  $T_No_new_password          = $T->h('No_new_password');
+  $T_No_retyped_new_password  = $T->h('No_retyped_new_password');
+
   try {
-    $T = new SM_T('clilstore/changePassword');
+
     $menu   = SM_clilHeadFoot::cabecera();
     $footer = SM_clilHeadFoot::pie();
 
@@ -14,7 +30,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Change password on Clilstore</title>
+    <title>$T_Change_password</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
     <link href="../lone.css" rel="stylesheet">
@@ -83,15 +99,15 @@ EOD_barr;
         $password2 = @$_POST['password2'];
 
         if (!$vialink && empty($oldpass)) {
-            $errorMessage = 'You have not given your old password';
+            $errorMessage = $T_Old_password_missing;
         } elseif (!$vialink && (crypt($oldpass,$row['password']) <> $row['password'])) {
-            $errorMessage = 'Old password incorrect';
+            $errorMessage = $T_Old_password_incorrect;
         } elseif (empty($password)) {
-            $errorMessage = 'You have not specified a new password';
+            $errorMessage = $T_No_new_password;
         } elseif (empty($password2)) {
-            $errorMessage = 'You have not retyped your new password';
+            $errorMessage = $T_No_retyped_new_password;
         } elseif ($password<>$password2) {
-            $errorMessage = 'Retyped password does not match';
+            $errorMessage = $T_Retyped_pw_mismatch;
         } else {
             $passwordCrypt = crypt($password,'$2a$07$rudeiginLanLanAmaideach');
             $stmt = $DbMultidict->prepare('UPDATE users SET password =:pw WHERE user=:user');
@@ -109,68 +125,84 @@ ENDsuccess;
             $oldpassRow = '';
         } else {
             $oldpassSC   = htmlspecialchars($oldpass);
-            $oldpassRow = "<tr><td>Old password:</td><td><input type=password name=oldpass value=\"$oldpassSC\" required</td></tr>";
+            $oldpassRow = <<<END_oldpassRow
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>$T_Old_password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                                    </div>
+                                    <input class="form-control" type="password" name="oldpass" value="$oldpassSC" required">
+                                </div>
+                                <div class="help-block with-errors text-danger">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+END_oldpassRow;
         }
         $passwordSC  = htmlspecialchars($password);
         $password2SC = htmlspecialchars($password2);
         echo <<<ENDform
 <div class="row h-100 justify-content-center align-items-center">
-	<div class="col-lg col-sm">
-		<div class="card">
-			<div class="card-header bg-primary text-center">
-				<h4>Change password for user $user</h4>
-			</div>
-			<div class="card-body">
-				<div class="alert text-center" role="alert">
-					<h5><span class="badge badge-danger">$errorMessage</span></h5>
-				</div>
-				<form data-toggle="validator" role="form" method="post" action="#">
-					<input type="hidden" class="hide" id="csrf_token" name="csrf_token" value="C8nPqbqTxzcML7Hw0jLRu41ry5b9a10a0e2bc2">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>New Password</label>
-                                                                <p style="font-size:xx-small">Set a password (at least 8 characters long)</p>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
-									</div>
-									<input class="form-control" type="password" name="password"  value="$passwordSC"  required pattern=".{8,}">
-								</div>
-								<div class="help-block with-errors text-danger">
-								</div>
-							</div>
-						</div>
-					</div>
-                                        <div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>Re-type New Password</label>
-                                                                <p style="font-size:xx-small">Reenter the password</p>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
-									</div>
-									<input class="form-control" type="password" name="password2" value="$password2SC" required pattern=".{8,}" placeholder="Retype to confirm">
-								</div>
-								<div class="help-block with-errors text-danger">
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<input type="hidden" name="user" value="$userSC">
-							<input type="submit" class="btn btn-primary btn-lg btn-block mb-2" value="Change Password" name="change">
-						</div>
-					</div>
-				</form>
-				<div class="clear">
-				</div>
-                                <p class="text-center mt-2"><i class="fa fa-arrow-left fa-fw"></i><a href="index.php">Volver</a></p>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg col-sm">
+        <div class="card">
+            <div class="card-header bg-primary text-center">
+                <h4>$T_Change_password_for_user $user</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert text-center" role="alert">
+                    <h5><span class="badge badge-danger">$errorMessage</span></h5>
+                </div>
+                <form data-toggle="validator" role="form" method="post" action="#">
+                    <input type="hidden" class="hide" id="csrf_token" name="csrf_token" value="C8nPqbqTxzcML7Hw0jLRu41ry5b9a10a0e2bc2">
+$oldpassRow
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>$T_New_password</label>
+                                <p style="font-size:xx-small">$T_Password_advice</p>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                                    </div>
+                                    <input class="form-control" type="password" name="password" value="$passwordSC" required pattern=".{8,}">
+                                </div>
+                                <div class="help-block with-errors text-danger">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>$T_Retype_new_password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                                    </div>
+                                    <input class="form-control" type="password" name="password2" value="$password2SC" required pattern=".{8,}" placeholder="$T_Retype_to_confirm">
+                                </div>
+                                <div class="help-block with-errors text-danger">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" name="user" value="$userSC">
+                            <input type="submit" class="btn btn-primary btn-lg btn-block mb-2" value="$T_Change_password" name="change">
+                        </div>
+                    </div>
+                </form>
+                <div class="clear">
+                </div>
+                <p class="text-center mt-2"><i class="fa fa-arrow-left fa-fw"></i><a href="/clilstore/">$T_Return</a></p>
+            </div>
+        </div>
+    </div>
 </div>
 ENDform;
     }
