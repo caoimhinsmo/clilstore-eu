@@ -135,7 +135,7 @@
     <a class='dropdown-item' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a>
     <a class='dropdown-item' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>
     $portfolioHtml
-    <a class='dropdown-item' href='logout.php?returnTo=/cs/$id' target=_top title='$T_Logout_from_Clilstore'>$T_Logout</a>
+    <a class='dropdown-item' href='logout.php?returnTo=/cs/$id' data-nowordlink target=_top title='$T_Logout_from_Clilstore'>$T_Logout</a>
   </div>
   </div>
 </div>
