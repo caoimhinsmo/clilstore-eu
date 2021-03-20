@@ -143,11 +143,12 @@
     $T_DT_Show_All = $T->j('DT_Show_All');
 
     $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
+    $timeNow = time();
 
     if (!isset($_COOKIE['csSessionId'])) $cookieMessage = <<<EOD_cookieMessage
      <div class="alert text-center cookiealert" role="alert">
     <p class="text-white"><b>$T_First_visit_to_CS</b> $T_CS_needs_cookies
-    <a type="button" class="btn btn-primary btn-sm acceptcookies" onclick=location.reload() href="?mode=1">
+    <a type="button" class="btn btn-primary btn-sm acceptcookies" onclick=location.reload() href="?mode=1&amp;refresh=$timeNow">
         $T_Got_it
     </a></p>
     <p class="text-white" style='font-size:80%'>$T_If_message_persists</p>
@@ -179,15 +180,11 @@ EOD_cookieMessage;
 
     //$incTest = 0;
 
-
        if (isset($_POST['incTest2'])){
         $incTest = 1;
        } else {
         $incTest = 0;
        }
-
-
-    //$mode    = $csSess->getCsSession()->mode;
 
     //$incTest = $csSess->getCsSession()->incTest;
 
@@ -207,7 +204,6 @@ EOD_cookieMessage;
     } else {
         $mode3radio ='';
     }
-
 
     $addColHtml = $csSess->addColHtml();
     $symbolRowHtml = $csSess->symbolRowHtml();
@@ -247,7 +243,7 @@ END_USER1;
         $row = $stmtIncUnit->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             extract($row);
-            $secondsToLive = $incCreated + 86400 - time(); //Delete automatically after 1 day
+            $secondsToLive = $incCreated + 86400 - $timeNow; //Delete automatically after 1 day
             if ($secondsToLive<=0) {
                 header("Location:$serverhome/clilstore/delete.php?id=$incUnit&delete");
             } elseif ($secondsToLive<100) {
@@ -834,7 +830,6 @@ END_tableHtmlBarr;
                  $avgChangedObj = new DateTime("@$avgChanged");
                  $avgChangedDate     = date_format($avgChangedObj, 'Y-m-d');
                  $avgChangedDateTime = date_format($avgChangedObj, 'Y-m-d H:i:s');
-                 $timeNow = time();
                  $totViewTime  = $nunits*$timeNow - $tot['created'];
                  $totClickTime = $nunits*$timeNow - $tot['created2'];
                  $viewRate  = $tot['views']/$totViewTime;
