@@ -166,7 +166,7 @@ EOD_UserMenuHtml;
              $sharebuttonEM
              $likeHtml
     </div>
-    <div class="col-md-4 col-sm-4">
+    <div class="col-md-4 col-sm-4" style='padding-left:0'>
            <div class="float-md-right float-sm-right" role="group">
              $recordVocHtml
              $buttonedit
@@ -279,13 +279,14 @@ EOD_NB2;
     margin-left: 0px;
    }
 
-   .dropdown-menu {
+   .dropdown-menu { border:1px solid grey;
         background-color: rgba(255, 255, 255, .8);
         margin-top:0;
     }
 
+   .dropdown-item { padding-left:0.25em; }
 
-    .dropdown-item:hover, .dropdown-item:focus {
+   .dropdown-item:hover, .dropdown-item:focus {
         color: #16181b;
         text-decoration: none;
         background-color: #f7ac99;
