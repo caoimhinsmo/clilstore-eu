@@ -1,9 +1,9 @@
 <?php if (!include('autoload.inc.php'))
   header("Location:http://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
-//  header('Cache-Control: no-cache, no-store, must-revalidate');
-//  header("Cache-Control:max-age=0");
-  header("Cache-Control:max-age=300"); //Cache for up to 5 minutes - temporary(?) measure while loading is so slow
+  header('Cache-Control: no-cache, no-store, must-revalidate');
+  header("Cache-Control:max-age=0");
+//  header("Cache-Control:max-age=300"); //Cache for up to 5 minutes - temporary(?) measure while loading is so slow
 
   try {
     $T = new SM_T('clilstore/index');
@@ -165,16 +165,12 @@ EOD_cookieMessage;
 
     $idioma = SM_T::hl0();
 
-//    if (isset($_GET['mode']))         { $csSess->setMode($_GET['mode']            ); }
-    if (!empty($_GET['sortCol']))     { $csSess->sortCol($_GET['sortCol']         ); }
-//    if (!empty($_GET['deleteCol']))   { $csSess->deleteCol($_GET['deleteCol']     ); }
-    if (!empty($_GET['addCol']))      { $csSess->addCol($_GET['addCol']           ); }
-    if (!empty($_GET['restoreCols'])) { $csSess->restoreCols($_GET['restoreCols'] ); }
+//    if (isset($_GET['mode']))  { $csSess->setMode($_GET['mode']); }
 
     $footer = SM_clilHeadFoot::pie();
 
-    //Modo
     $mode    = $csSess->getCsSession()->mode;
+$csid = $csSess->getCsSession()->csid;
 
     $autor = $_GET['owner'] ?? '';
 
@@ -188,29 +184,10 @@ EOD_cookieMessage;
 
     //$incTest = $csSess->getCsSession()->incTest;
 
-    $mode0selected = ( $mode==0 ? 'selected=selected' : '');
-    $mode1selected = ( $mode==1 ? 'selected=selected' : '');
-    $mode2selected = ( $mode==2 ? 'selected=selected' : '');
-    $mode3selected = ( $mode==3 ? 'selected=selected' : '');
+    if ($mode == 0 || $mode == 1) { $mode1radio ='checked'; } else { $mode1radio =''; }
+    if ($mode == 2 || $mode == 3) { $mode3radio ='checked'; } else { $mode3radio =''; }
 
-    if ($mode == 0 || $mode == 1){
-         $mode1radio ='checked';
-    } else {
-        $mode1radio ='';
-    }
-
-     if ($mode == 2 || $mode == 3){
-         $mode3radio ='checked';
-    } else {
-        $mode3radio ='';
-    }
-
-    $addColHtml = $csSess->addColHtml();
-    $symbolRowHtml = $csSess->symbolRowHtml();
-
-    $photo = $tabletopChoices = $nivelChoices = '';
-    if ($mode==1) { $photo = '<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Headphones-Sennheiser-HD555.jpg/320px-Headphones-Sennheiser-HD555.jpg" '
-                                . 'style="float:left;padding-left:20px;width:80px;height:60px" alt="">'; }
+    $tabletopChoices = '';
 
     if ($mode<=1) { $checkboxesHtml = ""; } else {
         $incTestLabel = ( empty($user)
@@ -221,7 +198,6 @@ EOD_cookieMessage;
         } else {
             $incTestChecked = '';
         }
-        $wideChecked    = ( $mode==3 ?  : '' );
         $checkboxesHtml = <<<CHECKBOXES
         <form id="filterForm2" method="post">
 <input type="checkbox" class="custom-control-input" name="incTest2" id="incTest2" $incTestChecked tabindex=2 onChange="submitFForm2()" value="1">
@@ -229,7 +205,6 @@ EOD_cookieMessage;
         </form>
 CHECKBOXES;
     }
-
 
     if (empty($user)) {
         if ($mode<=1) { $loginReason = $loginReasonStudent; }
@@ -345,7 +320,7 @@ END_USER2;
 
     if (empty($_GET)) { $csSess->getFilter($f); }  //if we have no GET parameters, restore stored filter values
     elseif ( count($_GET)==1                       //and do the same if we have just a single GET parameter consisting of one of the commands mode..levelBut
-          && in_array( array_keys($_GET)[0], array('mode','sortCol','deleteCol','addCol','restoreCols','levelBut'))
+          && in_array( array_keys($_GET)[0], array('mode','levelBut'))
            ) { $csSess->getFilter($f); }
 
     if (isset($_REQUEST['id']))         { $f['idFil']      = $_REQUEST['id'];         }
@@ -623,24 +598,6 @@ END_USER2;
         </form>
 
 ENDtabletopChoices;
-
-
-
-    $mode0commentoutStart  = ( $mode==0 ? '<!--' : '');
-    $mode0commentoutFinish = ( $mode==0 ? '-->'  : '');
-
-    $hoverColorOdd  = '#eef';
-    $hoverColorEven = '#fff';
-    if (empty($user)) { $highlightRow = 0; }
-    else {
-        $stmt = $DbMultidict->prepare('SELECT highlightRow FROM users WHERE user=:user');
-        $stmt->execute(array(':user'=>$user));
-        $highlightRow = $stmt->fetchObject()->highlightRow;
-    }
-    if ($highlightRow==1 || ($highlightRow==0 && $mode==3)) {
-        $hoverColorOdd  = '#fe6';
-        $hoverColorEven = '#fe6';
-    }
 
     if ($mode==1 && $f['slFil']=='') { $noTable = false; } else { $noTable = false; }
 
@@ -1490,28 +1447,14 @@ $(document).ready(function() {
       $("#media_aud").bootstrapToggle('off');
       $("#media_vid").bootstrapToggle('off');
       $("#media_doc").bootstrapToggle('off');
-//Delete the next 2 lines sometime. Clear filter no longer sets the test unit toggle to off
-//      $("#incTest2").prop("checked", false);
-//      document.getElementById('filterForm2').submit();
     });
 
 });
    </script>
 END_tableModeProfesor;
 
-if ($mode == 1){
-    $modoTabla = $modeAlumno;
-}
-
-if ($mode == 3){
-    $modoTabla = $modeProfesor;
-}
-
-
-
-
-
-
+if ($mode == 1) { $modoTabla = $modeAlumno;   }
+if ($mode == 3) { $modoTabla = $modeProfesor; }
 
     }
 

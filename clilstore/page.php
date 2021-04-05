@@ -35,6 +35,10 @@
   $T_Login_to_Clilstore    = $T->h('Login_to_Clilstore');
   $T_Logout_from_Clilstore = $T->h('Logout_from_Clilstore');
   $T_Options_title         = $T->h('Options_title');
+  $T_Help_videos_for_teachers = $T->h('Help_videos_for_teachers');
+  $T_Help_videos_for_students = $T->h('Help_videos_for_students');
+
+  $hl = SM_T::hl0();
 
   $hlSelect   = SM_mdNavbar::hlSelect();
   $hlSelectJs = SM_mdNavbar::hlSelectJs();
@@ -60,6 +64,15 @@
 
     if ($sl<>'ar') { $left = 'left';  $right = 'right'; }
      else          { $left = 'right'; $right = 'left';  }
+
+    $hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
+    if ($owner==$user) {
+        $helpTitle = $T_Help_videos_for_teachers;
+        $helpVideoURL = "https://languages.dk/help/$hlHelp/plug_teacher.html";
+    } else {
+        $helpTitle = $T_Help_videos_for_students;
+        $helpVideoURL = "https://languages.dk/help/$hlHelp/plug_student.html";
+    }
 
     //Prepare media (or picture)
     if ($medfloat=='') { $medfloat = 'none'; }
@@ -88,7 +101,7 @@
     }
     $buttonedit = ( $user<>$owner && $user<>'admin'
                   ? ''
-                  : "<a href='edit.php?id=$id&amp;view' title='$T_Edit_this_unit' class='nowordlink' target='_parent' role='button'><div class='cardinfo'><img src=/icons-smo/edit.png width='30'><img src=/icons-smo/edit_hover.png class='img-top' width='30'></div></a>"
+                  : "<a href='edit.php?id=$id&amp;view' title='$T_Edit_this_unit' class='nowordlink' target='_parent' role='button'><div class='cardinfo'><img src=/icons-smo/edit.png width='30'><img src=/icons-smo/editHover.png class='img-top' width='30'></div></a>"
                   );
     $stmt = $DbMultidict->prepare('SELECT record FROM users WHERE user=:user');
     $stmt->execute([':user'=>$user]);
@@ -122,7 +135,8 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
-    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButton_hover.png class='img-top' width='30'></div></a>";
+    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButtonHover.png class='img-top' width='30'></div></a>";
+    $helpHtml = "<a href='$helpVideoURL' target=help$id data-nowordlink class='nowordlink' title='$helpTitle'><div class='cardinfo'><img src=/icons-smo/helpButton.png width='30'><img src=/icons-smo/helpButtonHover.png class='img-top' width='30'></div></a>";
     if (empty($user)) {
         $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
@@ -156,6 +170,7 @@ EOD_UserMenuHtml;
            <div class="float-md-right float-sm-right" role="group">
              $recordVocHtml
              $buttonedit
+             $helpHtml
              $unitinfoHtml
              <div class="btn" style="display:inline-block;padding:0">$hlSelect</div>
             $userMenuHtml
