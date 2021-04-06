@@ -13,7 +13,6 @@ class SM_clilHeadFoot {
     $hl = SM_T::hl0();
     $hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
 
-    $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'] .'/';
     $header=<<<END_HEADER
 <nav class="navbar navbar-expand-lg fondo_menu navbar-dark" id="mainNav">
   <div class="container">
@@ -23,7 +22,7 @@ class SM_clilHeadFoot {
     </button>
     <div class="collapse navbar-collapse align-items-center" id="navbarResponsive">
       <ul class="navbar-nav ml-auto align-items-center">
-        <li class="nav-item"><a class="nav-link" href="$serverhome">$T_Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/clilstore/">$T_Home</a></li>
         <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/page2.html">$T_Help</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">$T_About</a>
@@ -48,7 +47,7 @@ END_HEADER;
   }
 
 
-  public static function cabecera0 ($usuario, $modo) {
+  public static function cabecera0 ($usuario, $mode) {
     $T = new SM_T('clilstore/serverhome');
     $T_Home     = $T->h('Home');
     $T_Help     = $T->h('Cobhair');
@@ -65,13 +64,14 @@ END_HEADER;
 
     $hlSelect   = SM_mdNavbar::hlSelect();
     $hlSelectJs = SM_mdNavbar::hlSelectJs();
+
     $hl = SM_T::hl0();
     $hlHelp = ( in_array($hl,['da','es','ga','it']) ? $hl : 'en' );
-    $helpFile = ( substr($_SERVER['SCRIPT_NAME'],-8)=='edit.php'
-                ? 'create_unit.html'
-                : 'page2.html' );
-
-    $serverhome = ( empty($_SERVER['HTTPS']) ? 'http' : 'https' ) . '://' . $_SERVER['SERVER_NAME'] .'/';
+    $scriptName = $_SERVER['SCRIPT_NAME'];
+    if ($scriptName=='/clilstore/edit.php') { $helpFile = 'create_unit.html';      }
+      elseif (!empty($usuario) && $mode>=2) { $helpFile = 'teacher_loggedin.html'; }
+      else                                  { $helpFile = 'page2.html';            }
+    $homeLink = ( $scriptName=='/clilstore/index.php' ? '/' : '/clilstore/' );
 
     if (empty($usuario)) { //Not logged in yet
       $headerUsuario = <<<END_headerLogin
@@ -79,7 +79,7 @@ END_HEADER;
     <a class="btn btn-outline-light" href="register.php">$T_Register</a>
 END_headerLogin;
     } else {
-        if ($modo<=1) { //Student mode
+        if ($mode<=1) { //Student mode
             $myItems = <<<END_myItemsStudent
         <a href="voc.php?user=$usuario" class="dropdown-item">$T_Vocabulary</a>
         <a href="portfolio.php" class="dropdown-item">$T_Portfolios</a>
@@ -104,6 +104,7 @@ $myItems
 END_headerUsuario;
     }
 
+$scriptName = $_SERVER['SCRIPT_NAME'];
     $header = <<<END_HEADER0
 <nav class="navbar navbar-expand-lg fondo_menu navbar-dark" id="mainNav">
   <div class="container">
@@ -113,7 +114,7 @@ END_headerUsuario;
     </button>
     <div class="collapse navbar-collapse align-items-center" id="navbarResponsive">
       <ul class="navbar-nav ml-auto align-items-center list-unstyled">
-        <li class="nav-item"><a class="nav-link" href="$serverhome">$T_Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="$homeLink">$T_Home</a></li>
         <li class="nav-item"><a class="nav-link" href="https://languages.dk/help/$hlHelp/$helpFile">$T_Help</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">$T_About</a>
