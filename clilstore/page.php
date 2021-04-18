@@ -142,7 +142,7 @@
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
 <div class="btn-group">
   <div class="dropdown">
-  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="min-width:8em">
+  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="min-width:8em">
     <a data-nowordlink>$userSC</a>
   </button>
   <div class="dropdown-menu">

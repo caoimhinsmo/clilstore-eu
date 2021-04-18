@@ -77,7 +77,7 @@
 
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
 
-    $unitsHtml = $unitsTableHtml = $titleHtml = $permitTableHtml = $pfsTableHtml = $addTeacherHtml = $itemEditHtml = '';
+    $unitsHtml = $unitsTableHtml = $titleHtml = $permitTableHtml = $pfsTableHtml = $addTeacherHtml = $itemEditHtml = $unitMoveHtml = '';
     $maxItemlen = 250;
 
     $pf = $_REQUEST['pf'] ?? -1;
@@ -96,8 +96,30 @@
             if (!$stmt2->fetch()) { throw new SM_MDexception("$T_You_do_not_have_read_access"); }
         }
     }
+
     $edit = ( in_array($loggedinUser, [$user,'admin']) ? 1 : 0 ); //$edit=1 indicates that the user has edit rights over the portfolio
     if ($edit) {
+        $stmtPfs = $DbMultidict->prepare('SELECT pf AS portf,title AS pfTitle FROM cspf WHERE user=:user ORDER BY prio DESC');
+        $stmtPfs->execute([':user'=>$user]);
+        $pfsRows = $stmtPfs->fetchAll(PDO::FETCH_ASSOC);
+        if (count($pfsRows)>1) {
+            $ddownItems = '';
+            foreach ($pfsRows as $row) {
+                extract($row);
+                if ($portf<>$pf) {$ddownItems .= "<div data-pf=$portf class=ddown-item onClick=movetoPf(this)>$pfTitle</div>\n"; }
+            }
+            $unitMoveHtml = <<<END_unitMoveHtml
+<div class=edit>
+<div class=ddown>
+<img src='/icons-smo/pfMove.png' alt='Move portfolio' class=ddown-toggle style='width:40px;height:40px;padding:10px 0 0 10px'>
+<div class=ddown-content>
+<div style=padding-left:1em;font-style:italic>Move this unit to portfolio...</div>
+$ddownItems
+</div>
+</div>
+</div>
+END_unitMoveHtml;
+        }
         $itemEditHtml = "<span class=upArrow title='$T_Move_up' onClick=moveItem(this,'up')><img src='/icons-smo/up-arrow.png' class=tool></span>"
                       . "<span class=downArrow title='$T_Move_down' onClick=moveItem(this,'down')><img src='/icons-smo/down-arrow.png' class=tool></span>"
                       . "<img src='/icons-smo/trash.png' alt='Delete' title='$T_Delete_this_item' onClick='itemDelete(this)' class=tool>";
@@ -172,7 +194,7 @@ END_workHtml;
     <table class="table borderless">
       <tr style='backgroud=color:#70a0b3'>
         <td style="vertical-align: middle; text-align: left">
-           <a href='/cs/$csUnit'>$unitidHtml</a>
+           <a href='/cs/$csUnit'>$unitidHtml</a>$unitMoveHtml
         </td>
         <td style="vertical-align: middle; text-align: left">
              <a href='/cs/$csUnit'>$csTitle</a>
@@ -253,18 +275,15 @@ END_pt;
     }
 
     if ($edit) {
-        $stmtPfs = $DbMultidict->prepare('SELECT pf AS portf,title FROM cspf WHERE user=:user ORDER BY prio DESC');
-        $stmtPfs->execute([':user'=>$user]);
-        $rows = $stmtPfs->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($rows as $n=>$row) {
+        foreach ($pfsRows as $n=>$row) {
             extract($row);
             if ($n==0) { $promoteHtml = "<span style='font-weigth: bold; color: #fff'><b>$T_active_portfolio</b>";
-                         $title = "<b>$title</b>"; }
+                         $pfTitle = "<b>$pfTitle</b>"; }
              else      { $promoteHtml = "<a class=\"btn  btn-outline-danger\" href=\"#\" role=\"button\" title='$T_Promote_to_active_portfolio' onClick=\"pfPromote('$portf')\"><span class='fa fa-arrow-up fa-sm' aria-hidden='true'></span> $T_Promote</a>"; }
             $editHtml = "<img src='/icons-smo/trash.png' class=tool alt='Delete' title='$T_Delete_this_portfolio' onclick=\"pfDelete('$portf','$pf','$n')\">";
             if ($portf==$pf) { $promoteHtml .= " &nbsp; [$T_this_portfolio]</span>"; }
             $promoteHtml = "<span>$promoteHtml</span>";
-            $pfsTableHtml .= "<tr id=pfsRow$portf><td>$editHtml </td><td><a href='./portfolio.php?pf=$portf'>$title</a> </td><td>$promoteHtml</td></tr>\n";
+            $pfsTableHtml .= "<tr id=pfsRow$portf><td>$editHtml </td><td><a href='./portfolio.php?pf=$portf'>$pfTitle</a> </td><td>$promoteHtml</td></tr>\n";
         }
         if ($pfsTableHtml=='') { $pfsTableHtml = "<tr><td colspan=3 style='text-align:center'>You have no portfolios</td></tr>"; }
         $pfsTableHtml = <<<END_pfstab
@@ -486,6 +505,10 @@ EOD;
             color: #ffffff;
         }
 
+        .ddown { display:inline-block; }
+        .ddown-content { display:none; position:absolute; padding:2px; background-color:white; white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
+        .ddown:hover .ddown-content { display:block; }
+        .ddown-item:hover, .ddown-item:focus { background-color:#fa9; color:#111; text-decoration:none; }
 
     </style>
     <script>
@@ -748,6 +771,22 @@ EOD;
                  else                { trEl.parentNode.insertBefore(swopEl,trEl); }
             }
             xhr.open('GET', 'ajax/pfUnitSwop.php?id='+id+'&swopId='+swopId);
+            xhr.send();
+        }
+
+        function movetoPf(el) {
+            var pf = el.getAttribute('data-pf');
+            var trEl = el.closest('tr.edit');
+            var pfu = trEl.id.substring(6);
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                var resp = this.responseText;
+                if (resp=='KO') { alert('This unit is already in that portfolio'); return; }
+                if (resp!='OK') { alert('$T_Error_in pfMoveUnit.php\\r\\n\\r\\n'+resp); return; }
+                trEl.style.backgroundColor = 'pink';
+                trEl.remove();
+            }
+            xhr.open('GET', 'ajax/pfMoveUnit.php?pfu='+pfu+'&pf='+pf);
             xhr.send();
         }
     </script>
