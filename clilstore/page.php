@@ -217,7 +217,7 @@ EOD_NB2;
     <script src="../js/bootstrap.min.js"></script>
     <style>
         .ddown2 { display:inline-block; }
-        .ddown2-content { display:none; position:absolute; right:0; padding:2px; background-color:rgba(255,255,255,0.9);
+        .ddown2-content { display:none; position:absolute; right:0; padding:2px 40px 2px 2px; background-color:rgba(255,255,255,0.9);
                           white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
         .ddown2:hover .ddown2-content { display:block; }
         .ddown2-item:hover, .ddown2-item:focus { background-color:#ed8; color:#111; }
