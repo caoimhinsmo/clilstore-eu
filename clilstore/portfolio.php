@@ -138,6 +138,11 @@ END_unitMoveHtml;
                   $h2 = "<div class=\"col-md-12 mb-3 mt-3\"><h4 style='color:white'>$T_active_portfolio : $titulo</h4></div>"; }
 
     $unitToEdit = $_REQUEST['unit'] ?? 0;
+    if ($unitToEdit) {
+        $ord = time();
+        $stmtAddUnit = $DbMultidict->prepare('INSERT IGNORE INTO cspfUnit (pf,unit,ord) VALUES (:pf,:unit,:ord)');
+        $stmtAddUnit->execute([ ':pf'=>$pf, ':unit'=>$unitToEdit, ':ord'=>$ord ]);
+    }
 
     $stmtPfu = $DbMultidict->prepare('SELECT cspfUnit.pfu, cspfUnit.unit AS csUnit, clilstore.title AS csTitle FROM cspfUnit,clilstore'
                                     . ' WHERE pf=:pf AND unit=clilstore.id ORDER BY ord');

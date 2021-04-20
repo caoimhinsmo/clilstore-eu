@@ -112,19 +112,31 @@
                         ."<img src='/favicons/recordOff.png' alt='VocOff' title='$T_Voc_Click_to_enable'>"
                         ."<img src='/favicons/record.png' alt='VocOn' title='$T_Voc_Click_to_disable'>"
                         ."</span>";
-// Conditional code commented out. Now showing Portfolio link whether or not the user has any portfolios.
-//       $stmt = $DbMultidict->prepare('SELECT pf FROM cspf WHERE user=:user ORDER BY prio DESC LIMIT 1');
-//       $stmt->execute([':user'=>$user]);
-//       if ($row  = $stmt->fetch(PDO::FETCH_ASSOC)) {
-           $portfolioHtml = "<a class='dropdown-item' href='portfolio.php?unit=$id' target='pftab' data-nowordlink onClick=\"pfAddUnit('$id');\" title='$T_Add_to_portfolio'>$T_Portfolio</a>";
-//       }
-       $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
-       $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
-       $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
-       $stmtGetLikes->execute([':id'=>$id]);
-       if ($stmtGetLike->fetchColumn()>0) { $likeClass = 'liked'; } else { $likeClass = 'unliked'; }
-       $likes = $stmtGetLikes->fetchColumn();
-       $likeHtml = "<span id=likeLI class='$likeClass' onclick='likeClicked();'><img id=heartUnliked src='/favicons/unlike.png' alt='unlike'><img id=heartLiked src='/favicons/like.png' alt='like'></span><span id='likesBadge' class='badge badge-pill badge-danger' style='margin-left:-1em'>$likes</span>";
+        $stmtPfs = $DbMultidict->prepare('SELECT pf AS portf,title AS pfTitle FROM cspf WHERE user=:user ORDER BY prio DESC');
+        $stmtPfs->execute([':user'=>$user]);
+        $pfsRows = $stmtPfs->fetchAll(PDO::FETCH_ASSOC);
+        foreach($pfsRows as $pfRow) {
+            extract($pfRow);
+            $portfolioHtml .= "<div class=ddown2-item><a href='portfolio.php?pf=$portf&amp;unit=$id' target='pftab' data-nowordlink>$pfTitle</a></div>\n";
+        }
+        $portfolioHtml = <<<END_portfolioHtml
+<div class='dropdown-item'>
+<div class=ddown2>
+<a class=dropdown-item href='javascript:;' data-nowordlink>Add to portfolio</a>
+<div class=ddown2-content style="right:0">
+$portfolioHtml
+<div class=ddown2-item><a href='portfolio.php?pf=0&amp;unit=$id' target='pftab' data-nowordlink style="font-style:italic;padding-left:0.3em">Add to a new portfolio</a></div>
+</div>
+</div>
+</div>
+END_portfolioHtml;
+        $stmtGetLike = $DbMultidict->prepare('SELECT likes FROM user_unit WHERE user=:user AND unit=:id');
+        $stmtGetLikes = $DbMultidict->prepare('SELECT SUM(likes) FROM user_unit WHERE unit=:id');
+        $stmtGetLike->execute([':user'=>$user,':id'=>$id]);
+        $stmtGetLikes->execute([':id'=>$id]);
+        if ($stmtGetLike->fetchColumn()>0) { $likeClass = 'liked'; } else { $likeClass = 'unliked'; }
+        $likes = $stmtGetLikes->fetchColumn();
+        $likeHtml = "<span id=likeLI class='$likeClass' onclick='likeClicked();'><img id=heartUnliked src='/favicons/unlike.png' alt='unlike'><img id=heartLiked src='/favicons/like.png' alt='like'></span><span id='likesBadge' class='badge badge-pill badge-danger' style='margin-left:-1em'>$likes</span>";
     }
 
     $shareTitle = 'Clilstore unit: ' . urlencode($title);
@@ -135,8 +147,8 @@
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
-    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink class='nowordlink' title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButtonHover.png class='img-top' width='30'></div></a>";
-    $helpHtml = "<a href='$helpVideoURL' target=help$id data-nowordlink class='nowordlink' title='$helpTitle'><div class='cardinfo'><img src=/icons-smo/helpButton.png width='30'><img src=/icons-smo/helpButtonHover.png class='img-top' width='30'></div></a>";
+    $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButtonHover.png class='img-top' width='30'></div></a>";
+    $helpHtml = "<a href='$helpVideoURL' target=help$id data-nowordlink title='$helpTitle'><div class='cardinfo'><img src=/icons-smo/helpButton.png width='30'><img src=/icons-smo/helpButtonHover.png class='img-top' width='30'></div></a>";
     if (empty($user)) {
         $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
     } else { $userMenuHtml = <<<EOD_UserMenuHtml
@@ -148,8 +160,8 @@
   <div class="dropdown-menu">
     <a class='dropdown-item' href='options.php?user=$user' data-nowordlink target=_blank title='$T_Options_title'>$T_Options</a>
     <a class='dropdown-item' href='voc.php?user=$user&amp;sl=$sl' data-nowordlink target=voctab title='$T_Open_vocabulary_list'>$T_Vocabulary</a>
-    $portfolioHtml
     <a class='dropdown-item' href='logout.php?returnTo=/cs/$id' data-nowordlink target=_top title='$T_Logout_from_Clilstore'>$T_Logout</a>
+    $portfolioHtml
   </div>
   </div>
 </div>
@@ -175,13 +187,10 @@ EOD_UserMenuHtml;
              <div class="btn" style="display:inline-block;padding:0">$hlSelect</div>
             $userMenuHtml
             </div>
-
-
     </div>
 </div>
-
-
 EOD_NB1;
+
     $navbar2 = <<<EOD_NB2
 <div class="row no-margin" style="background-color: #2c6692;">
     <div class="col-md-12" id="share-buttons">
@@ -197,7 +206,6 @@ EOD_NB2;
 <head>
     <meta charset="UTF-8">
     <title>CLILstore unit $id: $title</title>
-
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
@@ -208,9 +216,13 @@ EOD_NB2;
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <style>
-        .ddown { display:inline-block; overflow2:hidden; }
-        .ddown-content { display:none; position:absolute; padding:2px; background-color:#f9f9f9; white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
-        .ddown:hover .ddown-content { display:block; }
+        .ddown2 { display:inline-block; }
+        .ddown2-content { display:none; position:absolute; right:0; padding:2px; background-color:rgba(255,255,255,0.9);
+                          white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
+        .ddown2:hover .ddown2-content { display:block; }
+        .ddown2-item:hover, .ddown2-item:focus { background-color:#ed8; color:#111; }
+        .ddown2-item a { color:black; text-decoration:none; }
+
         #share-buttons img {
             width: 40px;
             padding: 5px;
@@ -273,14 +285,13 @@ EOD_NB2;
         span#likeLI.unliked #heartLiked   { display:none;   }
         span#likeLI.unliked #heartUnliked { display:inline; }
 
-
    .no-margin{
     margin-right: 0px;
     margin-left: 0px;
    }
 
    .dropdown-menu { border:1px solid grey;
-        background-color: rgba(255, 255, 255, .8);
+        background-color: rgba(255, 255, 255, 0.9);
         margin-top:0;
     }
 
@@ -289,7 +300,7 @@ EOD_NB2;
    .dropdown-item:hover, .dropdown-item:focus {
         color: #16181b;
         text-decoration: none;
-        background-color: #f7ac99;
+        background-color: #ed8;
     }
 
     .dropdown:hover>.dropdown-menu {
@@ -320,21 +331,6 @@ EOD_NB2;
     }
     </style>
     <script>
-        function likeClicked_SGUAB() {
-            var likeEl = document.getElementById('likeLI');
-            var newLikeStatus = 'unliked', increment = -1;
-            if (likeEl.className=='unliked') { newLikeStatus = 'liked'; increment = 1; }
-            var xhr = new XMLHttpRequest();
-            xhr.onload = function() {
-                if (this.status!=200 || this.responseText!='OK') { alert('$T_Error_in likeClicked:'+this.status+' '+this.responseText); return; }
-                likeEl.className = newLikeStatus;
-                var lbEl = document.getElementById('likesBadge');
-                lbEl.innerHTML = parseInt(lbEl.innerHTML,10) + increment;
-            }
-            xhr.open('GET', '/clilstore/ajax/setLike.php?unit=$id&newLikeStatus=' + newLikeStatus);
-            xhr.send();
-        }
-
         function likeClicked() {
             var likeEl = document.getElementById('likeLI');
             var newLikeStatus = 'unliked', increment = -1;
@@ -368,15 +364,6 @@ EOD_NB2;
             vocTogReq.send();
         }
 
-        function pfAddUnit(unit) {
-            var xhr = new XMLHttpRequest();
-            xhr.onload = function() {
-                if (this.status!=200 || this.responseText!='OK') { alert('$T_Error_in pfAddUnit:'+this.status+' '+this.responseText); return; }xc
-            }
-            xhr.open('GET', '/clilstore/ajax/pfAddUnit.php?unit='+unit);
-            xhr.send();
-        }
-
         function hlSelectJs(hl) {
             document.cookie = 'Thl=' + hl + '; path=/; samesite=lax; max-age=15000000';  //Valid for six months
             loc = document.location;
@@ -395,37 +382,9 @@ EOD_NB2;
             var available = winH - rectTop -70;
             if (available<160) { available = 160; }
             document.getElementById('textDiv').style.height = available+'px';
-/*
-//Unsuccessful attempts to get momentum scrolling back working on the iPad after the resize of the scrolling area.
-//Delete all this sometime, or perhaps continue again sometime with trying to find a method which works.
-            var userAgent = navigator.userAgent;
-            alert('userAgent='+userAgent);
-            if ( userAgent.indexOf('iPad') > -1 ) {
-                alert('Have guessed this is an iPad');
-                document.getElementById('textDiv').style.overflow = 'scroll';
-                document.getElementById('textDiv').style.WebkitOverflowScrolling = 'touch';
-                document.getElementById('textDiv').style.backgroundColor = '#f99';
-            }
-*/
         }
 
         window.addEventListener('load',sizeTextDiv);
-
-//Causes too many resizes on tablets
-//        function resizeAlert() {
-//            alert('Window resize detected.  About to resize the scrolling area to fit the window height.');
-//            sizeTextDiv();
-//        }
-//        window.addEventListener('resize',resizeAlert);
-
-
-//Doesn’t seem to be working
-//        function reorientAlert() {
-//            alert('Orientation change detected.  About to resize the scrolling area to fit the window height.');
-//            sizeTextDiv();
-//        }
-//        window.addEventListener('orientationchange',reorientAlert);
-
     </script>
 </head>
 <body lang="$sl">
@@ -455,7 +414,5 @@ EOD1;
     $stmt->execute();
     $stmt = null;
 
-
   } catch (Exception $e) { echo $e; }
-
 ?>
