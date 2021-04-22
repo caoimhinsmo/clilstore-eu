@@ -64,9 +64,11 @@
   $T_You_can_add_Clilstore_units    = $T->h('You_can_add_Clilstore_units');
   $T_Remove_permission_from_teacher = $T->h('Remove_permission_from_teacher');
   $T_Remove_unit_from_portfolio     = $T->h('Remove_unit_from_portfolio');
+  $T_Move_this_unit_to_portfolio    = $T->h('Move_this_unit_to_portfolio');
   $T_Completely_delete_portfolio    = $T->j('Completely_delete_portfolio');
   $T_Teacher_already_has_access     = $T->j('Teacher_already_has_access');
   $T_Must_give_portfolio_a_name     = $T->j('Must_give_portfolio_a_name');
+  $T_Unit_already_in_that_portfolio = $T->h('Unit_already_in_that_portfolio');  
 
   $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan);
 
@@ -113,7 +115,7 @@
 <div class=ddown>
 <img src='/icons-smo/pfMove.png' alt='Move portfolio' class=ddown-toggle style='width:40px;height:40px;padding:10px 0 0 10px'>
 <div class=ddown-content>
-<div style=padding-left:1em;font-style:italic>Move this unit to portfolio...</div>
+<div style=padding-left:1em;font-style:italic>$T_Move_this_unit_to_portfolio   </div>
 $ddownItems
 </div>
 </div>
@@ -513,7 +515,7 @@ EOD;
         .ddown { display:inline-block; }
         .ddown-content { display:none; position:absolute; padding:2px; background-color:white; white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
         .ddown:hover .ddown-content { display:block; }
-        .ddown-item:hover, .ddown-item:focus { background-color:#fa9; color:#111; text-decoration:none; }
+        .ddown-item:hover, .ddown-item:focus { background-color:#fca; color:#111; text-decoration:none; cursor:pointer; }
 
     </style>
     <script>
@@ -786,7 +788,7 @@ EOD;
             var xhr = new XMLHttpRequest();
             xhr.onload = function() {
                 var resp = this.responseText;
-                if (resp=='KO') { alert('This unit is already in that portfolio'); return; }
+                if (resp=='KO') { alert('$T_Unit_already_in_that_portfolio'); return; }
                 if (resp!='OK') { alert('$T_Error_in pfMoveUnit.php\\r\\n\\r\\n'+resp); return; }
                 trEl.style.backgroundColor = 'pink';
                 trEl.remove();

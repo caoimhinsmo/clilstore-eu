@@ -35,6 +35,7 @@
   $T_Login_to_Clilstore    = $T->h('Login_to_Clilstore');
   $T_Logout_from_Clilstore = $T->h('Logout_from_Clilstore');
   $T_Options_title         = $T->h('Options_title');
+  $T_Portfolio_title       = $T->h('Portfolio_title');
   $T_Help_videos_for_teachers = $T->h('Help_videos_for_teachers');
   $T_Help_videos_for_students = $T->h('Help_videos_for_students');
 
@@ -122,9 +123,8 @@
         $portfolioHtml = <<<END_portfolioHtml
 <div class='dropdown-item'>
 <div class=ddown2>
-<a class=dropdown-item href='javascript:;' data-nowordlink>$T_Portfolio</a>
+<a class=dropdown-item href='javascript:;' data-nowordlink title="$T_Portfolio_title">$T_Portfolio</a>
 <div class=ddown2-content style="right:0">
-<div style="text-align:center;color:#555"><a data-nowordlink>Add unit to portfolio</a></div>
 $portfolioHtml
 <div class=ddown2-item><a href='portfolio.php?pf=0&amp;unit=$id' target='pftab' data-nowordlink style="font-style:italic;padding-left:0.3em">New portfolio</a></div>
 </div>
