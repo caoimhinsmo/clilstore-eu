@@ -36,6 +36,8 @@
   $T_Logout_from_Clilstore = $T->h('Logout_from_Clilstore');
   $T_Options_title         = $T->h('Options_title');
   $T_Portfolio_title       = $T->h('Portfolio_title');
+  $T_New_portfolio         = $T->h('New_portfolio');
+  $T_Create_a_new_portfolio   = $T->h('Create_a_new_portfolio');
   $T_Help_videos_for_teachers = $T->h('Help_videos_for_teachers');
   $T_Help_videos_for_students = $T->h('Help_videos_for_students');
 
@@ -118,15 +120,15 @@
         $pfsRows = $stmtPfs->fetchAll(PDO::FETCH_ASSOC);
         foreach($pfsRows as $pfRow) {
             extract($pfRow);
-            $portfolioHtml .= "<div class=ddown2-item><a href='portfolio.php?pf=$portf&amp;unit=$id' target='pftab' data-nowordlink>$pfTitle</a></div>\n";
+            $portfolioHtml .= "<div class=pfddown-item><a href='portfolio.php?pf=$portf&amp;unit=$id' target='pftab' data-nowordlink>$pfTitle</a></div>\n";
         }
         $portfolioHtml = <<<END_portfolioHtml
 <div class='dropdown-item'>
-<div class=ddown2>
+<div class=pfddown>
 <a class=dropdown-item href='javascript:;' data-nowordlink title="$T_Portfolio_title">$T_Portfolio</a>
-<div class=ddown2-content style="right:0">
+<div class=pfddown-content style="right:0">
 $portfolioHtml
-<div class=ddown2-item><a href='portfolio.php?pf=0&amp;unit=$id' target='pftab' data-nowordlink style="font-style:italic;padding-left:0.3em">New portfolio</a></div>
+<div class=pfddown-item><a href='portfolio.php?pf=0&amp;unit=$id' target='pftab' data-nowordlink style="font-style:italic;padding-left:0.3em" title='$T_Create_a_new_portfolio'>$T_New_portfolio</a></div>
 </div>
 </div>
 </div>
@@ -217,12 +219,12 @@ EOD_NB2;
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <style>
-        .ddown2 { display:inline-block; }
-        .ddown2-content { display:none; position:absolute; right:0; padding:2px 40px 2px 2px; background-color:rgba(255,255,255,0.9);
+        .pfddown { display:inline-block; }
+        .pfddown-content { display:none; position:absolute; right:0; padding:2px 40px 2px 2px; background-color:rgba(255,255,255,0.9);
                           white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
-        .ddown2:hover .ddown2-content { display:block; }
-        .ddown2-item:hover, .ddown2-item:focus { background-color:#ed8; color:#111; }
-        .ddown2-item a { color:black; text-decoration:none; }
+        .pfddown:hover .pfddown-content { display:block; }
+        .pfddown-item:hover, .pfddown-item:focus { background-color:#ed8; color:#111; }
+        .pfddown-item a { color:black; text-decoration:none; }
 
         #share-buttons img {
             width: 40px;
