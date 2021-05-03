@@ -297,7 +297,8 @@
             {title: 'Example 2', inline: 'span', classes: 'example2'},
             {title: 'Table styles'},
             {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-        ]
+        ],
+        entity_encoding: 'raw'
      });
     </script>
 EODtinyMCE;
