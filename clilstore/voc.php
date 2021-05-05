@@ -15,11 +15,14 @@
   $T = new SM_T('clilstore/voc');
   $T_Return = $T->h('Return');
 
-  $T_Language = $T->h('Language');
-  $T_Word     = $T->h('Facal');
-  $T_words    = $T->h('facail');
-  $T_Meaning  = $T->h('Meaning');
-  $T_Error_in = $T->h('Error_in');
+  $T_Language   = $T->h('Language');
+  $T_Word       = $T->h('Facal');
+  $T_words      = $T->h('facail');
+  $T_Meaning    = $T->h('Meaning');
+  $T_Error_in   = $T->h('Error_in');
+  $T_Hide_all   = $T->h('Hide_all');
+  $T_Reveal_all = $T->h('Reveal_all');
+  $T_Reveal     = $T->h('Reveal');
 
   $T_Vocabulary_list_for_user_ = $T->h('Vocabulary_list_for_user_');
   $T_Page_needs_parameter      = $T->h('Parameter_p_a_dhith');
@@ -32,6 +35,7 @@
   $T_Sort_the_column           = $T->h('Sort_the_column');
   $T_Empty_voc_list_question   = $T->h('Empty_voc_list_question');
   $T_Write_meaning_here        = $T->h('Write_meaning_here');
+  $T_Test_yourself             = $T->h('Test_yourself');
   $T_Empty_voc_list_confirm    = $T->j('Empty_voc_list_confirm');
 
   $T_No_words_in_voc_list_info = strtr ( $T_No_words_in_voc_list_info, [ '{'=>'<i>', '}'=>'</i>' ] );
@@ -68,7 +72,7 @@ END_noVocTable1;
                 $slLorgEndonym = $endonym;
                 $class = 'btn btn-success btn-lg mr-2 text-uppercase';
             } else {
-               $class = 'btn btn-primary btn-lg mr-2 text-uppercase';
+                $class = 'btn btn-primary btn-lg mr-2 text-uppercase';
             }
             $langButArray[$sl] = "<a role='button' href='voc.php?user=$userSC&amp;sl=$sl' title='$endonym ($cnt $T_words)' class='$class'><i class='fa fa-language'></i> $sl</a>";
         }
@@ -128,7 +132,8 @@ END_noVocTable2;
 <tr id=row$vocid class="bg-primary text-white">
 <td><img src='/icons-smo/curAs.png' alt='Delete' title='$T_Delete_instantaneously' onclick="deleteVocWord('$vocid')"></td>
 <td title='$T_Lookup_with_Multidict'><a href='/multidict/?sl=$slLorg&amp;word=$word' target=vocmdtab><img src=/favicons/multidict.png alt=''> $word</a></td>
-<td><input type="text" class="form-control" value='$meaningSC' style='min-width:45em;max-width:55em' onchange="changeMeaning('$vocid',this.value)" title="$T_Write_meaning_here"></td>
+<td class=meaning><a class=reveal href="javascript:;" onclick="reveal(this)">$T_Reveal</a>
+    <input type="text" class="form-control" value='$meaningSC' style='min-width:45em;max-width:55em' onchange="changeMeaning('$vocid',this.value)" title="$T_Write_meaning_here"></td>
 <td><span id="$vocid-tick" class="change"><img src="check.png" height="28" width="28"></img><span></td>
 <td class="text-center">$unitsHtml</td>
 </tr>
@@ -141,7 +146,6 @@ END_vocHtml;
                                                   '[sl]' => "$slLorgEndonym"
                                                 ] );
             $vocTableHtml = <<<END_vocTable
-<h5 class="text-white">$T_Language: $slLorgEndonym</h5>
 <table id=vocab class="table table-hover">
 <thead class="thead-light">
     <tr id=vocabhead>
@@ -170,10 +174,17 @@ END_vocTable;
         </div>
    </div>
 </div>
-
+<div class="col-lg-12" style="margin:0.5em 0">
+<h5 class="text-white">$T_Language: $slLorgEndonym</h5>
+</div>
+<div class="col-lg-12">
+<h5 class="text-white">$T_Test_yourself&nbsp;
+<a role='button' href='javascript:hideAll();'  class='btn btn-primary btn-lg mr-2'>$T_Hide_all</a>
+<a role='button' href='javascript:revealAll()' class='btn btn-primary btn-lg mr-2'>$T_Reveal_all</a>
+</h5>
+</div>
 
 $vocTableHtml
-
 EOD;
 
   } catch (Exception $e) { $HTML = $e; }
@@ -212,13 +223,15 @@ EOD;
             text-decoration: none;
             background-color: transparent;
         }
-        table#vocab th a {
-            color:black;
-        }
+        table#vocab th a       { color:#495047; }
+        table#vocab th a:hover { color:blue;    }
         span.change { opacity:0; color:white; }
         span.change.changed { color:green; animation:appearFade 5s; }
         @keyframes appearFade { from { opacity:1; background-color:#35a4bf; } 20% { opacity:0.8; background-color:transparent; } to { opacity:0; } }
-
+        table#vocab td.meaning a.reveal { display:none; margin-left:1em; font-size:120%; padding:0 5px; background-color:#5ae; color:white; border-radius:4px; }
+        table#vocab td.meaning a.reveal:hover {background-color:#090; text-decoration:none; }
+        table#vocab td.meaning.hide input { display:none }
+        table#vocab td.meaning.hide a.reveal { display:inline; }
     </style>
     <script>
         function deleteVocWord(vocid) {
@@ -259,13 +272,28 @@ EOD;
                 return false;
             }
         }
+        function hideAll() {
+            var inputEls = document.querySelectorAll('table#vocab td.meaning input');
+            for (let inputEl of inputEls) {
+                if (inputEl.value > '') { inputEl.closest('td.meaning').classList.add('hide'); }
+            }
+        }
+        function revealAll() {
+            var inputEls = document.querySelectorAll('table#vocab td.meaning input');
+            for (let inputEl of inputEls) {
+                if (inputEl.value > '') { inputEl.closest('td.meaning').classList.remove('hide'); }
+            }
+        }
+        function reveal(el) {
+            el.closest('td.meaning').classList.remove('hide');
+            return false;
+        }
     </script>
 </head>
 <body>
 $menu
 <div class="container h100">
     <div class="row h-100 justify-content-center align-items-center">
-
 $HTML
         <div class="col-lg-12">
             $footer
