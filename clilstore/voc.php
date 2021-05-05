@@ -228,7 +228,7 @@ EOD;
         span.change { opacity:0; color:white; }
         span.change.changed { color:green; animation:appearFade 5s; }
         @keyframes appearFade { from { opacity:1; background-color:#35a4bf; } 20% { opacity:0.8; background-color:transparent; } to { opacity:0; } }
-        table#vocab td.meaning a.reveal { display:none; margin-left:1em; font-size:120%; padding:0 5px; background-color:#5ae; color:white; border-radius:4px; }
+        table#vocab td.meaning a.reveal { display:none; margin-left:1em; font-size:120%; padding:0 5px; background-color:#28a; color:white; border-radius:4px; }
         table#vocab td.meaning a.reveal:hover {background-color:#090; text-decoration:none; }
         table#vocab td.meaning.hide input { display:none }
         table#vocab td.meaning.hide a.reveal { display:inline; }
