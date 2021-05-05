@@ -29,7 +29,9 @@
   $T_No_words_in_voc_list      = $T->h('No_words_in_voc_list');
   $T_No_words_in_voc_list_for_ = $T->h('No_words_in_voc_list_for_');
   $T_No_words_in_voc_list_info = $T->h('No_words_in_voc_list_info');
+  $T_Sort_the_column           = $T->h('Sort_the_column');
   $T_Empty_voc_list_question   = $T->h('Empty_voc_list_question');
+  $T_Write_meaning_here        = $T->h('Write_meaning_here');
   $T_Empty_voc_list_confirm    = $T->j('Empty_voc_list_confirm');
 
   $T_No_words_in_voc_list_info = strtr ( $T_No_words_in_voc_list_info, [ '{'=>'<i>', '}'=>'</i>' ] );
@@ -78,7 +80,32 @@ END_noVocTable1;
 <h5 class="text-white">$T_No_words_in_voc_list_info</h5>
 END_noVocTable2;
         } else {
-            $stmt = $DbMultidict->prepare('SELECT vocid,word,calls,head,meaning FROM csVoc WHERE user=:user AND sl=:sl');
+            $vocidClickOrder   = 'vocid';
+            $wordClickOrder    = 'word';
+            $meaningClickOrder = 'meaning';
+            $order = $_REQUEST['order'] ?? 'vocidDESC';
+            if ($order=='vocid') {
+                $orderCondition  = 'vocid';
+                $vocidClickOrder = 'vocidDESC';
+            } elseif ($order=='vocidDESC') {
+                $orderCondition = 'vocid DESC';
+                $vocidClickOrder = 'vocid';
+            } elseif ($order=='word') {
+                $orderCondition = 'word';
+                $wordClickOrder  = 'wordDESC';
+            } elseif ($order=='wordDESC') {
+                $orderCondition = 'word DESC';
+                $wordClickOrder = 'word';
+            } elseif ($order=='meaning') {
+                $orderCondition = 'meaning, word';
+                $meaningClickOrder  = 'meaningDESC';
+            } elseif ($order=='meaningDESC') {
+                $orderCondition = 'meaning DESC, word';
+                $meaningClickOrder = 'meaning';
+            } else {
+                $orderCondition = 'vocid';
+            }
+            $stmt = $DbMultidict->prepare("SELECT vocid,word,calls,head,meaning FROM csVoc WHERE user=:user AND sl=:sl ORDER BY $orderCondition");
             $stmt->execute([':user'=>$user,':sl'=>$slLorg]);
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row) {
@@ -101,7 +128,7 @@ END_noVocTable2;
 <tr id=row$vocid class="bg-primary text-white">
 <td><img src='/icons-smo/curAs.png' alt='Delete' title='$T_Delete_instantaneously' onclick="deleteVocWord('$vocid')"></td>
 <td title='$T_Lookup_with_Multidict'><a href='/multidict/?sl=$slLorg&amp;word=$word' target=vocmdtab><img src=/favicons/multidict.png alt=''> $word</a></td>
-<td><input type="text" class="form-control" value='$meaningSC' style='min-width:45em;max-width:55em' onchange="changeMeaning('$vocid',this.value);"></td>
+<td><input type="text" class="form-control" value='$meaningSC' style='min-width:45em;max-width:55em' onchange="changeMeaning('$vocid',this.value)" title="$T_Write_meaning_here"></td>
 <td><span id="$vocid-tick" class="change"><img src="check.png" height="28" width="28"></img><span></td>
 <td class="text-center">$unitsHtml</td>
 </tr>
@@ -118,9 +145,9 @@ END_vocHtml;
 <table id=vocab class="table table-hover">
 <thead class="thead-light">
     <tr id=vocabhead>
-      <th scope="col"></th>
-      <th scope="col">$T_Word</th>
-      <th scope="col">$T_Meaning</th>
+      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$vocidClickOrder" title='$T_Sort_the_column'>*</a></th>
+      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$wordClickOrder" title='$T_Sort_the_column'>$T_Word</a></th>
+      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$meaningClickOrder" title='$T_Sort_the_column'>$T_Meaning</a></th>
       <th scope="col"></th>
       <th scope="col">$T_Clicked_in_unit</th>
     </tr>
@@ -184,6 +211,9 @@ EOD;
             color: #ffffff;
             text-decoration: none;
             background-color: transparent;
+        }
+        table#vocab th a {
+            color:black;
         }
         span.change { opacity:0; color:white; }
         span.change.changed { color:green; animation:appearFade 5s; }
