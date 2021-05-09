@@ -17,32 +17,11 @@
 
     $T_Teaching_units         = $T->h('Teaching_units');
     $T_for_CLIL               = $T->h('for_CLIL');
-    $T_Select_lang_level      = $T->h('Select_lang_level');
-    $T_My_options             = $T->h('My_options');
-    $T_My_units               = $T->h('My_units');
-    $T_My_vocabulary          = $T->h('My_vocabulary');
-    $T_Add_a_column_info      = $T->h('Add_a_column_info');
     $T_See_as_newbie          = $T->h('See_as_newbie');
-    $T_Create_a_unit          = $T->h('Create_a_unit') . '…';
     $T_For_students           = $T->h('For_students');
     $T_For_teachers           = $T->h('For_teachers');
-    $T_For_students_info      = $T->h('For_students_info');
-    $T_For_students_more_info = $T->h('For_students_more_info');
-    $T_For_teachers_info      = $T->h('For_teachers_info');
-    $T_For_teachers_more_info = $T->h('For_teachers_more_info');
     $T_Include_test_units     = $T->h('Include_test_units');
     $T_Include_test_units_o   = $T->h('Include_test_units_o');
-    $T_Login                  = $T->h('Log_air');
-    $T_Logout                 = $T->h('Logout');
-    $T_Logout_from_Clilstore  = $T->h('Logout_from_Clilstore');
-    $T_Logged_in_as           = $T->h('Logged_in_as');
-    $T_Disclaimer             = $T->h('Disclaimer');
-    $T_Disclaimer_EuropeanCom = $T->h('Disclaimer_EuropeanCom');
-    $T_or                     = $T->h('or');
-    $T_register               = $T->h('register');
-    $loginReasonStudent       = $T->h('loginReasonStudent');
-    $loginReasonTeacher       = $T->h('loginReasonTeacher');
-    $T_Lorg                   = $T->h('Lorg');
 
     $T_UnitID                 = $T->h('csCol_id');
     $T_Views                  = $T->h('csCol_views');
@@ -142,7 +121,7 @@
     $T_DT_rows     = $T->j('DT_rows');
     $T_DT_Show_All = $T->j('DT_Show_All');
 
-    $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = '';
+    $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = $incUnitMessage = '';
     $timeNow = time();
 
     if (!isset($_COOKIE['csSessionId'])) $cookieMessage = <<<EOD_cookieMessage
@@ -174,13 +153,12 @@ $csid = $csSess->getCsSession()->csid;
 
     $autor = $_GET['owner'] ?? '';
 
-    //$incTest = 0;
 
-       if (isset($_POST['incTest2'])){
+    if (isset($_POST['incTest2'])){
         $incTest = 1;
-       } else {
+    } else {
         $incTest = 0;
-       }
+    }
 
     //$incTest = $csSess->getCsSession()->incTest;
 
@@ -206,72 +184,47 @@ $csid = $csSess->getCsSession()->csid;
 CHECKBOXES;
     }
 
-    if (empty($user)) {
-        if ($mode<=1) { $loginReason = $loginReasonStudent; }
-          else        { $loginReason = $loginReasonTeacher; }
-        $userHtml = <<<END_USER1
-<p style="clear:both;padding:1em 0"><a href="login.php" class=mybutton>$T_Login</a> $T_or <a href="register.php">$T_register</a> $loginReason.</p>
-END_USER1;
-    } else {
-        $stmtIncUnit = $DbMultidict->prepare('SELECT id AS incUnit, created AS incCreated FROM clilstore WHERE test=2 and owner=:user'); //Check whether the user has any incomplete units
+    if (!empty($user)) {
+       //Check whether the user has any incomplete unit, and if so either delete it (if it is over 24 hours old) or issue a warning
+        $stmtIncUnit = $DbMultidict->prepare('SELECT id AS incUnit, created AS incCreated FROM clilstore WHERE test=2 and owner=:user');
         $stmtIncUnit->execute([':user'=>$user]);
         $row = $stmtIncUnit->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             extract($row);
             $secondsToLive = $incCreated + 86400 - $timeNow; //Delete automatically after 1 day
             if ($secondsToLive<=0) {
-                header("Location:$serverhome/clilstore/delete.php?id=$incUnit&delete");
-            } elseif ($secondsToLive<100) {
-                $deleteTimeMess = "$secondsToLive $T_seconds";
+                $DbMultidict->prepare('DELETE FROM csButtons WHERE id=:id')->execute(['id'=>$incUnit]);
+                $DbMultidict->prepare('DELETE FROM csFiles   WHERE id=:id')->execute(['id'=>$incUnit]);
+                $DbMultidict->prepare('DELETE FROM clilstore WHERE id=:id')->execute(['id'=>$incUnit]);
             } else {
-                $minutesToLive = round($secondsToLive/60);
-                if ($minutesToLive<100) {
-                    $deleteTimeMess = "$minutesToLive $T_minutes";
+                if ($secondsToLive<100) {
+                    $deleteTimeMess = "$secondsToLive $T_seconds";
                 } else {
-                    $hoursToLive = round($minutesToLive/60);
-                    $deleteTimeMess = "$hoursToLive $T_hours";
+                    $minutesToLive = round($secondsToLive/60);
+                    if ($minutesToLive<100) {
+                        $deleteTimeMess = "$minutesToLive $T_minutes";
+                    } else {
+                        $hoursToLive = round($minutesToLive/60);
+                        $deleteTimeMess = "$hoursToLive $T_hours";
+                    }
                 }
+                $stmtIncUnitFcount = $DbMultidict->prepare('SELECT COUNT(1) As cnt FROM csFiles WHERE id=:id');
+                $stmtIncUnitFcount->execute([':id'=>$incUnit]);
+                $incUnitFcount = $stmtIncUnitFcount->fetchColumn();
+                $fcountMessage = ( $incUnitFcount ? ' <i>('.sprintf($T_inc_d_attached_files,$incUnitFcount).')</i>' : '' );
+                $incUnitMessage = sprintf($T_incUnitMessage,$fcountMessage,$deleteTimeMess);
+                $incUnitMessage = strtr($incUnitMessage,
+                                         [ '{' => "<a href='edit.php?id=$incUnit' class=mybutton>",
+                                           '}' => '</a>',
+                                           '[' => "<a href='delete.php?id=$incUnit' class=mybutton>",
+                                           ']' => '</a>',
+                                           '&lt;br&gt;' => '<br>'
+                                         ]);
+                $incUnitMessage = "<p style='margin:0.5em 0;padding:0.5em;background-color:red;color:white;font-size:150%'>$incUnitMessage</p>";
             }
-            $stmtIncUnitFcount = $DbMultidict->prepare('SELECT COUNT(1) As cnt FROM csFiles WHERE id=:id');
-            $stmtIncUnitFcount->execute([':id'=>$incUnit]);
-            $incUnitFcount = $stmtIncUnitFcount->fetchColumn();
-            $fcountMessage = ( $incUnitFcount ? ' <i>('.sprintf($T_inc_d_attached_files,$incUnitFcount).')</i>' : '' );
-            $incUnitMessage = sprintf($T_incUnitMessage,$fcountMessage,$deleteTimeMess);
-            $incUnitMessage = strtr($incUnitMessage,
-                                     [ '{' => "<a href='edit.php?id=$incUnit' class=mybutton>",
-                                       '}' => '</a>',
-                                       '[' => "<a href='delete.php?id=$incUnit' class=mybutton>",
-                                       ']' => '</a>',
-                                       '&lt;br&gt;' => '<br>'
-                                     ]);
-            $incUnitMessage = "<p style='margin:0;padding:0.5em;background-color:red;color:white'>$incUnitMessage</p>";
-
-            $createButton = '';
-        } else {
-            $incUnitMessage = '';
-            $createButton = "<a href='edit.php?id=0' class=mybutton style='margin-right:2px'>$T_Create_a_unit</a>";
         }
-        if ($mode<=1) { $mybuttons = <<<END_MYBUTTONSstud
-<a href="voc.php?user=$user" class="mybutton" style="margin-left:0;margin-right:1px">$T_My_vocabulary</a>
-END_MYBUTTONSstud;
-        } else { $mybuttons = <<<END_MYBUTTONSteach
-<a href="./?owner=$user" class="mybutton" style="margin-left:0;margin-right:1px">$T_My_units</a>
-$createButton
-END_MYBUTTONSteach;
-        }
-        $userHtml = <<<END_USER2
-<div style="clear:both;float:left;margin:0.5em 0 1.8em 0;padding:2px 4px;background-color:#def">
-<p style="margin:2px 3px">$T_Logged_in_as <b>$user</b>
-<a href="logout.php" title="$T_Logout_from_Clilstore" class="mybutton" style="margin-right:5px">$T_Logout <img src="/icons-smo/logout.png" alt=""></a>
-<a href="options.php?user=$user" title="Change your Clilstore options or password" class="mybutton" style="margin-right:2.5em">$T_My_options</a>
-$mybuttons
-</p>
-$incUnitMessage
-</div><br style="clear:both">
-END_USER2;
     }
     $menu = SM_clilHeadFoot::cabecera0($user, $mode);
-    if ($mode<=1) { $userHtml .= "<p style='clear:both'>$T_Select_lang_level</p>"; }
 
     function wildChars (&$s,&$sVis,$con) {
      //Standardises wildcard characters to SQL format (% and _), removing duplicates
@@ -720,7 +673,7 @@ END_tableHtmlBarr;
             $ownerHtml = "<a href='userinfo.php?user=$ownerHtml' title='$fullnameHtml'>$ownerHtml</a>";
             $editHtml = $deleteHtml = '';
             $cefrHtml = SM_csSess::cefrHtml($level);
-            $testHtml  = ( empty($test) ? '' : '<img src="/icons-smo/undConst.gif" alt="" style="padding-left:16px"> ' );
+            $testHtml  = ( empty($test) ? '' : '<img src="/icons-smo/undConst.gif" alt=""> ' );
             $titleClass = ( empty($test) ? 'title' : 'title italic' );
             if ($sl=='ar') { $titleClass .= ' arabicfont'; }
             $medlenHtml = ( ( empty($medlen) && ($medtype==0 || $owner<>$user  ) )
@@ -1725,12 +1678,14 @@ if ($mode == 3) { $modoTabla = $modeProfesor; }
             line-height: 1.3;
          }
 
-         div.dropdown-menu { border:1px solid #212529; background-color:#f3f3f3; margin-top:0; }
-         a.buttons-columnVisibility { padding-left:2em; }
-         a.buttons-columnVisibility.active { padding-left:1em; }
-         a.buttons-columnVisibility.active::before { content:"✓ "; }
+        div.dropdown-menu { border:1px solid #212529; background-color:#f3f3f3; margin-top:0; }
+        a.buttons-columnVisibility { padding-left:2em; }
+        a.buttons-columnVisibility.active { padding-left:1em; }
+        a.buttons-columnVisibility.active::before { content:"✓ "; }
+        a.mybutton, button { background-color:#55a8eb; color:white; padding:1px 8px; border-radius:8px; white-space:nowrap; }
+        a.mybutton:hover, button:hover { background-color:blue; }
 
-         div#dmenu:hover > .dropdown-menu { display:block; }
+        div#dmenu:hover > .dropdown-menu { display:block; }
 
     </style>
     <script>
@@ -1834,6 +1789,7 @@ $cookieMessage
 
     <div class="row">
         <div class="col col-md-12">
+                            $incUnitMessage
             <div class="form-group">
 			<div class="input-group">
                             <div class="input-group-prepend fixed" style="margin-right: -25px; z-index: 100;">
