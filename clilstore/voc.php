@@ -25,7 +25,6 @@
   $T_Reveal     = $T->h('Reveal');
 
   $T_Vocabulary_list_for_user_ = $T->h('Vocabulary_list_for_user_');
-  $T_Page_needs_parameter      = $T->h('Parameter_p_a_dhith');
   $T_Clicked_in_unit           = $T->h('Clicked_in_unit');
   $T_Delete_instantaneously    = $T->h('Delete_instantaneously');
   $T_Lookup_with_Multidict     = $T->h('Lorg le Multidict');
@@ -34,6 +33,8 @@
   $T_No_words_in_voc_list_info = $T->h('No_words_in_voc_list_info');
   $T_Sort_the_column           = $T->h('Sort_the_column');
   $T_Empty_voc_list_question   = $T->h('Empty_voc_list_question');
+  $T_Export_to_csv             = $T->h('Export_to_csv');
+  $T_Export_to_tsv             = $T->h('Export_to_tsv');
   $T_Write_meaning_here        = $T->h('Write_meaning_here');
   $T_Test_yourself             = $T->h('Test_yourself');
   $T_Empty_voc_list_confirm    = $T->j('Empty_voc_list_confirm');
@@ -46,10 +47,8 @@
   try {
     $myCLIL->dearbhaich();
     $loggedinUser = $myCLIL->id;
-
-    $user = @$_REQUEST['user'] ?:null;
+    $user = $_REQUEST['user'] ?? $loggedinUser;
     $userSC = htmlspecialchars($user);
-    if (empty($user)) { throw new SM_MDexception(sprintf($T_Page_needs_parameter,'user')); }
 
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
     $vocHtml = $langButHtml = '';
@@ -59,7 +58,6 @@
     $vocLangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($vocLangs)) {
-        $langButHtml = '';
         $vocTableHtml = <<<END_noVocTable1
 <h5 class="text-white">$T_No_words_in_voc_list</h5>
 <h5 class="text-white">$T_No_words_in_voc_list_info</h5>
@@ -140,11 +138,35 @@ END_noVocTable2;
 </tbody>
 END_vocHtml;
             }
+            $T_Export_to_csv = strtr ( $T_Export_to_csv,
+                                      [ '{' => '<input type=submit value="',
+                                        '}' => '" class="btn-primary mr-2" style="padding:0px 8px">',
+                                        '|' => '<input name=separator required value="|" maxlength=1 style="width:1.8em;text-align:center">'
+                                      ] );
+            $T_Export_to_tsv = strtr ( $T_Export_to_tsv,
+                                      [ '{' => '<input type=submit value="',
+                                        '}' => '" class="btn-primary mr-2"style="padding:0px 8px">'
+                                      ] );
             $T_Empty_voc_list_question = strtr ( $T_Empty_voc_list_question,
-                                                [ '{'    => "<a class=\"btn btn-outline-danger btn-lg mr-2 text-uppercase\" id=emptyBut onclick=\"emptyVocList('$user','$slLorg')\"><i class=\"fa fa-trash\"></i> ",
-                                                  '}'    => '</a>',
-                                                  '[sl]' => "$slLorgEndonym"
-                                                ] );
+                                      [ '{'    => "<a class=\"btn btn-outline-danger mr-2\" style=\"padding:0 3px;font-size:90%\" id=emptyBut onclick=\"emptyVocList('$user','$slLorg')\"><i class=\"fa fa-trash\" style=\"padding:0 0.3em 0 0\"></i>",
+                                        '}'    => '</a>',
+                                        '[sl]' => "$slLorgEndonym"
+                                      ] );
+            $exportHtml = <<<END_exportHtml
+<div id=export>
+<p><form action=vocExport.php>$T_Export_to_csv
+<input type=hidden name=user value='$userSC'>
+<input type=hidden name=sl value='$slLorg'>
+<i>(UTF-8 encoding)</i>
+</form></p>
+<p><form action=vocExport.php>$T_Export_to_tsv
+<input type=hidden name=user value='$userSC'>
+<input type=hidden name=sl value='$slLorg'>
+<i>(UTF-8 encoding)</i>
+</form></p>
+<p>$T_Empty_voc_list_question</p>
+</div>
+END_exportHtml;
             $vocTableHtml = <<<END_vocTable
 <table id=vocab class="table table-hover">
 <thead class="thead-light">
@@ -159,7 +181,6 @@ END_vocHtml;
 
 $vocHtml
 </table>
-<h5 class="text-white">$T_Empty_voc_list_question</h5>
 END_vocTable;
         }
     }
@@ -176,6 +197,9 @@ END_vocTable;
 </div>
 <div class="col-lg-12" style="margin:0.5em 0">
 <h5 class="text-white">$T_Language: $slLorgEndonym</h5>
+</div>
+<div class="col-lg-12 text-white">
+$exportHtml
 </div>
 <div class="col-lg-12">
 <h5 class="text-white">$T_Test_yourself&nbsp;
@@ -232,6 +256,11 @@ EOD;
         table#vocab td.meaning a.reveal:hover {background-color:#090; text-decoration:none; }
         table#vocab td.meaning.hide input { display:none }
         table#vocab td.meaning.hide a.reveal { display:inline; }
+        div#export { margin:0 2em 2em 3em; border:3px solid grey; border-radius:0.5em; padding:0.1em 0.6em; font-size:85%; }
+        div#export p { margin:0.3em 0; }
+        div#export i { padding-left:1em; font-size:90%; color:#eee; }
+        div#export a.btn-outline-danger       { background-color:#28a; }
+        div#export a.btn-outline-danger:hover { background-color:red; }
     </style>
     <script>
         function deleteVocWord(vocid) {
@@ -265,7 +294,7 @@ EOD;
                 xhttp.onload = function() {
                     var resp = this.responseText;
                     if (resp!='OK') { alert('$T_Error_in emptyVocList:'+resp); return; }
-                    location.reload();
+                    window.location = window.location.href.split('?')[0];
                 }
                 xhttp.open('GET', 'ajax/emptyVocList.php?user='+user+'&sl=' +sl,true);
                 xhttp.send();
