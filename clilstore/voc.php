@@ -256,10 +256,10 @@ EOD;
         table#vocab td.meaning a.reveal:hover {background-color:#090; text-decoration:none; }
         table#vocab td.meaning.hide input { display:none }
         table#vocab td.meaning.hide a.reveal { display:inline; }
-        div#export { margin:0 2em 2em 3em; border:3px solid grey; border-radius:0.5em; padding:0.1em 0.6em; font-size:85%; }
+        div#export { margin:0 2em 2em 3em; border:2px solid white; border-radius:0.5em; padding:0.1em 0.6em; font-size:85%; }
         div#export p { margin:0.3em 0; }
         div#export i { padding-left:1em; font-size:90%; color:#eee; }
-        div#export a.btn-outline-danger       { background-color:#28a; }
+        div#export a.btn-outline-danger       { background-color:#28a; border:0; margin-left:0.5em; }
         div#export a.btn-outline-danger:hover { background-color:red; }
     </style>
     <script>
