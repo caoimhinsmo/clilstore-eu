@@ -23,6 +23,7 @@
   $T_Hide_all   = $T->h('Hide_all');
   $T_Reveal_all = $T->h('Reveal_all');
   $T_Reveal     = $T->h('Reveal');
+  $T_Randomize  = $T->h('Randomize');
 
   $T_Vocabulary_list_for_user_ = $T->h('Vocabulary_list_for_user_');
   $T_Clicked_in_unit           = $T->h('Clicked_in_unit');
@@ -204,6 +205,7 @@ $exportHtml
 <div class="col-lg-12">
 <h5 class="text-white">$T_Test_yourself&nbsp;
 <a role='button' href='javascript:hideAll();'  class='btn btn-primary btn-lg mr-2'>$T_Hide_all</a>
+<a role='button' href='javascript:randomize()' class='btn btn-primary btn-lg mr-2'>$T_Randomize</a>
 <a role='button' href='javascript:revealAll()' class='btn btn-primary btn-lg mr-2'>$T_Reveal_all</a>
 </h5>
 </div>
@@ -316,6 +318,9 @@ EOD;
         function reveal(el) {
             el.closest('td.meaning').classList.remove('hide');
             return false;
+        }
+        function randomize() {
+            alert('This feature has not yet been implemented - Coming soon');
         }
     </script>
 </head>
