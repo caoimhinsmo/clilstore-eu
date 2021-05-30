@@ -281,7 +281,6 @@
     tinymce.init({
         selector: "textarea#text",
         language: "$hlTiny",
-        entity_encoding: "raw",
         plugins: [
              "advlist autolink link image lists charmap preview hr anchor spellchecker",
              "searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking",
