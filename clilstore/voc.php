@@ -21,7 +21,7 @@
   $T_Meaning    = $T->h('Meaning');
   $T_Error_in   = $T->h('Error_in');
   $T_Hide_all   = $T->h('Hide_all');
-  $T_Reveal_all = $T->h('Reveal_all');
+  $T_Restore_all = $T->h('Restore_all');
   $T_Reveal     = $T->h('Reveal');
   $T_Randomize  = $T->h('Randomize');
 
@@ -33,15 +33,29 @@
   $T_No_words_in_voc_list      = $T->h('No_words_in_voc_list');
   $T_No_words_in_voc_list_for_ = $T->h('No_words_in_voc_list_for_');
   $T_No_words_in_voc_list_info = $T->h('No_words_in_voc_list_info');
-  $T_Sort_the_column           = $T->h('Sort_the_column');
+  $T_Sort_by_when_recorded     = $T->h('Sort_by_when_recorded');
+  $T_Sort_by_Word              = $T->h('Sort_by_Word');
+  $T_Sort_by_Meaning           = $T->h('Sort_by_Meaning');
+  $T_Drag_the_meaning          = $T->h('Drag_the_meaning');
+  $T_You_have_so_far_done_     = $T->h('You_have_so_far_done_');
+  $T_seconds_per_word          = $T->h('seconds_per_word');
   $T_Empty_voc_list_question   = $T->h('Empty_voc_list_question');
   $T_Export_to_csv             = $T->h('Export_to_csv');
   $T_Export_to_tsv             = $T->h('Export_to_tsv');
   $T_Write_meaning_here        = $T->h('Write_meaning_here');
   $T_Test_yourself             = $T->h('Test_yourself');
+
+  $T_Some_meanings_duplicates  = $T->j('Some_meanings_duplicates');
+  $T_dupVals_message1          = $T->j('dupVals_message1');
+  $T_dupVals_message2          = $T->j('dupVals_message2');
   $T_Empty_voc_list_confirm    = $T->j('Empty_voc_list_confirm');
 
   $T_No_words_in_voc_list_info = strtr ( $T_No_words_in_voc_list_info, [ '{'=>'<i>', '}'=>'</i>' ] );
+  $T_You_have_so_far_done_     = strtr ( $T_You_have_so_far_done_,
+                                         [ '{{nD}}' => '<span id=nRandDone>0</span>',
+                                           '{{nW}}' => '<span id=nRandTotal>0</span>',
+                                           '{{nS}}' => '<span id=nRandSeconds>0</span>'
+                                         ] );
 
   $menu   = SM_clilHeadFoot::cabecera();
   $footer = SM_clilHeadFoot::pie();
@@ -135,16 +149,14 @@ END_noVocTable2;
                 $unitsHtml = implode(' ',$unitHtmlArr);
                 $meaningSC  = htmlspecialchars($meaning);
                 $vocHtml .= <<<END_vocHtml
-<tbody>
 <tr id=row$vocid class="bg-primary text-white">
 <td><img src='/icons-smo/curAs.png' alt='Delete' title='$T_Delete_instantaneously' onclick="deleteVocWord('$vocid')"></td>
 <td title='$T_Lookup_with_Multidict'><a href='/multidict/?sl=$slLorg&amp;word=$word' target=vocmdtab><img src=/favicons/multidict.png alt=''> $word</a></td>
-<td class=meaning><a class=reveal href="javascript:;" onclick="reveal(this)">$T_Reveal</a>
-    <input type="text" class="form-control" value='$meaningSC' style='min-width:45em;max-width:55em' onchange="changeMeaning('$vocid',this.value)" title="$T_Write_meaning_here"></td>
+<td id=mean$vocid class=meaning><a class=reveal href="javascript:;" onclick="reveal(this)">$T_Reveal</a>
+    <input id=inp$vocid class="form-control" value='$meaningSC' style='min-width:45em;max-width:55em' onchange="changeMeaning('$vocid',this.value)" title="$T_Write_meaning_here"></td>
 <td><span id="$vocid-tick" class="change"><img src="check.png" height="28" width="28"></img><span></td>
 <td class="text-center">$unitsHtml</td>
 </tr>
-</tbody>
 END_vocHtml;
             }
             $T_Export_to_csv = strtr ( $T_Export_to_csv,
@@ -180,9 +192,9 @@ END_exportHtml;
 <table id=vocab class="table table-hover">
 <thead class="thead-light">
     <tr id=vocabhead>
-      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$vocidClickOrder" title='$T_Sort_the_column (vocid)'>$vocidArrow</a></th>
-      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$wordClickOrder" title='$T_Sort_the_column'>$wordArrow $T_Word</a></th>
-      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$meaningClickOrder" title='$T_Sort_the_column'>$meaningArrow $T_Meaning</a></th>
+      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$vocidClickOrder" title='$T_Sort_by_when_recorded'>$vocidArrow</a></th>
+      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$wordClickOrder" title='$T_Sort_by_Word'>$wordArrow $T_Word</a></th>
+      <th><a href="./voc.php?user=$user&amp;sl=$slLorg&amp;order=$meaningClickOrder" title='$T_Sort_by_Meaning'>$meaningArrow $T_Meaning</a></th>
       <th scope="col"></th>
       <th scope="col">$T_Clicked_in_unit</th>
     </tr>
@@ -215,8 +227,10 @@ $exportHtml
 <h5 class="text-white">$T_Test_yourself&nbsp;
 <a role='button' href='javascript:hideAll();'  class='btn btn-primary btn-lg mr-2'>$T_Hide_all</a>
 <a role='button' href='javascript:randomize()' class='btn btn-primary btn-lg mr-2'>$T_Randomize</a>
-<a role='button' href='javascript:revealAll()' class='btn btn-primary btn-lg mr-2'>$T_Reveal_all</a>
+<a role='button' href='javascript:restoreAll()' class='btn btn-primary btn-lg mr-2'>$T_Restore_all</a>
 </h5>
+<h5 class="text-white" id=randStatistics>$T_Drag_the_meaning<br>
+$T_You_have_so_far_done_ (<span id=nRandSecsPerWord>0</span> $T_seconds_per_word).</h5>
 </div>
 
 $vocTableHtml
@@ -265,15 +279,25 @@ EOD;
         @keyframes appearFade { from { opacity:1; background-color:#35a4bf; } 20% { opacity:0.8; background-color:transparent; } to { opacity:0; } }
         table#vocab td.meaning a.reveal { display:none; margin-left:1em; font-size:120%; padding:0 5px; background-color:#28a; color:white; border-radius:4px; }
         table#vocab td.meaning a.reveal:hover {background-color:#090; text-decoration:none; }
-        table#vocab td.meaning.hide input { display:none }
-        table#vocab td.meaning.hide a.reveal { display:inline; }
+        table#vocab tr.batchend { border-bottom:16px solid #59bddc; }
+        table#vocab tr td:nth-child(2) img { margin-right:0.5em; }
+        table#vocab tr.rand td:nth-child(2) { background-color:blue; }
+        table#vocab tr.rand td.meaning input { display:none; }
+        table#vocab tr.hide td.meaning input { display:none }
+        table#vocab tr.hide td.meaning a.reveal { display:inline; }
+        table#vocab td.meaning span.rand { margin-left:1.5em; padding:3px 6px; border-radius:4px; background-color:blue; color:white; cursor:grab; }
         div#export { margin:0 2em 2em 3em; border:2px solid white; border-radius:0.5em; padding:0.1em 0.6em; font-size:85%; }
         div#export p { margin:0.3em 0; }
         div#export i { padding-left:1em; font-size:90%; color:#eee; }
         div#export a.btn-outline-danger       { background-color:#28a; border:0; margin-left:0.5em; }
         div#export a.btn-outline-danger:hover { background-color:red; }
+        h5#randStatistics { margin:0.4em; display:none; }
+        h5#randStatistics.rand { display:block; }
+        h5#randStatistics span { font-weight:bold; }
     </style>
     <script>
+        var nRandDone, nRandTime;
+
         function deleteVocWord(vocid) {
             var xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
@@ -285,6 +309,7 @@ EOD;
             xhttp.open('GET', 'ajax/deleteVocWord.php?vocid=' + vocid);
             xhttp.send();
         }
+
         function changeMeaning(vocid,meaning) {
             var xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
@@ -297,6 +322,7 @@ EOD;
             xhttp.open('GET', 'ajax/changeMeaning.php?vocid=' + vocid + '&meaning=' + encodeURI(meaning));
             xhttp.send();
         }
+
         function emptyVocList(user,sl) {
             var confirmMessage = "$T_Empty_voc_list_confirm".replace('[sl]','‘'+sl+'’');
             var r = confirm(confirmMessage);
@@ -312,24 +338,177 @@ EOD;
                 return false;
             }
         }
+
         function hideAll() {
+            restoreAll();
+            moveMeaningsToTop();
             var inputEls = document.querySelectorAll('table#vocab td.meaning input');
             for (let inputEl of inputEls) {
-                if (inputEl.value > '') { inputEl.closest('td.meaning').classList.add('hide'); }
+                if (inputEl.value > '') { inputEl.closest('tr').classList.add('hide'); }
             }
         }
-        function revealAll() {
-            var inputEls = document.querySelectorAll('table#vocab td.meaning input');
-            for (let inputEl of inputEls) {
-                if (inputEl.value > '') { inputEl.closest('td.meaning').classList.remove('hide'); }
+
+        function restoreAll() {
+            var trEls = document.querySelectorAll('table#vocab tr');
+            for (let trEl of trEls) {
+                trEl.classList.remove('hide');
+                trEl.classList.remove('rand');
+                trEl.classList.remove('batchend');
             }
+            var randEls = document.querySelectorAll('table#vocab td.meaning span.rand');
+            for (let randEl of randEls) { randEl.remove(); }
+            nRandDone = nRandTotal = nRandSeconds = 0;
+            document.getElementById('nRandDone').innerHTML = '0';
+            document.getElementById('nRandTotal').innerHTML = '0';
+            document.getElementById('nRandSeconds').innerHTML = '0';
+            document.getElementById('nRandSecsPerWord').innerHTML = '0';
+            document.getElementById('randStatistics').classList.remove('rand');
         }
+
+        function moveMeaningsToTop() {
+            var trEls = document.querySelectorAll('table#vocab tr[id^="row"');
+            var topEmptyTrEl = null;
+            var nMeanings = 0;
+            for (let trEl of trEls) {
+                if (trEl.querySelector('td.meaning input').value=='') {
+                    if (topEmptyTrEl===null) { topEmptyTrEl = trEl; }
+                } else {
+                    nMeanings += 1;
+                    if (topEmptyTrEl!==null) { trEl.parentElement.insertBefore(trEl,topEmptyTrEl); }
+                }
+            }
+            return nMeanings;
+        }
+
         function reveal(el) {
-            el.closest('td.meaning').classList.remove('hide');
+            el.closest('tr').classList.remove('hide');
             return false;
         }
+
+        function shuffle(array) {
+            var currentIndex = array.length-1, temporaryValue, randomIndex;
+            var arrayPrev = [...array];
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                if (arrayPrev[currentIndex-1]!==array[randomIndex-1]) {
+                    // And swap it with the current element.
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                    currentIndex -= 1;
+                }
+            }
+            return array;
+        }
+
         function randomize() {
-            alert('This feature has not yet been implemented - Coming soon');
+            restoreAll();
+            moveMeaningsToTop();
+            var inputElsRaw = document.querySelectorAll('table#vocab td.meaning input');
+            let vocids = [], vals = [], dupVals = '';
+            for (let inputEl of inputElsRaw) {
+                if (inputEl.value>'') {
+                    vals.push(inputEl.value);
+                    vocids.push(inputEl.id.substring(3));
+                }
+            }
+            if (vocids.length==0) return;
+           //Check for duplicate meanings
+            let valsSort = vals.sort();
+            for (let i=0; i<valsSort.length-1; i++) {
+                if (valsSort[i+1] == valsSort[i]) { dupVals += '      ' + valsSort[i] + '\\n'; }
+            }
+            if (dupVals>'') {
+                var nl = '\\n';
+                alert('$T_Some_meanings_duplicates' + nl + nl + dupVals + nl + '$T_dupVals_message1' + nl + '$T_dupVals_message2' + nl+nl);
+                return;
+            }
+            var nVocids = vocids.length;
+            var batchSize = 8; //Randomize in batches so that the drag-and-drop distance is not too great
+            if (nVocids < batchSize*1.25) { batchSize = nVocids; } //Exceed the usual batch size by up to 25% if this would make a single batch possible
+            var nBatches = Math.ceil(nVocids/batchSize);
+            batchSizeFloat = (nVocids/nBatches);
+            batchStarts = [0];
+            for (var iBatch=1; iBatch<=nBatches; iBatch++) { batchStarts.push(Math.floor(iBatch*batchSizeFloat)); }
+            for (iBatch=1; iBatch<=nBatches; iBatch++) {
+               //Construct a randomization mapping, randMap
+                var vocidsBatch = vocids.slice(batchStarts[iBatch-1],batchStarts[iBatch]);
+                var vocidsShuffle = vocidsBatch.slice(0);
+                vocidsShuffle = shuffle(vocidsShuffle);
+                var randMap = new Map;
+                for (let i=0; i<vocidsBatch.length; i++) { randMap.set(vocidsBatch[i],vocidsShuffle[i]); }
+               //Process each vocabulary element
+                for (vocid of vocidsBatch) {
+                    var vocidShuffle = randMap.get(vocid);
+                    var tdEl  = document.getElementById('mean'+vocid);
+                    var trEl  = document.getElementById('row'+vocid);
+                    var inpEl = document.getElementById('inp'+vocid);
+                    trEl.classList.add('rand');
+                    var randEl   = document.createElement('span');
+                    var textNode = document.createTextNode(document.getElementById('inp'+vocidShuffle).value);
+                    randEl.appendChild(textNode);
+                    randEl.id = 'rand'+vocidShuffle;
+                    randEl.className = 'rand';
+                    randEl.setAttribute('draggable','true');
+                    tdEl.insertBefore(randEl,tdEl.firstChild);
+                    randEl.addEventListener('dragstart',randDragstart);
+                    trEl.addEventListener('dragover',randDragover);
+                    trEl.addEventListener('drop',randDrop);
+                }
+                trEl.classList.add('batchend');
+            }
+            document.getElementById('randStatistics').classList.add('rand');
+            document.getElementById('nRandTotal').innerHTML = vocids.length;
+            var dateobj = new Date();
+            nRandTime = dateobj.getTime();
+        }
+
+        function randDragover(ev) {
+            ev.preventDefault();
+        }
+
+        function randDragstart(ev) {
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+        }
+
+        function randDrop(ev) {
+            ev.preventDefault();
+            var sourceRandId = ev.dataTransfer.getData("text/plain");
+            var sourceRandEl = document.getElementById(sourceRandId);
+            var sourceTrEl = sourceRandEl.closest("tr");
+            var targetTrEl = ev.target.closest('tr');
+           if (targetTrEl==sourceTrEl) return;
+            var targetRandEl = targetTrEl.querySelector("span.rand");
+            var sourceRandVocid = sourceRandEl.id.substring(4);
+            var targetRandVocid = targetRandEl.id.substring(4);
+            var sourceVocid = sourceTrEl.id.substring(3);
+            var targetVocid = targetTrEl.id.substring(3);
+            var sourceTdEl = document.getElementById('mean'+sourceVocid);
+            var targetTdEl = document.getElementById('mean'+targetVocid);
+            sourceTdEl.insertBefore(targetRandEl,sourceTdEl.firstChild);
+            targetTdEl.insertBefore(sourceRandEl,targetTdEl.firstChild);
+            if (sourceRandVocid==targetVocid) {
+                randIncreaseTotal();
+                sourceRandEl.remove();
+                targetTrEl.classList.remove('rand');
+            }
+            if (targetRandVocid==sourceVocid) {
+                randIncreaseTotal();
+                targetRandEl.remove();
+                sourceTrEl.classList.remove('rand');
+            }
+        }
+
+        function randIncreaseTotal() {
+            nRandDone += 1;
+            var dateobj = new Date();
+            var nRandSeconds = Math.round((dateobj.getTime()-nRandTime)/10)/100;
+            var nRandSecsPerWord = Math.round(100*nRandSeconds/nRandDone)/100;
+            document.getElementById('nRandDone').innerHTML = nRandDone;
+            document.getElementById('nRandSeconds').innerHTML = nRandSeconds;
+            document.getElementById('nRandSecsPerWord').innerHTML = nRandSecsPerWord;
         }
     </script>
 </head>
