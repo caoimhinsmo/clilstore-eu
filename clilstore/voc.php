@@ -277,8 +277,7 @@ EOD;
         span.change { opacity:0; color:white; }
         span.change.changed { color:green; animation:appearFade 5s; }
         @keyframes appearFade { from { opacity:1; background-color:#35a4bf; } 20% { opacity:0.8; background-color:transparent; } to { opacity:0; } }
-        table#vocab td.meaning a.reveal { display:none; margin-left:1em; font-size:120%; padding:0 5px; background-color:#28a; color:white; border-radius:4px; }
-        table#vocab td.meaning a.reveal:hover {background-color:#090; text-decoration:none; }
+        table#vocab tr td { vertical-align:middle; }
         table#vocab tr.batchend { border-bottom:16px solid #59bddc; }
         table#vocab tr td:nth-child(2) img { margin-right:0.5em; }
         table#vocab tr.rand td:nth-child(2) { background-color:blue; }
@@ -286,6 +285,8 @@ EOD;
         table#vocab tr.hide td.meaning input { display:none }
         table#vocab tr.hide td.meaning a.reveal { display:inline; }
         table#vocab td.meaning span.rand { margin-left:1.5em; padding:3px 6px; border-radius:4px; background-color:blue; color:white; cursor:grab; }
+        table#vocab td.meaning a.reveal { display:none; margin-left:1em; font-size:120%; padding:0 5px; background-color:#28a; color:white; border-radius:4px; }
+        table#vocab td.meaning a.reveal:hover {background-color:#090; text-decoration:none; }
         div#export { margin:0 2em 2em 3em; border:2px solid white; border-radius:0.5em; padding:0.1em 0.6em; font-size:85%; }
         div#export p { margin:0.3em 0; }
         div#export i { padding-left:1em; font-size:90%; color:#eee; }
