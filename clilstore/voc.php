@@ -427,7 +427,7 @@ EOD;
                 return;
             }
             var nVocids = vocids.length;
-            var batchSize = 8; //Randomize in batches so that the drag-and-drop distance is not too great
+            var batchSize = 9; //Randomize in batches so that the drag-and-drop distance is not too great
             if (nVocids < batchSize*1.25) { batchSize = nVocids; } //Exceed the usual batch size by up to 25% if this would make a single batch possible
             var nBatches = Math.ceil(nVocids/batchSize);
             batchSizeFloat = (nVocids/nBatches);
