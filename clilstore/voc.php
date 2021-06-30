@@ -15,15 +15,15 @@
   $T = new SM_T('clilstore/voc');
   $T_Return = $T->h('Return');
 
-  $T_Language   = $T->h('Language');
-  $T_Word       = $T->h('Facal');
-  $T_words      = $T->h('facail');
-  $T_Meaning    = $T->h('Meaning');
-  $T_Error_in   = $T->h('Error_in');
-  $T_Hide_all   = $T->h('Hide_all');
+  $T_Language    = $T->h('Language');
+  $T_Word        = $T->h('Facal');
+  $T_words       = $T->h('facail');
+  $T_Meaning     = $T->h('Meaning');
+  $T_Error_in    = $T->h('Error_in');
+  $T_Hide_all    = $T->h('Hide_all');
   $T_Restore_all = $T->h('Restore_all');
-  $T_Reveal     = $T->h('Reveal');
-  $T_Randomize  = $T->h('Randomize');
+  $T_Reveal      = $T->h('Reveal');
+  $T_Randomize   = $T->h('Randomize');
 
   $T_Vocabulary_list_for_user_ = $T->h('Vocabulary_list_for_user_');
   $T_You_can_add_meanings      = $T->h('You_can_add_meanings');
@@ -278,7 +278,7 @@ EOD;
         span.change.changed { color:green; animation:appearFade 5s; }
         @keyframes appearFade { from { opacity:1; background-color:#35a4bf; } 20% { opacity:0.8; background-color:transparent; } to { opacity:0; } }
         table#vocab tr td { vertical-align:middle; }
-        table#vocab tr.batchend { border-bottom:16px solid #59bddc; }
+        table#vocab tr.batchend { border-bottom:50px solid #59bddc; }
         table#vocab tr td:nth-child(2) img { margin-right:0.5em; }
         table#vocab tr.rand td:nth-child(2) { background-color:blue; }
         table#vocab tr.rand td.meaning input { display:none; }
