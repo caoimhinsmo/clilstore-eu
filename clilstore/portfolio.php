@@ -19,6 +19,7 @@
 
   $T_Clilstore_unit = $T->h('Clilstore_unit');
   $T_userid         = $T->h('userid');
+  $T_Edit_the_title = $T->h('Edit_the_title');
   $T_Add_a_teacher  = $T->h('Add_a_teacher');
   $T_My_portfolios  = $T->h('My_portfolios');
   $T_Create         = $T->h('Create');
@@ -51,6 +52,7 @@
   $T_A_URL_must_begin_with_  = $T->j('A_URL_must_begin_with_');
   $T_No_such_userid_as_      = $T->j('No_such_userid_as_');
   $T_Have_changed_URL_to_    = $T->j('Have_changed_URL_to_');
+  $T_Err_Title_too_short     = $T->j('Err_Title_too_short');
 
   $T_No_teachers_can_yet_view       = $T->h('No_teachers_can_yet_view');
   $T_Following_teacher_can_view     = $T->h('Following_teacher_can_view');
@@ -69,6 +71,8 @@
   $T_Teacher_already_has_access     = $T->j('Teacher_already_has_access');
   $T_Must_give_portfolio_a_name     = $T->j('Must_give_portfolio_a_name');
   $T_Unit_already_in_that_portfolio = $T->j('Unit_already_in_that_portfolio');  
+
+  $T_Err_Title_too_short = sprintf($T_Err_Title_too_short,1);
 
   $mdNavbar = SM_mdNavbar::mdNavbar($T->domhan);
 
@@ -134,10 +138,19 @@ END_unitMoveHtml;
 
     $userSC = htmlspecialchars($user) ?? '';
     $titulo = htmlspecialchars($title);
-    if ($pf==0) { $h1 = $T_Create_a_new_portfolio;
-                  $h2 = ''; }
-      else      { $h1 = "<span>$T_Portfolio_for_user_ <span style='color:white'>$user</span></span>";
-                  $h2 = "<div class=\"col-md-12 mb-3 mt-3\"><h4 style='color:white'>$T_active_portfolio : $titulo</h4></div>"; }
+    if ($pf==0) {
+        $h1 = $T_Create_a_new_portfolio;
+        $h2 = '';
+    } else {
+        $h1 = "<span>$T_Portfolio_for_user_ <span style='color:white'>$user</span></span>";
+        $h2 = "<span id=h2Span onKeypress='titleKeypress(event)'>$titulo</span>";
+        if ($edit) {
+            $h2 .= " <img src='/icons-smo/pencil.png' class=editIcon alt='Edit' title='$T_Edit_the_title' onClick=titleEdit(1)>";
+            $h2 .= " <img src='/icons-smo/save.png' class=saveIcon alt='Save' title='$T_Save_your_edit' onClick=titleEdit(0)>";
+            $h2 .= " <span id=titletick class=change>✔<span>";
+        }
+        $h2 = "<div class='col-md-12 mb-3 mt-3'><h4 id=h2 style='color:white'>$h2</h4></div>";
+    }
 
     $unitToEdit = $_REQUEST['unit'] ?? 0;
     if ($unitToEdit) {
@@ -494,6 +507,12 @@ EOD;
         a#emptyBut:hover,
         a#emptyBut:active,
 
+        h4 img.editIcon { display:inline; }
+        h4 img.saveIcon { display:none; }
+        h4.editing img.editIcon { display:none; }
+        h4.editing img.saveIcon { display:inline; }
+        h4.editing span#h2Span { border:1px solid white; padding:0 0.3em; }
+
         li img.editIcon { display:inline; }
         li img.saveIcon { display:none; }
 
@@ -516,6 +535,10 @@ EOD;
         .ddown-content { display:none; position:absolute; padding:2px; background-color:white; white-space:nowrap; box-shadow:0 8px 16px 0 rgba(0,0,0,0.7); z-index:1; }
         .ddown:hover .ddown-content { display:block; }
         .ddown-item:hover, .ddown-item:focus { background-color:#fca; color:#111; text-decoration:none; cursor:pointer; }
+
+        span.change { opacity:0; color:red; }
+        span.change.changed { color:green; animation:appearFade 5s; }
+        @keyframes appearFade { from { opacity:1; } to { opacity:0; } }
 
     </style>
     <script>
@@ -796,6 +819,49 @@ EOD;
             xhr.open('GET', 'ajax/pfMoveUnit.php?pfu='+pfu+'&pf='+pf);
             xhr.send();
         }
+
+        function titleEdit(onOff) {
+            var h2El     = document.getElementById('h2');
+            var h2SpanEl = document.getElementById('h2Span');
+            if (onOff==1) {
+                h2El.classList.add('editing');
+                h2SpanEl.setAttribute('contenteditable','true');
+                h2SpanEl.focus();
+            } else {
+                h2El.classList.remove('editing');
+                h2SpanEl.setAttribute('contenteditable','false');
+                var newTitle = h2SpanEl.innerHTML;
+                if (newTitle.length < 1) {
+                    alert('$T_Err_Title_too_short');
+                    titleEdit(1);
+                    return;
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                        var resp = this.responseText;
+                        if (resp!='OK') { alert('$T_Error_in titleEdit~~\\r\\n\\r\\n'+resp); return; }
+                    } else {
+                        var tickel = document.getElementById('titletick');
+                        tickel.classList.remove('changed'); //Remove the class (if required) and add again after a tiny delay, to restart the animation
+                        setTimeout(function(){tickel.classList.add('changed');},50);
+                    }
+                }
+                var formData = new FormData();
+                formData.append('pf','$pf');
+                formData.append('title',newTitle);
+                xhr.open('POST', 'ajax/pfTitleEdit.php');
+                xhr.send(formData);
+            }
+        }
+
+        function titleKeypress(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                titleEdit(0);
+            }
+        }
+
     </script>
 
 </head>
