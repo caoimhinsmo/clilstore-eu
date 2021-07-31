@@ -142,7 +142,7 @@
        <div class="col-md-4">
           <select name="upload" class="form-control form-control-sm">
             <option value="0" selected>$T_Process_page</option>
-            <option value="2">Compose a page</option>
+            <option value="2">$T_Compose_page</option>
           </select>
        </div>
        <div class="col-md-2 mx-auto">
