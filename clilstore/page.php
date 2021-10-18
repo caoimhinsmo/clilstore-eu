@@ -53,17 +53,13 @@
 
     $serverhome = SM_myCLIL::serverhome();
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-    $stmt = $DbMultidict->prepare('SELECT sl,owner,title,text,medembed,medfloat FROM clilstore WHERE id=:id');
+    $stmt = $DbMultidict->prepare('SELECT sl,owner,title,text,medembed,medfloat,css FROM clilstore WHERE id=:id');
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
-    if (!($r = $stmt->fetch(PDO::FETCH_OBJ))) { throw new SM_MDexception("No unit exists for id=$id"); }
+    if (!($r = $stmt->fetch(PDO::FETCH_ASSOC))) { throw new SM_MDexception("No unit exists for id=$id"); }
     $stmt = null;
-    $sl       = $r->sl;
-    $owner    = $r->owner;
-    $title    = $r->title;
-    $text     = $r->text;
-    $medembed = $r->medembed;
-    $medfloat = $r->medfloat;
+    extract($r);
+    $css = strip_tags($css); //paranoia
 
     if ($sl<>'ar') { $left = 'left';  $right = 'right'; }
      else          { $left = 'right'; $right = 'left';  }
@@ -332,6 +328,8 @@ EOD_NB2;
     .cardinfo:hover .img-top {
         display: inline;
     }
+
+$css
     </style>
     <script>
         function likeClicked() {
