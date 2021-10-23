@@ -42,8 +42,16 @@
         $text       = $matches[4];
         $result .= $whitespace;
         if ($sl=='ja') { //Japanese has no spaces between words so needs to be broken up with the mecab tokenizer
-            $command = "echo '{$word}' | mecab";
-            $response = shell_exec($command);
+            $process = proc_open ( 'mecab',
+                                    [ 0=>['pipe','r'],               //stdin
+                                      1=>['pipe','w'],               //stdout
+                                      2=>['file','/dev/null','a'] ], //stderr
+                                   $pipes );
+            fwrite($pipes[0],$word);
+            fclose($pipes[0]);
+            $response = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            proc_close($process);
             $lines = explode("\n", $response);
             foreach ($lines as $line) {
                 if ($line=='EOS') continue;
