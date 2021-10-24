@@ -127,7 +127,7 @@
     <div class="row">
        <div class="col-md-6">
           <input type="hidden" name="sid" value="$sid"/>
-          <input type="text" class="form-control form-control-sm rounded" id="url" name="url" value="$url" title="URL of the webpage" placeholder="$T_Copy_url_here">
+          <input type=url class="form-control form-control-sm rounded" id="url" name="url" value="$url" title="URL of the webpage" placeholder="$T_Copy_url_here">
        </div>
        <div class="col-md-4">
           <select class="form-control form-control-sm" name="sl" id="sl" title="The language the above page is written in" onchange="submitForm()">
