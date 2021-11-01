@@ -260,6 +260,8 @@ END_COMPOSE;
 
     $html = rtrim($html);  //Without rtrim the program crashed on pages with trailing whitespace
 
+    $htmlout = '';
+
     // Convert all relative links to absolute links
     function resolveLink ($link) {
         global $netUrl;
@@ -334,12 +336,12 @@ END_JS;
 END_LS;
     $head = preg_replace('|</head>|i',"$linkstyle$javascript\n</head>",$head);
     $head = preg_replace('|(<meta.*".*charset\s*=\s*).*(".*>)|i',"$1UTF-8$2",$head);
-    echo $head;
-    echo $bodytag;
+    $htmlout .= $head;
+    $htmlout .= $bodytag;
 
 //  First mop up anything before the first tag
     preg_match('|^(.*?)(<.*>)$|us',$remainder,$matches);
-    echo addLinks($matches[1]);
+    $htmlout .= addLinks($matches[1]);
     $remainder  = $matches[2];
 
 //  Then process tag,text repeatedly til the end of the source
@@ -367,8 +369,10 @@ END_LS;
             if ($tagType=='a')     { $tag  = addWordlink($tag); }
             if ($tagType=='frame') { $tag  = addWordlink($tag,'frame'); }
         }
-        echo $tag,$text;
+        $htmlout .= $tag;
+        $htmlout .= $text;
     }
+    echo $htmlout;
 
   } catch (Exception $e) {
       $message = $e->getMessage();
