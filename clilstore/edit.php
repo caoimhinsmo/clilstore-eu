@@ -145,6 +145,8 @@
   $T_or                     = $T->h('or');
   $T_Lorg                   = $T->h('Lorg');
 
+  $editorsMessage = $tinymceScriptHead = $tinymceScriptBody = $language_url = '';
+
   $hl0 = $T->hl0();
 
   $mode=3;
@@ -282,36 +284,26 @@
 
         $menu = SM_clilHeadFoot::cabecera0($user, $mode);
 
-        $tinymceScript = <<<EODtinyMCE
-    <script src="/tinymce/tinymce.min.js"></script>
-    <script>
-    tinymce.init({
-        selector: "textarea#text",
-        language: "$hlTiny",
-        plugins: [
-             "advlist autolink link image lists charmap preview hr anchor spellchecker",
-             "searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking",
-             "save table directionality emoticons template paste"
-       ],
-       content_css: "$tinymceCSS",
-       toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor",
-       style_formats: [
-            {title: 'Bold text', inline: 'b'},
-            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-            {title: 'Example 1', inline: 'span', classes: 'example1'},
-            {title: 'Example 2', inline: 'span', classes: 'example2'},
-            {title: 'Table styles'},
-            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-        ],
-        entity_encoding: 'raw'
-     });
-    </script>
-EODtinyMCE;
+        $tinymceScriptHead = <<<END_tinymceScriptHead
+<script src="https://cdn.tiny.cloud/1/dxnggerdund5rb10s6xi2iempu5ez5q17cceotkni6rx6b7e/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+END_tinymceScriptHead;
+        if (in_array($hl0,['ga','gd','sh'])) { $language_url = "language_url: '/tinymce/langs/$hlTiny.js',"; } //Currently need local translations for ga, gd, sh
 
-    } else {
-        $editorsMessage = '';
-        $tinymceScript  = '';
+        $tinymceScriptBody = <<<END_tinymceScriptBody
+  <script>
+    tinymce.init({
+      selector: 'textarea.tinymce',
+      plugins: [ 'advlist autolink autoresize autosave charmap code directionality emoticons fullscreen help hr image ',
+                 'link lists media nonbreaking paste print preview quickbars save searchreplace table visualblocks visualchars wordcount'
+      ],
+      toolbar: 'undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage',
+      max_height: '100em',
+      language: "$hlTiny",
+      $language_url
+      entity_encoding: 'raw'
+    });
+  </script>
+END_tinymceScriptBody;
     }
 
     $DbMultidict = SM_DbMultidictPDO::singleton('rw');
@@ -991,7 +983,7 @@ EODfileInfoForm;
 
     </script>
 
-$tinymceScript
+$tinymceScriptHead
 
 </head>
 <body onload="setLevel($level); medlenDisp($medtype); licenceChange('$licence'); permisChange(); $insistOnTitleJS">
@@ -1021,7 +1013,8 @@ $errorMessage
 <input name="medembed" value="$medembedHtml" style="width:100%" class="form-control"></div>
 <div style="margin-top:6px">
 $T_Text <span class="info" style="padding-left:2em">$textAdvice</span><br>
-<textarea class="form-control" name="text" id="text" placeholder="$T_Text_placeholder" style="width:100%;height:400px">$text</textarea></div>
+<textarea class="form-control tinymce" name="text" id="text" placeholder="$T_Text_placeholder" style="width:100%;height:400px">$text</textarea></div>
+$tinymceScriptBody
 <fieldset style="margin:6px 0 0 0;border:1px solid green;padding:5px;corner-radius:5px">
 <legend>$T_Link_buttons</legend>
 <table id="editlinkbuts">
