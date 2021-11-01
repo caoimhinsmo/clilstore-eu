@@ -801,20 +801,6 @@ EOD;
   }
 
 
-  public static function langName2Code($name) {
-      if ($name=='') { return $name; }
-      $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-      $query = 'SELECT id FROM lang WHERE id=:name OR endonym=:name OR name_en=:name OR ll=:name OR iso_639_3=:name';
-      $stmt = $DbMultidict->prepare($query);
-      $stmt->bindParam(':name',$name);
-      $stmt->execute();
-      $result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      if (count($result)==1) { return $result[0]; }
-      if (count($result) >1) { return '«ambiguous»'; }
-      return strtolower($name);
-  }
-
-
   public static function updateCalls($sl,$tl,$dict) {
       // Updates the count of word lookup Calls to the combination ($sl, $tl, $dict)
       // and also the exponential decay average count over the last three months or whatever

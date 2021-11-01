@@ -374,7 +374,6 @@ CHECKBOXES;
         $nowlDisplay   = 'none';
     }
 
-    $f['slFil']    = SM_WlSession::langName2Code($f['slFil']);  //Accept language names as well as codes
     $f['levelMin'] = SM_csSess::levelVis2Num($f['levelMin'],'min');
     $f['levelMax'] = SM_csSess::levelVis2Num($f['levelMax'],'max');
 

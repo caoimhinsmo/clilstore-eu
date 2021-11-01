@@ -317,7 +317,7 @@ END_tinymceScriptBody;
 
         $clone     =@$_POST['clone'];     if (isset($clone)) { $id = 0; } // Set id to 0 to create a new unit
         $owner     = $_POST['owner'];
-        $sl        = $_POST['sl'];        $sl = trim(strip_tags($sl));  $sl = SM_WlSession::langName2Code($sl); //Accept names+codes
+        $sl        = $_POST['sl'];        $sl = trim(strip_tags($sl));
         $level     = $_POST['level'];
         $cefr      = $_POST['cefr'];
         $title     = $_POST['title'];     $title = trim(strip_tags($title));
