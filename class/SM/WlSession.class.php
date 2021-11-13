@@ -465,13 +465,20 @@ class SM_WlSession {
           $bits = explode(':',$wfrule);  if (sizeof($bits)==2) { $wfrule = $bits[0]; $slEffective = $bits[1]; }
           if ($wfrule=='hun') {
               $wfArr = array();
-              $command = "echo '{$word}' | hunspell -m -d {$slEffective} ";
-              $response = shell_exec($command);
-              $lines = explode("\n", $response);
-              $wordpreg = $this->wordpreg;
-              foreach ($lines as $line) {
-                  preg_match ('%\sst:('.$wordpreg.')%u' , $line, $matches );
-                  if (!empty($matches[1])) { $wfArr[] = $matches[1]; }
+              if (file_exists("/usr/share/hunspell/$slEffective.aff")) {
+                  $env = ['LANG' => 'en_US.utf-8'];
+                  $process = proc_open ( "hunspell -m -d $slEffective", [ 0=>['pipe','r'], 1=>['pipe','w'], 2=>['file','/dev/null','a'] ], $pipes, NULL , $env );
+                  fwrite($pipes[0],$word);  //stdin
+                  fclose($pipes[0]);
+                  $response = stream_get_contents($pipes[1]);  //stdout
+                  fclose($pipes[1]);
+                  proc_close($process);
+                  $lines = explode("\n", $response);
+                  $wordpreg = $this->wordpreg;
+                  foreach ($lines as $line) {
+                      preg_match ('%\sst:('.$wordpreg.')%u' , $line, $matches );
+                      if (!empty($matches[1])) { $wfArr[] = $matches[1]; }
+                  }
               }
           } elseif ($wfrule=='lemtable') {
             $DbMultidict = SM_DbMultidictPDO::singleton('rw');
