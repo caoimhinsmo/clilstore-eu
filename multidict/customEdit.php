@@ -7,13 +7,14 @@
     $T_No_words_found = $T->h('Cha_d_fhuaireadh_facal');
     $T_Deasaich = $T->h('Deasaich');
 
-    $sl   = $_REQUEST['sl']   ?? '';
-    $tl   = $_REQUEST['tl']   ?? '';
-    $word = $_REQUEST['word'] ?? '';  $wordLIKE = strtr($word,'*?','%_');
-    if (empty($sl))   { throw new SM_Exception('Missing parameter: ‘sl’'); }
-    if (empty($tl))   { throw new SM_Exception('Missing parameter: ‘tl’'); }
-    if (empty($word)) { throw new SM_Exception('Missing parameter: ‘word’'); }
+    $idc = $_REQUEST['idc'] ?? '';
+    if (empty($idc)) { throw new SM_Exception('Missing parameter: ‘idc’'); }
 
+    $HTML = '';
+
+    $HTML = "<p>Editing word $idc</p>";
+
+/*
     $myCLIL = SM_myCLIL::singleton();
     $user = ( isset($myCLIL->id) ? $myCLIL->id : '' );
 
@@ -21,26 +22,14 @@
     $grp = "cw-$sl";
     $stmtPermission = $DbMultidict->prepare('SELECT 1 FROM userGrp WHERE user=:user AND grp=:grp');
     $stmtPermission->execute([':user'=>$user,':grp'=>$grp]);
-    if ($stmtPermission->fetch()) { $editor = TRUE; } else { $editor = FALSE; }
+    if ($stmtPermission->fetch()) { throw new SM_Exception("User $user has no permission to edit $sl Custom Wordlist entries"); }
 
-    $editHtml = '';
-    if ($editor) {
-        $editHtml = " <img src='/icons-smo/peann.png'>";
-        $editHtml = "<a href='customEdit.php?idc={idc}' title='$T_Deasaich' style='margin-left:2em'>$editHtml</a>";
-    }
-
-    $query = 'SELECT custom.idc, word, disambig, gram, meaning, pri FROM custom, customtr'
-           . ' WHERE lang=:sl AND word LIKE :word AND custom.idc=customtr.idc AND tl=:tl'
-           . ' UNION '
-           . 'SELECT custom.idc, custom.word, disambig, gram, meaning, customwf.pri AS pri FROM customwf, custom, customtr'
-           . ' WHERE wf LIKE :word AND customwf.idc=custom.idc AND lang=:sl AND customtr.idc=custom.idc AND tl=:tl'
-           . ' ORDER BY pri, word, disambig';
-    $stmt = $DbMultidict->prepare($query);
+    $stmt = $DbMultidict->prepare('SELECT word, disambig, gram, meaning, pri FROM custom');
     $stmt->execute([':sl'=>$sl,':tl'=>$tl,':word'=>$wordLIKE]);
-    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
     $resHTML = '';
-    foreach ($res as $r) {
-       extract($r);
+
+       extract($res);
        $word = htmlspecialchars($word);
        $word = strtr ( $word,
         [ '&lt;ruby&gt;'  => '<ruby>',
@@ -49,11 +38,6 @@
           '&lt;/rt&gt;'   => '</rt>',
           '&lt;rp&gt;'    => '<rp>',
           '&lt;/rp&gt;'   => '</rp>' ] ); //Restore ruby markup which was messed up by htmlspecialchars
-       $title = '';
-       if (!empty($disambig)) {
-           $title = htmlspecialchars($disambig);
-           $title = " title='$title'";
-       }
        if (!empty($gram)) { $gram = " <span class=gram>$gram</span>"; }
        $editHtml2 = str_replace('{idc}',$idc,$editHtml);
        $resHTML .= <<<resHTML
@@ -61,7 +45,7 @@
 <p class=meaning>$meaning</p>
 resHTML;
     }
-    if (empty($resHTML)) { $resHTML = "<p>$T_No_words_found</p>\n"; }
+*/
 
     echo <<<END_HTML
 <!DOCTYPE html>
@@ -80,7 +64,7 @@ resHTML;
 <body>
 <div class="smo-body-indent" style="max-width:80em">
 
-$resHTML
+$HTML
 
 </body>
 </html>
