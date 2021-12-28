@@ -3,19 +3,6 @@
 body { background-color:#fff; color:#000; padding:0; margin:0; border-top:1px solid white; font-family:Verdana,Tahoma,sans-serif; }
 div.smo-body-indent { clear:both; margin:0 0.25%; padding:0 0.25% 6px 0.25%; border-top:1px solid white; clear: both; }
 
-/* ------------ Ceanglaichean ---------------------------------------------------------------------------------------- */
-/* --commented out, CPD 2020-11-13
-a         { text-decoration:none; }
-a:link    { color: #00f; }
-a:visited { color: #909; }
-a:hover   { color: #ff0; background-color:blue; text-decoration:none; }
-a:hover[href^="mailto"]         { background-color:red;  }
-a:hover[href^="#"]              { background-color:#008; }
-a:hover[href*=".pdf"]            { color:#fb0; }
-a:hover[href*=".doc"]            { color:#fb0; }
-a img:hover                     { background-color:#ccf; }
-*/
-
 img { border:0; }
 
 h1.smo { font-size:160%; margin-top:0; padding-top:0.5em; }
@@ -26,6 +13,10 @@ div.exception { clear:both; margin:1em 0.5em; padding:1em; border:3px solid red;
 span.fann     { color:#777; }
 span.pdf      { font-size:80%; }
 span.rabhadh  { color:red; font-size:80%; }
+
+span.change { opacity:0; color:white; text-decoration:underline;  }
+span.change.changed { color:green; animation:appearFade 5s; }
+@keyframes appearFade { from { opacity:1; background-color:yellow; } 20% { opacity:0.8; background-color:white; } to { opacity:0; } }
 
 p.tiotal { margin-bottom:1px; font-weight:bold; }
 ul.dluth { margin-top:0px; }
