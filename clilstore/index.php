@@ -121,7 +121,7 @@
     $T_DT_rows     = $T->j('DT_rows');
     $T_DT_Show_All = $T->j('DT_Show_All');
 
-    $tableHtml = $modeAlumno= $modeProfesor = $cookieMessage = $incUnitMessage = '';
+    $tableHtml = $modoTabla = $modeAlumno= $modeProfesor = $cookieMessage = $incUnitMessage = '';
     $timeNow = time();
 
     if (!isset($_COOKIE['csSessionId'])) $cookieMessage = <<<EOD_cookieMessage
