@@ -620,7 +620,7 @@ class SM_WlSession {
       $stmt = $DbMultidict->prepare('SELECT class FROM dict WHERE dict=:dict');
       $stmt->execute([':dict'=>$dict]);
       $r = $stmt->fetch();
-      $class = $r['class'];
+      $class = ( empty($r) ? '' : $r['class'] );
       return $class;
   }
 
