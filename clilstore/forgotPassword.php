@@ -29,7 +29,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login to Clilstore</title>
+    <title>$T_Forgotten_your_password</title>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/scripts.js"></script>
     <link href="../lone.css" rel="stylesheet">
@@ -94,7 +94,6 @@ END_mess;
     }
 
     if ($formRequired) {
-        $userSC     = htmlspecialchars($userAsTyped);
         echo <<<ENDform
 <div class="row h-100 justify-content-center align-items-center">
 	<div class="col-lg col-sm">
@@ -118,7 +117,7 @@ END_mess;
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span>
 									</div>
-									<input type="text" class="form-control" name="findme" value="$findmeSC" required utofocus>
+									<input type="text" class="form-control" name="findme" value="$findmeSC" required autofocus>
 								</div>
 								<div class="help-block with-errors text-danger">
 								</div>
