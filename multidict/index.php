@@ -96,7 +96,7 @@ EODWFFH;
 EODpageNav;
   } else { $pageNav = ''; }
 
-  $slOptionsHtml = $tlSelectHtml = $formItems = '';
+  $slOptionsHtml = $tlSelectHtml = $formItems = $dictSelectHtml = $dictIconsHtml = $dictIconHtml = $nbTlHtml = '';
 
   $slArr = SM_WlSession::slArr();
   foreach ($slArr as $lang=>$langInfo) { $slArray[$lang] = $langInfo['endonym']; }
