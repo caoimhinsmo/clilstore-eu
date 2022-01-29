@@ -514,7 +514,7 @@ class SM_WlSession {
       $sl = $this->sl;
 
      // Populate $tlDictQualArray with quality values, first for single dictionaries...
-      $stmt = $DbMultidict->prepare("SELECT tl,dict,quality FROM dictParamV WHERE sl=:sl");
+      $stmt = $DbMultidict->prepare("SELECT tl,dict,quality FROM dictParamVce WHERE sl=:sl");
       $stmt->bindParam(':sl',$sl);
       $stmt->execute();
       $stmt->bindColumn(1,$tl);
@@ -527,9 +527,9 @@ class SM_WlSession {
       }
       $stmt = null;
      // ...and then for multidictionaries
-      $query = "SELECT dictParamV.dict, dictParamV.quality, dictParamV.tl AS monolingCheck, dictLang2.lang, lang.quality"
-             . " FROM dictParamV, dictLang,dictLang AS dictLang2, lang"
-             . " WHERE dictParamV.dict=dictLang.dict AND dictParamV.dict=dictLang2.dict AND lang.id=dictLang2.lang AND dictLang.lang=:sl";
+      $query = "SELECT dictParamVce.dict, dictParamVce.quality, dictParamVce.tl AS monolingCheck, dictLang2.lang, lang.quality"
+             . " FROM dictParamVce, dictLang,dictLang AS dictLang2, lang"
+             . " WHERE dictParamVce.dict=dictLang.dict AND dictParamVce.dict=dictLang2.dict AND lang.id=dictLang2.lang AND dictLang.lang=:sl";
       $stmt = $DbMultidict->prepare($query);
       $stmt->bindParam(':sl',$sl);
       $stmt->execute();
@@ -571,7 +571,7 @@ class SM_WlSession {
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
       $html = '';
       $dictArray = explode('|',$this->dictRanks);
-      $stmt = $DbMultidict->prepare("SELECT name FROM dictParamV WHERE dict=:dict");
+      $stmt = $DbMultidict->prepare("SELECT name FROM dictParamVce WHERE dict=:dict");
       $stmt->bindParam(':dict',$dic);
       $stmt->bindColumn(1,$name);
       foreach ($dictArray as $dic) {
@@ -726,9 +726,9 @@ EOD;
       // Returns an array of source languages which have dictionaries in the database together with the native names
       $slArr = array();
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-      $query = "SELECT dictLang.lang,endonym,name_en,wiki,pools,dictParamV.dict"
-             ." FROM dictParamV,dictLang LEFT JOIN lang ON dictLang.lang=lang.id"
-             ." WHERE dictParamV.sl='¤' AND dictParamV.dict=dictLang.dict";
+      $query = "SELECT dictLang.lang,endonym,name_en,wiki,pools,dictParamVce.dict"
+             ." FROM dictParamVce,dictLang LEFT JOIN lang ON dictLang.lang=lang.id"
+             ." WHERE dictParamVce.sl='¤' AND dictParamVce.dict=dictLang.dict";
       $stmt = $DbMultidict->prepare($query);
       $stmt->execute();
       $stmt->bindColumn(1,$sl);
@@ -746,7 +746,7 @@ EOD;
           $slArr[$sl]['multidicts'] .= "$dict|";
       }
       $stmt = null;
-      $stmt = $DbMultidict->prepare("SELECT DISTINCT sl,endonym,wiki,pools FROM dictParamV LEFT JOIN lang ON dictParamV.sl=lang.id WHERE sl<>'¤'");
+      $stmt = $DbMultidict->prepare("SELECT DISTINCT sl,endonym,wiki,pools FROM dictParamVce LEFT JOIN lang ON dictParamVce.sl=lang.id WHERE sl<>'¤'");
       $stmt->execute();
       $stmt->bindColumn(1,$sl);
       $stmt->bindColumn(2,$endonym);
@@ -769,7 +769,7 @@ EOD;
       $sl = $this->sl;
       $tlArr = array();
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-      $stmt = $DbMultidict->prepare("SELECT DISTINCT tl,endonym FROM dictParamV LEFT JOIN lang ON dictParamV.tl=lang.id WHERE sl=:sl");
+      $stmt = $DbMultidict->prepare("SELECT DISTINCT tl,endonym FROM dictParamVce LEFT JOIN lang ON dictParamVce.tl=lang.id WHERE sl=:sl");
       $stmt->bindParam(':sl',$sl);
       $stmt->execute();
       $stmt->bindColumn(1,$tl);
@@ -779,8 +779,8 @@ EOD;
       }
       $stmt = null;
       $query = "SELECT dl2.lang AS tl, endonym"
-             ." FROM dictParamV, dictLang AS dl1, dictLang AS dl2 LEFT JOIN lang ON dl2.lang=lang.id"
-             ." WHERE dictParamV.dict=dl1.dict AND dl1.dict=dl2.dict AND dl1.lang=:sl AND (dictParamV.tl='¤' OR (dictParamV.tl='x' AND dl1.lang<>dl2.lang))";
+             ." FROM dictParamVce, dictLang AS dl1, dictLang AS dl2 LEFT JOIN lang ON dl2.lang=lang.id"
+             ." WHERE dictParamVce.dict=dl1.dict AND dl1.dict=dl2.dict AND dl1.lang=:sl AND (dictParamVce.tl='¤' OR (dictParamVce.tl='x' AND dl1.lang<>dl2.lang))";
       $stmt = $DbMultidict->prepare($query);
       $stmt->bindParam(':sl',$sl);
       $stmt->execute();
