@@ -118,6 +118,9 @@
     $T_DT_oAria_sSortAscending   = $T->j('DT_oAria_sSortAscending');
     $T_DT_oAria_sSortDescending  = $T->j('DT_oAria_sSortDescending');
 
+    $T_Clilstore_studentWelcome = $T->h('Clilstore_studentWelcome');
+    $T_Clilstore_teacherWelcome = $T->h('Clilstore_teacherWelcome');
+
     $T_DT_rows     = $T->j('DT_rows');
     $T_DT_Show_All = $T->j('DT_Show_All');
 
@@ -1415,6 +1418,7 @@ if ($mode == 3) { $modoTabla = $modeProfesor; }
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta property="og:description" content="$T_Clilstore_studentWelcome >$T_Clilstore_teacherWelcome"/>
     <title>Clilstore - $T_Teaching_units $T_for_CLIL</title>
 
     <link rel="icon" type="image/png" href="/favicons/clilstore.png">
