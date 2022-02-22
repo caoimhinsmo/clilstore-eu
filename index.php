@@ -14,9 +14,6 @@
   $T_Login                    = $T->h('Log_air');
   $T_Acceder                  = $T->h('Go_in');
 
-  $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-  if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
-
   $menu = SM_clilHeadFoot::cabecera();
   $footer = SM_clilHeadFoot::pie();
 

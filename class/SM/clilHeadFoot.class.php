@@ -145,15 +145,18 @@ END_HEADER0;
     $T = new SM_T('clilstore/serverhome');
     $T_Disclaimer               = $T->h('Disclaimer');
     $T_Disclaimer_EuropeanCom   = $T->h('Disclaimer_EuropeanCom');
-    $EUlogo = '/EUlogos/' . SM_T::hl0() . '.png';
-    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.png'; }
+    $hl0 = SM_T::hl0();
+    $EUlogo = "/EUlogos/$hl0.jpg";
+    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.jpg'; }
+    $EUlangs = explode(',', 'bg,cs,da,de,en,el,es,et,fi,fr,hr,ga,hr,it,lt,lv,mt,nl,pl,pt,ro,sk,sl,sv');
+    $hlEU = ( in_array($hl0,$EUlangs) ? $hl0 : 'en' ); //EU official language, otherwise English
 
     $footer = <<<END_FOOTER
   <footer class="mt-5 mb-3">
     <div class="container mt-5 align-items-center">
       <div class="row">
         <div class="col-xs-12 col-md-6 text-center">
-            <a href="http://eacea.ec.europa.eu/llp/index_en.php"><img src="$EUlogo" width="281" height="60"></a>
+            <a href="//www.eacea.ec.europa.eu/grants_$hlEU"><img src="$EUlogo" width="281" height="60"></a>
         </div>
         <div class="col-xs-12 col-md-6 text-center">
             <p style="font-size:x-small" class="text-white"><i>$T_Disclaimer:</i> $T_Disclaimer_EuropeanCom</p>
