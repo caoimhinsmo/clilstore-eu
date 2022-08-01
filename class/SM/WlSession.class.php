@@ -30,7 +30,8 @@ class SM_WlSession {
           $crTime = time();
           $crHost = gethostbyaddr($crIP);
           $crReferer = ( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
-          $stmt = $DbMultidict->prepare("INSERT INTO wlUser (uid,IP,crIP,utime,crTime,crHost,crReferer) VALUES (:uid,:crIP,:crIP,:crTime,:crTime,:crHost,:crReferer)");
+          $stmt = $DbMultidict->prepare("INSERT INTO wlUser (uid,IP,crIP,utime,crTime,crHost,crReferer)"
+                                      . " VALUES (:uid,:crIP,:crIP,:crTime,:crTime,:crHost,:crReferer)");
           $stmt->bindParam(':uid',$uid,PDO::PARAM_INT);
           $stmt->bindParam(':crIP',$crIP);
           $stmt->bindParam(':crTime',$crTime,PDO::PARAM_INT);
@@ -114,7 +115,6 @@ class SM_WlSession {
       } elseif (!empty($url) && $url<>'{compose}') {
           $url = trim($url);
           $url = strtr ( $url, array('{and}'=>'&') );  //Translate back any protected ampersands
-//          if (preg_match('|^https://.*wikipedia|',$url)) { $url = 'http://'.substr($url,8); }  //Replace https protocol with http, since Wordlink doesn’t seem to work with https at present
           if (substr($url,0,2)=='//')       { $url = "http:$url"; }  //If the protocol is empty, use http
           if (!(strpos($url,'://')>0) and !(substr($url,0,4)=='http')) { $url = "http://$url"; }  //if  there is still no sign of a protocol, use http
           if (strpos($url,'google.com')>0) { throw new SM_MDexception('Sorry, Wordlink does not currently work with Google Drive or other Google sites'); }
@@ -205,7 +205,11 @@ class SM_WlSession {
           }
       }
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-      $query = "UPDATE wlSession SET sl=:sl,tl=:tl,dict=:dict,url=:url,word=:word,wfs=:wfs,inc=:inc,rmLi=:rmLi, mode=:mode, navsize=:navsize, utime=:utime WHERE sid=:sid";
+      $query = <<<EOSQL
+          UPDATE wlSession
+            SET sl=:sl, tl=:tl, dict=:dict, url=:url, word=:word, wfs=:wfs, inc=:inc, rmLi=:rmLi, mode=:mode, navsize=:navsize, utime=:utime
+            WHERE sid=:sid
+          EOSQL;
       $stmt = $DbMultidict->prepare($query);
       $stmt->bindParam(':sl',$sl);
       $stmt->bindParam(':tl',$tl);
@@ -220,12 +224,11 @@ class SM_WlSession {
       $stmt->bindParam(':utime',$utime,PDO::PARAM_INT);
       $stmt->bindParam(':sid',$sid,PDO::PARAM_INT);
       $stmt->execute();
-      $stmt = null;
   }
 
 
   private function wfruleGet() {
-    // Returns the string of rules appriopriate for deriving a string of wordforms to search for in succession in the current dictionary
+    // Returns the string of rules appropriate for deriving a string of wordforms to search for in succession in the current dictionary
       $sl   = $this->sl;
       $tl   = $this->tl;
       $dict = $this->dict;
@@ -301,7 +304,8 @@ class SM_WlSession {
                       $word = substr($word,0,-3).'yse'; break;
                   case 'ise':
                       $last4 = substr($word,-4); if ($last4=='cise' || $last4=='prise' || $last4=='vise') break;
-                      if ($word=='advertise'||$word=='chastise'||$word=='despise'||$word=='disguise'||$word=='franchise'||$word=='merchandise'||$word=='surmise') break;
+                      if ($word=='advertise' || $word=='chastise' || $word=='despise' || $word=='disguise'
+                       || $word=='franchise' || $word=='merchandise' || $word=='surmise') break;
                       $word = substr($word,0,-3).'ize'; break;
                   case 'ize':
                       if ($word=='capsize') break;
@@ -454,7 +458,8 @@ class SM_WlSession {
               $wfArr = array();
               if (file_exists("/usr/share/hunspell/$slEffective.aff")) {
                   $env = ['LANG' => 'en_US.utf-8'];
-                  $process = proc_open ( "hunspell -m -d $slEffective", [ 0=>['pipe','r'], 1=>['pipe','w'], 2=>['file','/dev/null','a'] ], $pipes, NULL , $env );
+                  $process = proc_open ( "hunspell -m -d $slEffective",
+                                         [ 0=>['pipe','r'], 1=>['pipe','w'], 2=>['file','/dev/null','a'] ], $pipes, NULL , $env );
                   fwrite($pipes[0],$word);  //stdin
                   fclose($pipes[0]);
                   $response = stream_get_contents($pipes[1]);  //stdout
@@ -711,55 +716,45 @@ EOD;
           $stmt2->execute();
           if (isset($tlArr[$alt]) && $stmt2->fetch()) {
               if (empty($icon)) {
-                  $html .= "<a onclick=\"tlChange('$alt')\" title=\"Switch to $endonym\" class=\"box\">$alt</a>";
+                  $html .= "<a onclick=\"tlChange('$alt')\" title='Switch to $endonym' class='box'>$alt</a>";
               } else {
-                  $html .= "<a onclick=\"tlChange('$alt')\" title=\"Switch to $endonym\"><img src=\"/multidict/icon.php?lang=$alt\" alt=\"\"></a>";
+                  $html .= "<a onclick=\"tlChange('$alt')\" title='Switch to $endonym'><img src='/multidict/icon.php?lang=$alt' alt=''></a>";
               }
           }
       }
-      if (!empty($html)) { $html = "<br>\n<div class=\"nbLang\">$html</div>\n"; }
+      if (!empty($html)) { $html = "<br>\n<div class=nbLang>$html</div>\n"; }
       return $html;
   }
 
 
   public static function slArr() {
-      // Returns an array of source languages which have dictionaries in the database together with the native names
+      // Returns an array of source languages which have dictionaries in the database together with their native names and some other info
       $slArr = array();
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-      $query = "SELECT dictLang.lang,endonym,name_en,wiki,pools,dictParamVce.dict"
-             ." FROM dictParamVce,dictLang LEFT JOIN lang ON dictLang.lang=lang.id"
-             ." WHERE dictParamVce.sl='¤' AND dictParamVce.dict=dictLang.dict";
+      $query = <<<EOSQL
+          SELECT dictLang.lang AS sl, endonym, script, wiki, pools, dictParamV.dict
+            FROM dictParamV,dictLang LEFT JOIN lang ON dictLang.lang=lang.id
+            WHERE dictParamV.sl='¤' AND dictParamV.dict=dictLang.dict
+          UNION
+          SELECT sl, endonym, script, wiki, pools, dict
+            FROM dictParamV LEFT JOIN lang ON dictParamV.sl=lang.id WHERE sl<>'¤'
+          ORDER BY endonym
+          EOSQL;
       $stmt = $DbMultidict->prepare($query);
       $stmt->execute();
-      $stmt->bindColumn(1,$sl);
-      $stmt->bindColumn(2,$endonym);
-      $stmt->bindColumn(3,$name_en);
-      $stmt->bindColumn(4,$wiki);
-      $stmt->bindColumn(5,$pools);
-      $stmt->bindColumn(6,$dict);
-      while ($stmt->fetch()) {
-          if (!isset($slArr[$sl])) { $slArr[$sl]['multidicts'] = '|'; } //Initialise (For multidict-only languages, multidicts will be set to list them)
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      foreach ($results as $res) {
+          extract($res);
           $slArr[$sl]['endonym']  = "$endonym ($sl)";
-          $slArr[$sl]['name_en']  = "$name_en ($sl)";
+          $slArr[$sl]['script']   = $script;
           $slArr[$sl]['wiki']  = $wiki;
           $slArr[$sl]['pools'] = $pools;
-          $slArr[$sl]['multidicts'] .= "$dict|";
+          if ($dict<>'Google') {
+              $slArr[$sl]['onlyGoog'] = '';
+          } elseif (!isset($slArr[$sl]['onlyGoog'])) {
+              $slArr[$sl]['onlyGoog'] = 'onlyGoog';
+          }
       }
-      $stmt = null;
-      $stmt = $DbMultidict->prepare("SELECT DISTINCT sl,endonym,wiki,pools FROM dictParamVce LEFT JOIN lang ON dictParamVce.sl=lang.id WHERE sl<>'¤'");
-      $stmt->execute();
-      $stmt->bindColumn(1,$sl);
-      $stmt->bindColumn(2,$endonym);
-      $stmt->bindColumn(3,$wiki);
-      $stmt->bindColumn(4,$pools);
-      while ($stmt->fetch()) {
-          $slArr[$sl]['endonym']  = "$endonym ($sl)";
-          $slArr[$sl]['wiki']   = $wiki;
-          $slArr[$sl]['pools'] = $pools;
-          $slArr[$sl]['multidicts'] = '';
-      }
-      $stmt = null;
-      ksort($slArr);
       return $slArr;
   }
 
@@ -769,27 +764,23 @@ EOD;
       $sl = $this->sl;
       $tlArr = array();
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-      $stmt = $DbMultidict->prepare("SELECT DISTINCT tl,endonym FROM dictParamVce LEFT JOIN lang ON dictParamVce.tl=lang.id WHERE sl=:sl");
-      $stmt->bindParam(':sl',$sl);
-      $stmt->execute();
-      $stmt->bindColumn(1,$tl);
-      $stmt->bindColumn(2,$endonym);
-      while ($stmt->fetch()) {
-          $tlArr[$tl] = "$endonym ($tl)";
-      }
-      $stmt = null;
-      $query = "SELECT dl2.lang AS tl, endonym"
-             ." FROM dictParamVce, dictLang AS dl1, dictLang AS dl2 LEFT JOIN lang ON dl2.lang=lang.id"
-             ." WHERE dictParamVce.dict=dl1.dict AND dl1.dict=dl2.dict AND dl1.lang=:sl AND (dictParamVce.tl='¤' OR (dictParamVce.tl='x' AND dl1.lang<>dl2.lang))";
+      $query = <<<EOSQL
+          SELECT DISTINCT tl, endonym, script FROM dictParamV LEFT JOIN lang ON dictParamV.tl=lang.id WHERE sl=:sl
+           UNION
+          SELECT dl2.lang AS tl, endonym, script
+           FROM dictParamV, dictLang AS dl1, dictLang AS dl2 LEFT JOIN lang ON dl2.lang=lang.id
+           WHERE dictParamV.dict=dl1.dict AND dl1.dict=dl2.dict AND dl1.lang=:sl AND (dictParamV.tl='¤'
+             OR (dictParamV.tl='x' AND dl1.lang<>dl2.lang))
+           ORDER BY endonym
+          EOSQL;
       $stmt = $DbMultidict->prepare($query);
-      $stmt->bindParam(':sl',$sl);
-      $stmt->execute();
-      $stmt->bindColumn(1,$tl);
-      $stmt->bindColumn(2,$endonym);
-      while ($stmt->fetch()) {
-          $tlArr[$tl] = "$endonym ($tl)";
+      $stmt->execute([':sl'=>$sl]);
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      foreach ($results as $res) {
+          extract($res);
+          $tlArr[$tl] = ['endonym'=>"$endonym ($tl)",
+                         'script' =>$script];
       }
-      $stmt = null;
       $this->tlArr = $tlArr;
       return $tlArr;
   }
@@ -892,23 +883,6 @@ EOD;
       $stmt = $DbMultidict->prepare("SELECT 1 FROM lang WHERE id=?");
       $stmt->execute(array($id));
       if ($stmt->fetch()) { return 1; } else { return 0; }
-  }
-
-
-  public static function clilSlArr() {
-      // Returns an array of languages in Clilstore together with their native names
-      $DbMultidict = SM_DbMultidictPDO::singleton('rw');
-      $sql = "SELECT DISTINCT clilstore.sl,lang.endonym FROM clilstore,lang WHERE clilstore.sl=lang.id"
-            ." ORDER BY clilstore.sl";
-      $stmt = $DbMultidict->prepare($sql);
-      $stmt->execute();
-      $stmt->bindColumn(1,$sl);
-      $stmt->bindColumn(2,$endonym);
-      $slArr = array();
-      while ($stmt->fetch()) {
-         $slArr[$sl] = $endonym;
-      }
-      return $slArr;
   }
 
 

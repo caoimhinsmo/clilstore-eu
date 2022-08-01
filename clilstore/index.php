@@ -507,18 +507,20 @@ CHECKBOXES;
     if (!empty($textVis))    { $textVal       = "value=\"$textVis\"";    }
 
 
-    $query = 'SELECT DISTINCT endonym,sl FROM clilstore,lang WHERE clilstore.sl=lang.id ORDER BY endonym';
+    $query = 'SELECT DISTINCT sl, endonym, script FROM clilstore,lang WHERE clilstore.sl=lang.id ORDER BY endonym';
     $stmt = $DbMultidict->prepare($query);
     $stmt->execute();
-    $result = $stmt->fetchAll();
-    $slOptions = array();
-    $slOptions[] = '<option value="" style="background-color:white">'
-                  .'</option><option value="ar">Arabic (ar)</option>'; //"Arabic" added in English as a special case
-    foreach ($result as $lang) {
-        $endonym = $lang['endonym'];
-        $sl      = $lang['sl'];
-        $selected = ( $sl==$slFil ? ' selected' : '');
-        $slOptions[] = "<option value=\"$sl\"$selected>$endonym ($sl)</option>";
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $slOptions = [];
+    $scriptPrev = 'Latn';
+    foreach ($results as $res) {
+        extract($res);
+        if ($script<>$scriptPrev) {
+            $slOptions[] = "<option value='' disabled>&nbsp; &nbsp; $script</option>";
+            $scriptPrev = $script;
+        }
+        $selected = ( $sl==$slFil ? ' selected=selected' : '');
+        $slOptions[] = "<option value='$sl'$selected>$endonym ($sl)</option>";
     }
     $slOptionsHtml = implode("\n",$slOptions);
     $slSelectColor = ( $slFil=='' ? 'white' : 'yellow' );
@@ -544,6 +546,7 @@ CHECKBOXES;
                                 <span class="input-group-text"><i class="fa fa-language mr-1" aria-hidden="true"></i>$T_Language</span>
                             </div>
                             <select name="sl" onchange="document.getElementById('selectForm').submit();" class="form-control form-control-sm mySelect ampliar">
+                            <option value='' style='background-color:white'></option>
                             $slOptionsHtml
                             </select>
                     </div>

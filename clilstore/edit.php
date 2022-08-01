@@ -533,14 +533,17 @@ EOD2;
         $scrollChecked = ( $medfloat=='scroll' ? 'checked' : '' );
 
         $slArr = SM_WlSession::slArr();
-        foreach ($slArr as $lang=>$langInfo) { $slArray[$lang] = $langInfo['endonym']; }
-        setlocale(LC_COLLATE,'en_GB.UTF-8');
-        uasort($slArray,'strcoll');
-        $slArray = array_merge(array(''=>'-Choose-'),$slArray);
         $slOptionHtml = '';
-        foreach ($slArray as $code=>$name) {
-            $selectHtml = ( $sl==$code ? ' selected="selected"' : '');
-            $slOptionHtml .= "  <option value=\"$code\"$selectHtml>$name</option>\n";
+        $scriptPrev = 'Latn';
+        foreach ($slArr as $lang=>$langInfo) {
+            $endonym = $langInfo['endonym'];
+            $script  = $langInfo['script'];
+            if ($script<>$scriptPrev) {
+                $slOptionHtml .= "  <option value='' disabled>&nbsp; &nbsp; $script</option>\n";
+                $scriptPrev = $script;
+            }
+            $selectHtml = ( $sl==$lang ? ' selected=selected' : '');
+            $slOptionHtml .= "  <option value=$lang$selectHtml>$endonym</option>\n";
         }
 
         if (empty($id)) { //Creating a new unit
@@ -1050,6 +1053,7 @@ $fileInfoForm
 <div style="margin-top:5px">
 $T_Language
 <select name="sl" required>
+<option value=''></option>
 $slOptionHtml
 </select>
 </div>

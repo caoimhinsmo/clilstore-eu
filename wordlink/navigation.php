@@ -51,17 +51,21 @@
   $robots = ( empty($wlSession->url) ? 'index,follow' : 'noindex,nofollow' );
   $servername = $_SERVER['SERVER_NAME'];
 
-  $slOptions = array();
+  $slOptions = [];
   $slArr = SM_WlSession::slArr();
-  foreach ($slArr as $lang=>$langInfo) { $slArray[$lang] = $langInfo['endonym']; }
-  setlocale(LC_COLLATE,'en_GB.UTF-8');
-  uasort($slArray,'strcoll');
-  $slArray = array_merge ( array(''=>'- Choose -'), $slArray, array('null'=>'--null--') );
-  foreach ($slArray as $lang=>$endonym) {
-      $selectHtml = ( $sl==$lang ? ' selected="selected"' : '');
-      $slOptions[] = "<option value=\"$lang\"$selectHtml>$endonym</option>\n";
+  $scriptPrev = 'Latn';
+  foreach ($slArr as $lang=>$langInfo) {
+      $endonym = $langInfo['endonym'];
+      $script  = $langInfo['script'];
+      if ($script<>$scriptPrev) {
+          $slOptions[] = "<option value='' disabled>&nbsp; &nbsp; $script</option>";
+          $scriptPrev = $script;
+      }
+      $selectHtml = ( $sl==$lang ? ' selected=selected' : '');
+      $slOptions[] = "<option value='$lang'$selectHtml>$endonym</option>";
   }
-   $slOptionsHtml = implode("\n",$slOptions);
+  $slOptionsHtml = implode("\n",$slOptions);
+
   echo <<<EOD1
 <!DOCTYPE html>
 <html>
@@ -131,7 +135,9 @@
        </div>
        <div class="col-md-4">
           <select class="form-control form-control-sm" name="sl" id="sl" title="The language the above page is written in" onchange="submitForm()">
+          <option value=''>- Choose -</option>
           $slOptionsHtml
+          <option value='null'>&nbsp; - null -</option>
           </select>
        </div>
         <div class="col-md-2">
