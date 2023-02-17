@@ -69,7 +69,7 @@
            //Create cookie
             $myCLIL::cuirCookie('myCLIL_authentication',$user,0,108000); //Cookie expires at session end, or max 30 hours
             $csSess->setUser($user);  //Remember $user, to make the next login easier
-            SM_csSess::logWrite($user,'login');
+            SM_csSess::logWrite($user,'login','clilstore.eu');
             $successMessage = <<<ENDsuccess
 <div class="col-lg-12 text-center">
             <h4 class="text-white text-center"><img src="loader-icon.gif" height="30" width="30"> $T_Wait_a_moment... $T_Successfully_logged_in</h4>

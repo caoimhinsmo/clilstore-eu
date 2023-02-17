@@ -539,7 +539,7 @@ EOD2;
             $endonym = $langInfo['endonym'];
             $script  = $langInfo['script'];
             if ($script<>$scriptPrev) {
-                $slOptionHtml .= "  <option value='' disabled>&nbsp; &nbsp; $script</option>\n";
+                $slOptionHtml .= "  <option value='' disabled>&nbsp; &nbsp; &nbsp; -$script-</option>\n";
                 $scriptPrev = $script;
             }
             $selectHtml = ( $sl==$lang ? ' selected=selected' : '');
@@ -679,6 +679,8 @@ EODfileInfoForm;
         div#licenceInfo { margin:4px 0 0 6px; border:2px solid #bb3; border-radius:6px; background-color:#ffd; padding:2px; }
         table#filesAtt td { white-space: nowrap; }
         div.fann { opacity:0.25; }
+        select#sl option[disabled] { background-color:#686; color:#aca; }
+
         .card .card-header {
         color: #ffffff;
         }
@@ -1052,7 +1054,7 @@ $fileInfoForm
 
 <div style="margin-top:5px">
 $T_Language
-<select name="sl" required>
+<select name="sl" id="sl" required>
 <option value=''></option>
 $slOptionHtml
 </select>

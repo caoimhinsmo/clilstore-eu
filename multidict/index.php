@@ -3,7 +3,6 @@
     header("Location:http://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
   header("Cache-Control:max-age=0");
-  header('P3P: CP="CAO PSA OUR"');
 
   $T = new SM_T('multidict/index');
   $T_Word        = $T->h('Facal');
@@ -104,7 +103,7 @@ EODpageNav;
       $endonym = $langInfo['endonym'];
       $script  = $langInfo['script'];
       if ($script<>$scriptPrev) {
-          $slOptionsHtml .= "  <option value='' disabled>&nbsp; &nbsp; $script</option>\n";
+          $slOptionsHtml .= "  <option value='' disabled>&nbsp; &nbsp; &nbsp; -$script-</option>\n";
           $scriptPrev = $script;
       }
       $selectHtml = ( $sl==$lang ? ' selected=selected' : '');
@@ -118,7 +117,7 @@ EODpageNav;
           $endonym = $langInfo['endonym'];
           $script  = $langInfo['script'];
           if ($script<>$scriptPrev) {
-              $tlSelectHtml .= "  <option value='' disabled>&nbsp; &nbsp; $script</option>\n";
+              $tlSelectHtml .= "  <option value='' disabled>&nbsp; &nbsp; &nbsp; -$script-</option>\n";
               $scriptPrev = $script;
           }
           $selectedHtml = ( $tl==$lang ? ' selected="selected"' : '');
@@ -189,6 +188,8 @@ EOD3;
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <style>
+        select#sl option[disabled],
+        select#tl option[disabled] { background-color:#686; color:#aca; } 
 
         html,body {
         height: 100%;

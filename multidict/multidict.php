@@ -2,8 +2,6 @@
   if (!include('autoload.inc.php'))
     header("Location:https://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
-   header('P3P: CP="CAO PSA OUR"');
-
   function getDictLangInfo($dict,$lang,&$langCode,&$encoding) {
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
       $query = "SELECT langCode,encoding FROM dictLang WHERE dict=:dict AND lang=:lang";

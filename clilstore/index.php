@@ -1,9 +1,16 @@
 <?php if (!include('autoload.inc.php'))
   header("Location:http://claran.smo.uhi.ac.uk/mearachd/include_a_dhith/?faidhle=autoload.inc.php");
 
-  header('Cache-Control: no-cache, no-store, must-revalidate');
-  header("Cache-Control:max-age=0");
-//  header("Cache-Control:max-age=300"); //Cache for up to 5 minutes - temporary(?) measure while loading is so slow
+//  header('Cache-Control: no-cache, no-store, must-revalidate');
+//  header("Cache-Control:max-age=0");
+  header("Cache-Control:max-age=300"); //Cache for up to 5 minutes - temporary(?) measure while loading is so slow
+
+$refresh = $_GET['refresh'] ?? '';
+$refresh2 = substr($refresh,0,2);
+if ($refresh2=='16' || $refresh2=='17') { //start of timestamp
+    header('Location: https://clilstore.eu/clilstore/index.php?mode=1&refresh=yes',true,301);
+    exit;
+}
 
   try {
     $T = new SM_T('clilstore/index');
@@ -130,7 +137,9 @@
     if (!isset($_COOKIE['csSessionId'])) $cookieMessage = <<<EOD_cookieMessage
      <div class="alert text-center cookiealert" role="alert">
     <p class="text-white"><b>$T_First_visit_to_CS</b> $T_CS_needs_cookies
-    <a type="button" class="btn btn-primary btn-sm acceptcookies" onclick=location.reload() href="?mode=1&amp;refresh=$timeNow">
+/// Changed '$timeNow' to 'yes' in the following line to try and stop Bing and other spiders from reloading the inefficient index page so often --CPD 2022-12-07
+/// <a type="button" class="btn btn-primary btn-sm acceptcookies" onclick=location.reload() href="?mode=1&amp;refresh=$timeNow">
+    <a type="button" class="btn btn-primary btn-sm acceptcookies" onclick=location.reload() href="?mode=1&amp;refresh=yes">
         $T_Got_it
     </a></p>
     <p class="text-white" style='font-size:80%'>$T_If_message_persists</p>
@@ -516,7 +525,7 @@ CHECKBOXES;
     foreach ($results as $res) {
         extract($res);
         if ($script<>$scriptPrev) {
-            $slOptions[] = "<option value='' disabled>&nbsp; &nbsp; $script</option>";
+            $slOptions[] = "<option value='' disabled>&nbsp; &nbsp; &nbsp; -$script-</option>";
             $scriptPrev = $script;
         }
         $selected = ( $sl==$slFil ? ' selected=selected' : '');
@@ -545,7 +554,7 @@ CHECKBOXES;
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-language mr-1" aria-hidden="true"></i>$T_Language</span>
                             </div>
-                            <select name="sl" onchange="document.getElementById('selectForm').submit();" class="form-control form-control-sm mySelect ampliar">
+                            <select name="sl" id="sl" onchange="document.getElementById('selectForm').submit();" class="form-control form-control-sm mySelect ampliar">
                             <option value='' style='background-color:white'></option>
                             $slOptionsHtml
                             </select>
@@ -1462,6 +1471,7 @@ if ($mode == 3) { $modoTabla = $modeProfesor; }
 
 
     <style>
+        select#sl option[disabled] { background-color:#686; color:#aca; }
 
         @font-face {
             font-family: "Lato";
