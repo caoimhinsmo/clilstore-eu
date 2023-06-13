@@ -146,8 +146,10 @@ END_HEADER0;
     $T_Disclaimer               = $T->h('Disclaimer');
     $T_Disclaimer_EuropeanCom   = $T->h('Disclaimer_EuropeanCom');
     $hl0 = SM_T::hl0();
-    $EUlogo = "/EUlogos/$hl0.jpg";
-    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $EUlogo)) { $EUlogo = '/EUlogos/en.jpg'; }
+    $EUlogos = $_SERVER['DOCUMENT_ROOT'] . '/EUlogos';
+    if      (file_exists("$EUlogos/$hl0.png")) { $EUlogo = "/EUlogos/$hl0.png"; }
+     elseif (file_exists("$EUlogos/$hl0.jpg")) { $EUlogo = "/EUlogos/$hl0.jpg"; }
+     else                                      { $EUlogo = '/EUlogos/en.png';   }
     $EUlangs = explode(',', 'bg,cs,da,de,en,el,es,et,fi,fr,hr,ga,hr,it,lt,lv,mt,nl,pl,pt,ro,sk,sl,sv');
     $hlEU = ( in_array($hl0,$EUlangs) ? $hl0 : 'en' ); //EU official language, otherwise English
 
