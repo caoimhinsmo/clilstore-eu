@@ -137,8 +137,6 @@ if ($refresh2=='16' || $refresh2=='17') { //start of timestamp
     if (!isset($_COOKIE['csSessionId'])) $cookieMessage = <<<EOD_cookieMessage
      <div class="alert text-center cookiealert" role="alert">
     <p class="text-white"><b>$T_First_visit_to_CS</b> $T_CS_needs_cookies
-/// Changed '$timeNow' to 'yes' in the following line to try and stop Bing and other spiders from reloading the inefficient index page so often --CPD 2022-12-07
-/// <a type="button" class="btn btn-primary btn-sm acceptcookies" onclick=location.reload() href="?mode=1&amp;refresh=$timeNow">
     <a type="button" class="btn btn-primary btn-sm acceptcookies" onclick=location.reload() href="?mode=1&amp;refresh=yes">
         $T_Got_it
     </a></p>
