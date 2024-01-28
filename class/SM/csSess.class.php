@@ -42,7 +42,7 @@ class SM_csSess {
       $DbMultidict = SM_DbMultidictPDO::singleton('rw');
       $stmt = $DbMultidict->prepare('UPDATE csSession SET mode=:mode,incTest=:incTest,user=:user WHERE csid=:csid');
       $stmt->execute(array(':mode'=>$mode,':incTest'=>$incTest,':user'=>$user,':csid'=>$csid));
-      $stmt = null;
+//error_log("storeCsSession: \$csid=$csid, \$mode=$mode");
   }
 
 
@@ -192,6 +192,7 @@ class SM_csSess {
   public function setMode($mode) {
       $this->csSession->mode = $mode;
       if ($mode==0 || $mode==1) { $this->csSession->incTest = 0; } //student modes - no test units
+//error_log("setMode: \$mode=$mode");
       $this->storeCsSession();
   }
 

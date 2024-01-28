@@ -154,12 +154,12 @@ EOD_cookieMessage;
 
     $idioma = SM_T::hl0();
 
-//    if (isset($_GET['mode']))  { $csSess->setMode($_GET['mode']); }
+    if (isset($_GET['mode']))  { $csSess->setMode($_GET['mode']); }
 
     $footer = SM_clilHeadFoot::pie();
 
     $mode    = $csSess->getCsSession()->mode;
-$csid = $csSess->getCsSession()->csid;
+//$csid = $csSess->getCsSession()->csid;
 
     $autor = $_GET['owner'] ?? '';
 
