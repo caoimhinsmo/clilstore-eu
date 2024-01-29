@@ -43,8 +43,13 @@ class SM_WlSession {
       $stmt->execute();
       $stmt = null;
 
-      setcookie ('wlUser', $uid, time()+31556926, '/' );  //Store cookie for up to a year
-
+      setcookie ('wlUser', $uid, [
+          'expires' => time()+31556926, //Store cookie for up to a year
+          'path'    => '/',
+          'secure'  => true,
+          'httponly' => true,
+          'samesite' => 'None'
+      ]);
       if (is_null($sid)) {  // No sid so create a new one
           $stmt = $DbMultidict->prepare("SELECT MAX(sid) AS sidMax FROM wlSession");
           $stmt->execute();
