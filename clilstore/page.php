@@ -32,6 +32,7 @@
   $T_Edit_this_unit        = $T->h('Edit_this_unit');
   $T_Add_to_portfolio      = $T->h('Add_to_portfolio');
   $T_Unit_info_title       = $T->h('Unit_info_title');
+  $T_Alt_interface_at       = $T->h('Alt_interface_at');
   $T_Login_to_Clilstore    = $T->h('Login_to_Clilstore');
   $T_Logout_from_Clilstore = $T->h('Logout_from_Clilstore');
   $T_Options_title         = $T->h('Options_title');
@@ -147,6 +148,7 @@ END_portfolioHtml;
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
 //    if (stripos('Mobi',$_SERVER['HTTP_USER_AGENT'])===false) { $sharebuttonWA = ''; }
     $unitinfoHtml = "<a href='unitinfo.php?id=$id' target=_top data-nowordlink title='$T_Unit_info_title'><div class='cardinfo'><img src=/icons-smo/infoButton.png width='30'><img src=/icons-smo/infoButtonHover.png class='img-top' width='30'></div></a>";
+    $mdHtml = "<a href='//multidict.net/cs/$id' target=_top data-nowordlink title='$T_Alt_interface_at multidict.net'><div class='cardinfo'><img src=/icons-smo/mdButton.png width='30'><img src=/icons-smo/mdButtonHover.png class='img-top' width='30'></div></a>";
     $helpHtml = "<a href='$helpVideoURL' target=help$id data-nowordlink title='$helpTitle'><div class='cardinfo'><img src=/icons-smo/helpButton.png width='30'><img src=/icons-smo/helpButtonHover.png class='img-top' width='30'></div></a>";
     if (empty($user)) {
         $userMenuHtml = "<a role=button href='login.php?returnTo=/cs/$id' target=_top class='nowordlink btn btn-primary text-white btn-sm mt-1 mb-1' title='$T_Login_to_Clilstore'>$T_Login</a>";
@@ -183,6 +185,7 @@ EOD_UserMenuHtml;
              $buttonedit
              $helpHtml
              $unitinfoHtml
+             $mdHtml
              <div class="btn" style="display:inline-block;padding:0">$hlSelect</div>
             $userMenuHtml
             </div>
