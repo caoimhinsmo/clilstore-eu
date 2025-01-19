@@ -572,7 +572,7 @@ EODfilesButton;
 <td><input name="but[]" class="form-control mr-2 mb-2" value="$but" placeholder="$T_You_can_write_here" maxlength=35></td>
 <td><input type="checkbox" name="wl[]" $wlch value="$ord" title="$T_Whether_to_WL_link\n$T_Whether_to_WL_info"></td>
 <td><input type="checkbox"  name="new[]" $newch value="$ord" title="$T_Whether_to_new_tab"></td>
-<td><input name="link[]" value="$link" maxlength=500 class="form-control mb-2"></td>
+<td><input name="link[]" value="$link" class="form-control mb-2"></td>
 </tr>
 EODbutHtml;
         }
@@ -662,7 +662,7 @@ EODfileInfoForm;
         table#editlinkbuts td:nth-child(1)::placeholder { font-style:italic; opacity:1; }
         table#editlinkbuts td:nth-child(2)       { width:1.5em; text-align:center; }
         table#editlinkbuts td:nth-child(3)       { width:1.8em; text-align:center; }
-        table#editlinkbuts td:nth-child(4) input { min-width:60em; }
+        table#editlinkbuts td:nth-child(4) { width:99%; }
         a#addLinkButton { display:block; font-size:85%; margin-left:6px; width:14em; text-align:center; padding:6px 4px;
                           border:1px dashed black; border-radius:6px; background-color:white; font-weight:bold; }
         a#addLinkButton:hover { background-color:#ccf; }
