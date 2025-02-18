@@ -143,7 +143,7 @@ END_portfolioHtml;
     $shareURL = urlencode("https://clilstore.eu/cs/$id");
     $sharebuttonFB="<a href='http://www.facebook.com/sharer.php?u=$shareURL' target='_blank' class='nowordlink' title='$T_Share_via Facebook'><img src='facebook.png' alt='Facebook' /></a>";
     $sharebuttonBS = "<a class='nowordlink' target=_blank href='https://bsky.app/intent/compose?text=$shareTitle $shareURL' title='$T_Share_via Bluesky'><img src='bluesky.png'></a>";
-    $sharebuttonTw = "<a class='nowordlink' target=_blank href='https://twitter.com/intent/tweet?text=$shareTitle&amp;url=$shareURL' title='$T_Share_via Twitter'><img src='twitter.png'></a>";
+//    $sharebuttonTw = "<a class='nowordlink' target=_blank href='https://twitter.com/intent/tweet?text=$shareTitle&amp;url=$shareURL' title='$T_Share_via Twitter'><img src='twitter.png'></a>";
     $sharebuttonWA = "<a class='nowordlink' target=_blank href='whatsapp://send?text=$shareTitle $shareURL' title='$T_Share_via Whatsapp'><img src='whatsapp.png' alt='WA'></a>";
     $sharebuttonLI = "<a class='nowordlink' target=_blank href='http://www.linkedin.com/shareArticle?mini=true&amp;url=$shareURL' title='$T_Share_via Linkedin'><img src='linkedin.png' alt='Linkedin'></a>";
     $sharebuttonEM = "<a class='nowordlink' target=_blank href='mailto:?Subject=$shareTitle&amp;Body=$shareTitle $shareURL' title='$T_Share_via $T_email'><img src='email.png' alt='Email'></a>";
@@ -175,7 +175,6 @@ EOD_UserMenuHtml;
         <a role="button" href="/clilstore" class="nowordlink btn btn-primary text-white btn-sm align-middle ml-1 mt-1 mb-1 mr-1" title="Clilstore index page" target="_parent">Clilstore</a>
              $sharebuttonFB
              $sharebuttonBS
-             $sharebuttonTw
              $sharebuttonWA
              $sharebuttonLI
              $sharebuttonEM
